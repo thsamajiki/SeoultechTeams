@@ -230,7 +230,6 @@ public class MyTodoListFragment extends Fragment implements OnRecyclerItemClickL
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-
         binding = null;
     }
 }
