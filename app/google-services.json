@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "395515706122",
+    "firebase_url": "https://seoultechteams-66458.firebaseio.com",
+    "project_id": "seoultechteams-66458",
+    "storage_bucket": "seoultechteams-66458.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:395515706122:android:43b628ddef186f723898f3",
+        "android_client_info": {
+          "package_name": "com.hero.seoultechteams"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "395515706122-7r3tl7vscthf2nmlupj3mll16vjqliib.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRZQ4JAsjYndQdtqqsOV7mjLN2hBQqeV8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "395515706122-7r3tl7vscthf2nmlupj3mll16vjqliib.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

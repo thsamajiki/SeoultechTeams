@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="10dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardElevation="7dp"
+    app:cardUseCompatPadding="true"
+    app:contentPadding="10dp"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
+    app:rippleColor="@color/colorPrimary30"
+    android:id="@+id/mcv_mytodo_list" >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:id="@+id/tv_mytodo_title"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="10dp"
+            tools:text="제목입니다"
+            android:textColor="@color/black"
+            android:textSize="@dimen/title_text_size" />
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginEnd="8dp"
+            android:padding="5dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:id="@+id/btn_mytodo_option_menu"
+            android:src="@drawable/ic_option_menu"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:clickable="true"
+            android:visibility="invisible" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/tv_mytodo_title"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginTop="7dp"
+            android:layout_marginStart="10dp"
+            android:id="@+id/tv_mytodo_start_date"
+            android:text="@string/todo_start_date"
+            android:textSize="@dimen/body_text_size"
+            android:textColor="@color/dark_gray" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/btn_mytodo_option_menu"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="10dp"
+            android:id="@+id/tv_mytodo_end_date"
+            android:text="@string/todo_end_date"
+            android:textSize="@dimen/body_text_size"
+            android:textColor="@color/dark_gray" />
+
+        <ProgressBar
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/tv_mytodo_end_date"
+            app:layout_constraintBottom_toTopOf="@+id/tv_mytodo_desc"
+            android:id="@+id/pb_mytodo_d_day"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="7dp"
+            android:progressDrawable="@drawable/d_day_progress" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/pb_mytodo_d_day"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="@string/dummy_text"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:textSize="@dimen/body_text_size"
+            android:textColor="@color/dark_gray"
+            android:id="@+id/tv_mytodo_desc" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_mytodo_team_name"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginBottom="12.5dp"
+            tools:text="안드로이드 조별과제 팀"
+            android:textSize="@dimen/small_text_size"
+            android:textColor="@color/normal_gray" />
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:id="@+id/btn_dismiss_mytodo"
+            android:text="@string/dismiss_todo"
+            android:textColor="@color/colorPrimaryRed"
+            android:textSize="@dimen/small_text_size"
+            android:backgroundTint="@color/colorPrimaryRed60"
+            app:layout_constraintEnd_toStartOf="@+id/btn_state_mytodo"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_state_mytodo"
+            android:layout_marginTop="7dp"
+            android:layout_marginEnd="15dp"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:id="@+id/btn_state_mytodo"
+            android:text="@string/submit_todo"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/small_text_size"
+            android:backgroundTint="@color/colorPrimary30"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintTop_toBottomOf="@+id/tv_mytodo_desc"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</com.google.android.material.card.MaterialCardView>

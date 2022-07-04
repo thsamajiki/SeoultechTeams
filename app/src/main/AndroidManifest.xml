@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.hero.seoultechteams">
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".view.main.team.TeamDetailActivity"></activity>
+        <activity android:name=".view.main.account.setting.notice.NoticeListActivity" />
+        <activity android:name=".view.main.account.setting.SettingActivity" />
+        <activity
+            android:name=".view.main.team.todo.AddTodoActivity"
+            android:theme="@style/TranslucentActivity"
+            android:windowSoftInputMode="adjustResize|stateVisible" />
+        <activity android:name=".view.main.team.todo.TeamTodoListActivity" />
+
+        <activity android:name=".view.main.team.CreateTeamActivity" />
+        <activity android:name=".view.main.team.option_menu.TeamParticipationActivity" />
+        <activity android:name=".view.main.team.option_menu.InviteActivity" />
+        <activity android:name=".view.main.team.todo.TodoDetailActivity" />
+        <activity android:name=".view.main.account.EditProfileActivity" />
+
+        <activity android:name=".view.photoview.PhotoActivity" />
+        <activity android:name=".view.login.SignUp02Activity" />
+        <activity android:name=".view.login.SignUp01Activity" />
+        <activity android:name=".view.login.LoginActivity" />
+        <activity android:name=".view.main.team.option_menu.TeamMemberListActivity" />
+        <activity android:name=".view.main.MainActivity" />
+        <activity android:name=".SplashActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+
+    </application>
+
+</manifest>

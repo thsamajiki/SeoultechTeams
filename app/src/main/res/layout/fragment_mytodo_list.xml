@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.main.mytodo.MyTodoListFragment"
+    android:orientation="vertical" >
+
+    <com.google.android.material.tabs.TabLayout
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/tl_mytodo_list"
+        app:tabIndicatorColor="@color/white"
+        app:tabSelectedTextColor="@color/black"
+        app:tabTextColor="@color/normal_gray"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="10dp"
+        app:tabTextAppearance="@style/TabTextAppearance"
+        app:tabGravity="start" >
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tab_now_mytodo"
+            android:text="@string/title_tab_now_mytodo_list"
+            android:textSize="@dimen/title_text_size"
+            android:textColor="@color/black" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tab_completed_mytodo"
+            android:text="@string/title_tab_completed_mytodo_list"
+            android:textSize="@dimen/title_text_size"
+            android:textColor="@color/black" />
+
+    </com.google.android.material.tabs.TabLayout>
+
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/srl_my_todo_list" >
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:id="@+id/rv_mytodo_list"
+            tools:listitem="@layout/item_mytodo_list"
+            android:orientation="vertical" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</LinearLayout>

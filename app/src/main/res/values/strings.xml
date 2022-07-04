@@ -1,0 +1,165 @@
+<resources>
+    <string name="app_name">SeoulTechTeams</string>
+
+    <string name="developer_id_number">13109378</string>
+    <string name="developer_name">정호섭</string>
+
+    <string name="title_login">로그인</string>
+    <string name="input_email">이메일</string>
+    <string name="input_password">패스워드</string>
+    <string name="input_password_confirm">패스워드 확인</string>
+    <string name="btn_text_signup">아직 회원이 아니신가요? 가입하기</string>
+    <string name="btn_text_login">로그인</string>
+
+    <string name="title_signup">회원가입</string>
+    <string name="btn_next">다음</string>
+    <string name="input_username">사용자명</string>
+    <string name="btn_start">시작하기</string>
+
+    <string name="title_member_list">멤버 목록</string>
+    <string name="user_email">bongsik@gmail.com</string>
+
+    <string name="btn_invite">초대하기</string>
+    <string name="ask_if_invite">초대하시겠습니까?</string>
+    <string name="yes_invite">예</string>
+    <string name="no_invite">아니오</string>
+
+    <string name="title_todo_list">할 일 목록</string>
+
+    <string name="submission">서브미션</string>
+    <string name="d_day_countdown">D-10</string>
+    <string name="todo_list">할 일 목록</string>
+    <string name="add_todo">추가</string>
+
+    <string name="todo_start_date">20.01.01 10:10 PM</string>
+    <string name="todo_end_date">20.01.10 6:10 PM까지</string>
+
+    <string name="create_team_title">팀 생성</string>
+    <string name="edit_team_name">팀 이름을 지어주세요</string>
+    <string name="edit_team_desc">멋진 우리 팀을 소개해주세요</string>
+    <string name="finish_create_team">완료</string>
+
+    <string name="detail_team_title">팀의 정보</string>
+
+    <string name="ask_if_delete">삭제하시겠습니까?</string>
+    <string name="yes_delete">예</string>
+    <string name="no_delete">아니오</string>
+
+    <string name="create_todo">해야할 일을 작성해 주세요</string>
+    <string name="submit_todo">제출</string>
+    <string name="dismiss_todo">반려</string>
+    <string name="approve_todo">승인</string>
+
+    <string name="member_add_todo_title">할 일 추가</string>
+    <string name="edit_member_add_todo_title">해야 할 일을 요약해서 작성해주세요</string>
+    <string name="edit_member_add_todo_desc">나의 할 일을 자세히 메모해보세요</string>
+    <string name="member_finish_add_todo">완료</string>
+    <string name="todo_d_day">D-Day</string>
+    <string name="set_title_manager">담당자</string>
+    <string name="manager_name">김봉식</string>
+
+    <string name="detail_todo_title">해야 할 일</string>
+    <string name="edit_todo_title">제목을 입력해주세요</string>
+    <string name="edit_todo_desc">나의 할 일을 자세히 메모해보세요</string>
+    <string name="title_comment">Comment</string>
+    <string name="edit_comment">Comment</string>
+
+    <string name="mytodo_list_title">나의 할 일</string>
+    <string name="title_tab_now_mytodo_list">진행중</string>
+    <string name="title_tab_completed_mytodo_list">완료됨</string>
+
+    <string name="btn_change_profile">프로필 수정</string>
+    <string name="tv_notification">알림</string>
+    <string name="title_about_us">앱의 정보</string>
+    <string name="title_version">버전</string>
+    <string name="version">1.0 Beta</string>
+    <string name="title_copyright">저작권</string>
+    <string name="copyright">Copyright (C) 2020-2021 정호섭\n\nPowered by Seoultech Software</string>
+
+    <string name="title_image_open_source">이미지</string>
+    <string name="item01_image_open_source">flaticon</string>
+    <string name="item02_image_open_source">Unsplash</string>
+
+    <string name="title_open_source">오픈소스</string>
+    <string name="item01_open_source">Google Material Design</string>
+    <string name="item02_open_source">Firebase</string>
+    <string name="item03_open_source">bumptech/glide (GitHub)</string>
+    <string name="item04_open_source">wdullaer:materialdatetimepicker (GitHub)</string>
+
+    <string name="title_change_profile">프로필 수정</string>
+    <string name="edit_username">사용자 이름</string>
+    <string name="tv_change_pwd">패스워드 변경</string>
+    <string name="edit_pwd">패스워드</string>
+    <string name="edit_pwd_confirm">패스워드 확인</string>
+
+    <string name="title_setting">설정</string>
+    <string name="subtitle_general_setting">일반</string>
+    <string name="item_notice">공지사항</string>
+    <string name="item_font">폰트</string>
+    <string name="item_theme">테마</string>
+    <string name="subtitle_notification_setting">알림</string>
+    <string name="item_push_notification">푸시 알림 받기</string>
+    <string name="subtitle_data_management_setting">데이터 관리</string>
+    <string name="item_delete_cache">캐시 데이터 삭제</string>
+    <string name="subtitle_others">기타</string>
+    <string name="item_inquiry">문의하기</string>
+    <string name="item_review">리뷰하기</string>
+    <string name="item_open_source">오픈소스 라이센스</string>
+
+    <string name="title_notice_list">공지사항</string>
+    <string name="date_notice_item">날짜</string>
+    <string name="title_notice_item">제목</string>
+
+    <string name="title_participation">팀 참여도</string>
+    <string name="todo_faithful_ranking_title">성실도 랭킹</string>
+    <string name="first_rank">1위</string>
+    <string name="second_rank">2위</string>
+    <string name="third_rank">3위</string>
+    <string name="fourth_rank">4위</string>
+    <string name="rank_percent">90%</string>
+    <string name="first_rank_member_name">1등맨</string>
+    <string name="second_rank_member_name">2등맨</string>
+    <string name="third_rank_member_name">3등맨</string>
+    <string name="fourth_rank_member_name">4등맨</string>
+    <string name="late_king">우리팀 지연왕</string>
+    <string name="late_king_name">지연왕 이름</string>
+    <string name="our_hero">우리팀 영웅</string>
+    <string name="our_hero_name">영웅 이름</string>
+    <string name="forever_late">영원한 삼수생</string>
+    <string name="forever_late_name">삼수생 이름</string>
+    <string name="future_lawyer">미래의 변호사</string>
+    <string name="future_lawyer_name">변호사 이름</string>
+    <string name="about_leader">팀장에 대한 어떤 것</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="loading">잠시만 기다려주세요.</string>
+
+    <string name="dummy_text">
+        Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate
+    </string>
+
+    <string name="first_notice_desc">안녕하세요. SeoultechTeams에 오신 것을 환영합니다!</string>
+
+    <string-array name="title_array">
+        <item>팀 목록</item>
+        <item>내 할 일 목록</item>
+        <item>나의 정보</item>
+    </string-array>
+
+    <string name="option_modify_team">수정하기</string>
+    <string name="option_delete_team">삭제하기</string>
+
+    <string name="state_doing">진행중</string>
+    <string name="btn_state_submit_late">지연제출</string>
+    <string name="btn_state_submit">제출</string>
+    <string name="state_submitted">제출됨</string>
+    <string name="btn_state_waiting">대기중</string>
+    <string name="btn_state_confirm">승인</string>
+    <string name="state_confirmed">승인됨</string>
+    <string name="btn_state_dismiss">반려</string>
+    <string name="state_dismissed">반려됨</string>
+    <string name="btn_state_resubmit">다시 제출</string>
+    <string name="state_protested">이의제기됨</string>
+
+
+</resources>

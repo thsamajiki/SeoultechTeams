@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menu_team"
+        android:title="팀 목록"
+        android:icon="@drawable/ic_teams" />
+    <item android:id="@+id/menu_mytodo"
+        android:title="할 일 목록"
+        android:icon="@drawable/ic_todo_list" />
+    <item android:id="@+id/menu_account"
+        android:title="나의 정보"
+        android:icon="@drawable/ic_user" />
+</menu>
