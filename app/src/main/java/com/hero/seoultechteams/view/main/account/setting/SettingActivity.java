@@ -21,7 +21,7 @@ import com.google.android.play.core.tasks.OnFailureListener;
 import com.google.android.play.core.tasks.OnSuccessListener;
 import com.google.android.play.core.tasks.Task;
 import com.hero.seoultechteams.R;
-import com.hero.seoultechteams.view.main.OpenSourceLicenseDialog;
+import com.hero.seoultechteams.view.main.account.OpenSourceLicenseDialog;
 import com.hero.seoultechteams.view.main.account.setting.notice.NoticeListActivity;
 
 public class SettingActivity extends AppCompatActivity implements View.OnClickListener {
@@ -114,7 +114,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     private void openInquiryPopUp() {
         MaterialAlertDialogBuilder openInquiryAlertDialogBuilder = new MaterialAlertDialogBuilder(this);
         String openInquiryTitle = "문의하기";
-        String openInquiryMessage = "13109378@seoultech.ac.kr로\n문의 부탁드립니다 :)";
+        String openInquiryMessage = "chs8275@gmail.com으로\n문의 부탁드립니다 :)";
         String positiveText = "확인";
 
         new MaterialAlertDialogBuilder(this).setTitle(openInquiryTitle)

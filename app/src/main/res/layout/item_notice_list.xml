@@ -24,7 +24,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             android:id="@+id/tv_date_notice_item"
-            android:text="2021.01.11"
+            android:text="2022.01.11"
             android:textSize="@dimen/small_text_size"
             android:textColor="@color/dark_gray" />
 
