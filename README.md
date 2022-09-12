@@ -58,16 +58,20 @@
 
 
 ## 스크린샷
-<img src="/images/Screenshot_1.png" width="180px" height="320px" title="Login" alt="Login"></img>
-<img src="/images/Screenshot_2.png" width="180px" height="320px" title="Login" alt="Login"></img>
-<img src="/images/Screenshot_3.png" width="180px" height="320px" title="SignUp" alt="SignUp"></img>
-<img src="/images/Screenshot_4.png" width="180px" height="320px" title="CommertialMovie" alt="CommertialMovie"></img>
-<img src="/images/Screenshot_5.png" width="180px" height="320px" title="IndependentMovie" alt="IndependentMovie"></img>
-<img src="/images/Screenshot_6.png" width="180px" height="320px" title="Theater" alt="Theater"></img>
-<img src="/images/Screenshot_7.png" width="180px" height="320px" title="Review" alt="Review"></img>
-<img src="/images/Screenshot_8.png" width="180px" height="320px" title="myReview" alt="myReview"></img>
-<img src="/images/Screenshot_9.png" width="180px" height="320px" title="Login" alt="Login"></img>
-<img src="/images/Screenshot_10.png" width="180px" height="320px" title="Login" alt="Login"></img>
+<img src="/images/Splash.png" width="180px" height="320px" title="Splash" alt="Splash"></img>
+<img src="/images/Login.png" width="180px" height="320px" title="Login" alt="Login"></img>
+<img src="/images/SignUp.png" width="180px" height="320px" title="SignUp" alt="SignUp"></img>
+<img src="/images/MyTodoList.png" width="180px" height="320px" title="MyTodoList" alt="MyTodoList"></img>
+<img src="/images/TeamList.png" width="180px" height="320px" title="TeamList" alt="TeamList"></img>
+<img src="/images/CreateTeam.png" width="180px" height="320px" title="CreateTeam" alt="CreateTeam"></img>
+<img src="/images/TeamTodoList.png" width="180px" height="320px" title="TeamTodoList" alt="TeamTodoList"></img>
+<img src="/images/CreateTodo.png" width="180px" height="320px" title="CreateTodo" alt="CreateTodo"></img>
+<img src="/images/TeamMemberList.png" width="180px" height="320px" title="TeamMemberList" alt="TeamMemberList"></img>
+<img src="/images/MemberEvaluation.png" width="180px" height="320px" title="MemberEvaluation" alt="MemberEvaluation"></img>
+<img src="/images/InviteList.png" width="180px" height="320px" title="InviteList" alt="InviteList"></img>
+<img src="/images/Profile.png" width="180px" height="320px" title="Profile" alt="Profile"></img>
+<img src="/images/ProfileEdit.png" width="180px" height="320px" title="ProfileEdit" alt="ProfileEdit"></img>
+
 
 
 ## 시연 영상
