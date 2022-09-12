@@ -75,7 +75,7 @@
 
 
 ## 시연 영상
-<img src="/images/서울텍팀즈앱_시연.gif" width="180px" height="320px" title="test_video" alt="Test_video"></img>
+<img src="/images/서울텍팀즈앱_시연.gif" width="360px" height="640px" title="test_video" alt="Test_video"></img>
 
 
 ## 구글 플레이스토어 출시
