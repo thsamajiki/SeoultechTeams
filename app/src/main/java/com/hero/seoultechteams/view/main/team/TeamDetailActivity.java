@@ -1,36 +1,32 @@
 package com.hero.seoultechteams.view.main.team;
 
-import androidx.appcompat.widget.PopupMenu;
-
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.hero.seoultechteams.BaseActivity;
+import com.hero.seoultechteams.Injector;
 import com.hero.seoultechteams.R;
-import com.hero.seoultechteams.database.OnCompleteListener;
-import com.hero.seoultechteams.database.team.TeamRepository;
-import com.hero.seoultechteams.database.team.entity.TeamData;
+import com.hero.seoultechteams.domain.team.entity.TeamEntity;
+import com.hero.seoultechteams.view.main.team.contract.TeamDetailContract;
+import com.hero.seoultechteams.view.main.team.presenter.TeamDetailPresenter;
 
 import static com.hero.seoultechteams.view.main.team.TeamListFragment.EXTRA_TEAM_DATA;
 
-
-public class TeamDetailActivity extends BaseActivity implements View.OnClickListener {
-
-    private ImageView ivBack, btnOptionMenu;
+public class TeamDetailActivity extends BaseActivity implements View.OnClickListener, TeamDetailContract.View {
+    private ImageView ivBack, ivOptionMenu;
     private EditText editTeamName, editTeamDesc;
     public static final String EXTRA_UPDATE_TEAM = "updateTeam";
+    private TeamDetailContract.Presenter presenter = new TeamDetailPresenter(this,
+            Injector.getInstance().provideUpdateTeamDetailUseCase());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,37 +37,29 @@ public class TeamDetailActivity extends BaseActivity implements View.OnClickList
         addTextWatcher();
     }
 
+    private TeamEntity initTeamEntity;
+
     private void initView() {
         ivBack = findViewById(R.id.iv_back);
-        btnOptionMenu = findViewById(R.id.iv_option_menu);
+        ivOptionMenu = findViewById(R.id.iv_option_menu);
         editTeamName = findViewById(R.id.edit_team_name);
         editTeamDesc = findViewById(R.id.edit_team_desc);
 
-        showUpdatedTeamDetail();
+        initTeamEntity = getIntent().getParcelableExtra(EXTRA_TEAM_DATA);
+        initializeTeamDetail(initTeamEntity);
     }
 
-    private void setOnClickListener() {
-        ivBack.setOnClickListener(this);
-        btnOptionMenu.setOnClickListener(this);
-    }
-
-    private TeamData getTeamData() {
-        return getIntent().getParcelableExtra(EXTRA_TEAM_DATA);
-    }
-
-    private void showUpdatedTeamDetail() {
-        TeamData teamData = getTeamData();
+    private void initializeTeamDetail(TeamEntity teamEntity) {
         String myUserKey = getCurrentUser().getUid();
-        if (myUserKey.equals(teamData.getLeaderKey())) {
+        if (myUserKey.equals(teamEntity.getLeaderKey())) {
             toggleEditText(editTeamName, true);
             toggleEditText(editTeamDesc, true);
         } else {
             toggleEditText(editTeamName, false);
             toggleEditText(editTeamDesc, false);
         }
-
-        String teamName = teamData.getTeamName();
-        String teamDesc = teamData.getTeamDesc();
+        String teamName = teamEntity.getTeamName();
+        String teamDesc = teamEntity.getTeamDesc();
         editTeamName.setText(teamName);
         editTeamDesc.setText(teamDesc);
         if (TextUtils.isEmpty(teamDesc)) {
@@ -87,6 +75,15 @@ public class TeamDetailActivity extends BaseActivity implements View.OnClickList
             editTeamName.clearFocus();
             editTeamDesc.clearFocus();
         }
+    }
+
+    private void setOnClickListener() {
+        ivBack.setOnClickListener(this);
+        ivOptionMenu.setOnClickListener(this);
+    }
+
+    private TeamEntity getTeamData() {
+        return getIntent().getParcelableExtra(EXTRA_TEAM_DATA);
     }
 
     private void toggleEditText(EditText editText, boolean enabled) {
@@ -132,28 +129,24 @@ public class TeamDetailActivity extends BaseActivity implements View.OnClickList
     }
 
     private void updateTeamDetail() {
-        TeamRepository teamRepository = new TeamRepository(this);
         final String teamName = editTeamName.getText().toString();
         final String teamDesc = editTeamDesc.getText().toString();
-
-        final TeamData teamData = getTeamData();
-        teamData.setTeamName(teamName);
-        teamData.setTeamDesc(teamDesc);
-
-        teamRepository.updateTeam(new OnCompleteListener<TeamData>() {
-            @Override
-            public void onComplete(boolean isSuccess, TeamData data) {
-                if (isSuccess) {
-                    Intent intent = new Intent();
-                    intent.putExtra(EXTRA_UPDATE_TEAM, teamData);
-                    setResult(RESULT_OK, intent);
-                    finish();
-                } else {
-                    Toast.makeText(TeamDetailActivity.this, "데이터가 수정되지 않았습니다.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }, teamData);
+        presenter.updateTeamDetail(teamName, teamDesc, initTeamEntity);
     }
+
+    @Override
+    public void updatedTeamDetail(TeamEntity data) {
+        Intent intent = new Intent();
+        intent.putExtra(EXTRA_UPDATE_TEAM, data);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
+    @Override
+    public void failedUpdateTeamDetail() {
+        Toast.makeText(TeamDetailActivity.this, "데이터가 수정되지 않았습니다.", Toast.LENGTH_SHORT).show();
+    }
+
 
 //    private void showTeamDetailOptionMenu(){
 //        PopupMenu popupMenu = new PopupMenu(this, btnOptionMenu);

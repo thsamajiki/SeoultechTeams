@@ -1,23 +1,25 @@
 package com.hero.seoultechteams.database;
 
-import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.Update;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static androidx.room.OnConflictStrategy.REPLACE;
 
-@Dao
+
 public interface BaseDao<T> {
     @Insert(onConflict = REPLACE)
     void insertData(T data);
 
     @Insert
-    void insertAll(ArrayList<T> dataList);
+    void insertAll(List<T> dataList);
+
+    @Update
+    void updateData(T data);
 
     @Delete
-    void delete(T data);
-
-
+    void deleteData(T data);
 }

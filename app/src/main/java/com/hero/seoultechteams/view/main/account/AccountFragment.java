@@ -1,29 +1,32 @@
 package com.hero.seoultechteams.view.main.account;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.button.MaterialButton;
-import com.google.firebase.auth.FirebaseUser;
 import com.hero.seoultechteams.BaseFragment;
+import com.hero.seoultechteams.Injector;
 import com.hero.seoultechteams.R;
-import com.hero.seoultechteams.database.OnCompleteListener;
-import com.hero.seoultechteams.database.user.entity.UserData;
+import com.hero.seoultechteams.domain.user.entity.UserEntity;
+import com.hero.seoultechteams.view.main.account.contract.AccountContract;
+import com.hero.seoultechteams.view.main.account.presenter.AccountPresenter;
 import com.hero.seoultechteams.view.photoview.PhotoActivity;
-
-import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -31,8 +34,7 @@ import static android.app.Activity.RESULT_OK;
 import static com.hero.seoultechteams.view.main.account.EditProfileActivity.EXTRA_UPDATE_USER_DATA;
 import static com.hero.seoultechteams.view.photoview.PhotoActivity.EXTRA_PROFILE_IMAGE_URL;
 
-
-public class AccountFragment extends BaseFragment implements View.OnClickListener {
+public class AccountFragment extends BaseFragment implements View.OnClickListener, AccountContract.View {
 
     private CircleImageView ivMyUserProfile;
     private TextView tvMyUserName, tvMyUserEmail;
@@ -41,6 +43,27 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
     private static final int EDIT_PROFILE_REQ = 1010;
     public static final String EXTRA_MY_USER_DATA = "userData";
     public static final String EXTRA_MY_NOTIFICATION_DATA = "myNotificationData";
+    private final ActivityResultLauncher<Intent> // 화면 간 이동에 대한 결과값을 받음
+            editProfileResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    int resultCode = result.getResultCode();
+                    Intent data = result.getData();
+
+                    if (resultCode == RESULT_OK && data != null) {
+                        UserEntity userData = data.getParcelableExtra(EXTRA_UPDATE_USER_DATA);
+                        if (userData != null) {
+                            setUserData(userData);
+                        }
+                    }
+                }
+            });
+
+    private ActivityResultLauncher<Intent> photoResultLauncher;
+    private final AccountContract.Presenter presenter = new AccountPresenter(this,
+            Injector.getInstance().provideGetAccountProfileUseCase());
 
     @Nullable
     @Override
@@ -51,6 +74,7 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
         View view = inflater.inflate(R.layout.fragment_account, container, false);
         initView(view);
         setOnClickListener();
+
         //getMyNotificationFromDatabase();
         return view;
     }
@@ -69,12 +93,12 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
 
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        setUserData(convertToUserData());
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setUserData(presenter.getUserEntity());
     }
 
-    private void setUserData(UserData userData) {
+    private void setUserData(UserEntity userData) {
         if (TextUtils.isEmpty(userData.getProfileImageUrl())) {
             Glide.with(requireActivity()).load(R.drawable.ic_user).into(ivMyUserProfile);
         } else {
@@ -89,7 +113,7 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_my_user_profile:
-                String myProfileImageUrl = convertToUserData().getProfileImageUrl();
+                String myProfileImageUrl = presenter.getUserEntity().getProfileImageUrl();
                 intentPhoto(myProfileImageUrl);
                 break;
             case R.id.btn_edit_profile:
@@ -99,41 +123,15 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
     }
 
     private void intentPhoto(String profileImageUrl) {
+        Log.d("photo", "intentPhoto: " + profileImageUrl);
         Intent intent = new Intent(requireActivity(), PhotoActivity.class);
         intent.putExtra(EXTRA_PROFILE_IMAGE_URL, profileImageUrl);
-        startActivity(intent);
+        photoResultLauncher.launch(intent);
     }
 
     private void intentEditProfile() {
         Intent intent = new Intent(requireActivity(), EditProfileActivity.class);
-        startActivityForResult(intent, EDIT_PROFILE_REQ);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == EDIT_PROFILE_REQ && resultCode == RESULT_OK && data != null) {
-            UserData userData = data.getParcelableExtra(EXTRA_UPDATE_USER_DATA);
-            if (userData != null) {
-                setUserData(userData);
-            }
-        }
-    }
-
-    private UserData convertToUserData() {
-        FirebaseUser firebaseUser = getCurrentUser();
-        UserData userData = new UserData();
-        userData.setKey(firebaseUser.getUid());
-        userData.setName(firebaseUser.getDisplayName());
-        userData.setEmail(firebaseUser.getEmail());
-        if (firebaseUser.getPhotoUrl() != null) {
-            userData.setProfileImageUrl(firebaseUser.getPhotoUrl().toString());
-        } else {
-            userData.setProfileImageUrl(null);
-        }
-
-        return userData;
+        editProfileResultLauncher.launch(intent);
     }
 
     @Override

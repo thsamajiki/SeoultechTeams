@@ -17,7 +17,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Transaction;
 import com.hero.seoultechteams.database.CloudStore;
-import com.hero.seoultechteams.database.OnCompleteListener;
+import com.hero.seoultechteams.domain.common.OnCompleteListener;
 import com.hero.seoultechteams.database.member.entity.MemberData;
 import com.hero.seoultechteams.database.team.entity.TeamData;
 import com.hero.seoultechteams.database.user.entity.UserData;
@@ -25,6 +25,7 @@ import com.hero.seoultechteams.database.user.entity.UserData;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 public class MemberCloudStore extends CloudStore<MemberData> {
 
@@ -59,7 +60,7 @@ public class MemberCloudStore extends CloudStore<MemberData> {
     }
 
     @Override
-    public void getDataList(final OnCompleteListener<ArrayList<MemberData>> onCompleteListener, Object... params) {
+    public void getDataList(final OnCompleteListener<List<MemberData>> onCompleteListener, Object... params) {
         String teamKey = params[0].toString();
         getFirestore().collection("Team")
                 .document(teamKey)
@@ -95,7 +96,6 @@ public class MemberCloudStore extends CloudStore<MemberData> {
     @Override
     public void add(final OnCompleteListener<MemberData> onCompleteListener, final MemberData memberData) {
         getFirestore().runTransaction(new Transaction.Function<MemberData>() {
-            @Nullable
             @Override
             public MemberData apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
                 TeamData teamData = new TeamData();
@@ -136,55 +136,55 @@ public class MemberCloudStore extends CloudStore<MemberData> {
         });
     }
 
-    public void addNewMemberList(final OnCompleteListener<ArrayList<MemberData>> onCompleteListener, final TeamData teamData, ArrayList<UserData> userDataList, ArrayList<MemberData> memberDataList) {
-
-        getFirestore().runTransaction(new Transaction.Function<ArrayList<MemberData>>() {
-            @Nullable
-            @Override
-            public ArrayList<MemberData> apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
-                DocumentReference teamRef = getFirestore().collection("Team").document();
-                FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-
-                DocumentReference myRef = getFirestore().collection("User")
-                        .document(firebaseUser.getUid());
-                DocumentReference myTeamRef = myRef.collection("MyTeam")
-                        .document(teamRef.getId());
-
-                MemberData newMemberData = new MemberData();
-                UserData userData = transaction.get(myRef).toObject(UserData.class);
-
-                for (UserData data : userDataList) {
-                    for (MemberData memberData : memberDataList) {
-                        if (!data.getKey().equals(memberData.getKey())) {
-                            newMemberData.setProfileImageUrl(userData.getProfileImageUrl());
-                            newMemberData.setName(userData.getName());
-                            newMemberData.setTeamKey(teamData.getTeamKey());
-                            newMemberData.setEmail(userData.getEmail());
-                            newMemberData.setKey(firebaseUser.getUid());
-                            memberDataList.add(newMemberData);
-                        }
-                    }
-                }
-
-                DocumentReference memberRef = teamRef.collection("Member").document(newMemberData.getKey());
-                transaction.set(teamRef, teamData);
-                transaction.set(memberRef, newMemberData);
-                transaction.set(myTeamRef, teamData);
-                return memberDataList;
-            }
-        }).addOnSuccessListener(new OnSuccessListener<ArrayList<MemberData>>() {
-            @Override
-            public void onSuccess(ArrayList<MemberData> memberDataList) {
-                //MemberCacheStore.getInstance().add(null, memberDataList);
-                onCompleteListener.onComplete(true, memberDataList);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                onCompleteListener.onComplete(false, null);
-            }
-        });
-    }
+//    public void addNewMemberList(final OnCompleteListener<ArrayList<MemberData>> onCompleteListener, final TeamData teamData, ArrayList<UserData> userDataList, ArrayList<MemberData> memberDataList) {
+//
+//        getFirestore().runTransaction(new Transaction.Function<ArrayList<MemberData>>() {
+//            @Nullable
+//            @Override
+//            public ArrayList<MemberData> apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
+//                DocumentReference teamRef = getFirestore().collection("Team").document();
+//                FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+//
+//                DocumentReference myRef = getFirestore().collection("User")
+//                        .document(firebaseUser.getUid());
+//                DocumentReference myTeamRef = myRef.collection("MyTeam")
+//                        .document(teamRef.getId());
+//
+//                MemberData newMemberData = new MemberData();
+//                UserData userData = transaction.get(myRef).toObject(UserData.class);
+//
+//                for (UserData data : userDataList) {
+//                    for (MemberData memberData : memberDataList) {
+//                        if (!data.getKey().equals(memberData.getKey())) {
+//                            newMemberData.setProfileImageUrl(userData.getProfileImageUrl());
+//                            newMemberData.setName(userData.getName());
+//                            newMemberData.setTeamKey(teamData.getTeamKey());
+//                            newMemberData.setEmail(userData.getEmail());
+//                            newMemberData.setKey(firebaseUser.getUid());
+//                            memberDataList.add(newMemberData);
+//                        }
+//                    }
+//                }
+//
+//                DocumentReference memberRef = teamRef.collection("Member").document(newMemberData.getKey());
+//                transaction.set(teamRef, teamData);
+//                transaction.set(memberRef, newMemberData);
+//                transaction.set(myTeamRef, teamData);
+//                return memberDataList;
+//            }
+//        }).addOnSuccessListener(new OnSuccessListener<ArrayList<MemberData>>() {
+//            @Override
+//            public void onSuccess(ArrayList<MemberData> memberDataList) {
+//                //MemberCacheStore.getInstance().add(null, memberDataList);
+//                onCompleteListener.onComplete(true, memberDataList);
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                onCompleteListener.onComplete(false, null);
+//            }
+//        });
+//    }
 
     @Override
     public void update(final OnCompleteListener<MemberData> onCompleteListener, final MemberData memberData) {

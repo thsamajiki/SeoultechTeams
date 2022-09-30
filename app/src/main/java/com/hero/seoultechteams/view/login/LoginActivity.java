@@ -1,10 +1,6 @@
 package com.hero.seoultechteams.view.login;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 
@@ -13,26 +9,24 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 import com.hero.seoultechteams.BaseActivity;
+import com.hero.seoultechteams.Injector;
 import com.hero.seoultechteams.R;
 
-import com.hero.seoultechteams.SplashActivity;
-import com.hero.seoultechteams.database.OnCompleteListener;
-import com.hero.seoultechteams.database.user.UserRepository;
-import com.hero.seoultechteams.database.user.entity.UserData;
+import com.hero.seoultechteams.domain.user.entity.UserEntity;
+import com.hero.seoultechteams.view.login.contract.LoginContract;
+import com.hero.seoultechteams.view.login.presenter.LoginPresenter;
 import com.hero.seoultechteams.view.main.MainActivity;
 
-public class LoginActivity extends BaseActivity implements View.OnClickListener {
+public class LoginActivity extends BaseActivity implements View.OnClickListener, LoginContract.View {
 
     private MaterialButton btnLogin;
     private TextView btnSignUp;
     private TextInputEditText editEmail, editPwd;
+    private final LoginContract.Presenter presenter = new LoginPresenter(this,
+            Injector.getInstance().provideGetUserUseCase());
 
 
     @Override
@@ -72,68 +66,59 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         final String email = editEmail.getText().toString();
         final String pwd = editPwd.getText().toString();
 
-        if (!checkEmailValid(email)) {
-            Toast.makeText(this, "이메일 양식을 확인해주세요", Toast.LENGTH_SHORT).show();
-            return;
-        }
 
-        if (!checkPwdValid(pwd)) {
-            Toast.makeText(this, "패스워드가 올바르지 않습니다", Toast.LENGTH_SHORT).show();
-            return;
-        }
 
-        if (TextUtils.isEmpty(pwd)) {
-            Toast.makeText(this, "패스워드를 입력해주세요", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        firebaseLogin(email, pwd);
+        presenter.firebaseLogin(email, pwd);
 
     }
 
-    private void firebaseLogin(final String email, String pwd) {
-        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, pwd)
-                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                    @Override
-                    public void onSuccess(AuthResult authResult) {
-                        getUserFromDatabase();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(LoginActivity.this, "로그인에 실패했습니다.", Toast.LENGTH_SHORT).show();
-                    }
-                });
+    @Override
+    public void onLogin(UserEntity userEntity) {
+        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        finishAffinity();
     }
 
-    private boolean checkPwdValid(String pwd) {
-        if (TextUtils.isEmpty(pwd)) {
-            return false;
-        }
-
-        return pwd.length() >= 6;
+    @Override
+    public void failedLogin() {
+        Toast.makeText(LoginActivity.this, "로그인에 실패했습니다.", Toast.LENGTH_SHORT).show();
     }
 
-    private boolean checkEmailValid(String email) {
-        if (TextUtils.isEmpty(email)) {
-            return false;
-        }
-
-        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    @Override
+    public void onInvalidLogin(InvalidLoginInfoType invalidLoginInfoType) {
+        Toast.makeText(this, invalidLoginInfoType.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
-    private void getUserFromDatabase() {
-        UserRepository userRepository = new UserRepository(this);
-        userRepository.getUser(new OnCompleteListener<UserData>() {
-            @Override
-            public void onComplete(boolean isSuccess, UserData data) {
-                if (isSuccess && data != null) {
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                    finishAffinity();
-                }
+//    private void firebaseLogin(final String email, String pwd) {
+//        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, pwd)
+//                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+//                    @Override
+//                    public void onSuccess(AuthResult authResult) {
+//                        getUserFromDatabase();
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Toast.makeText(LoginActivity.this, "로그인에 실패했습니다.", Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//    }
 
-            }
-        }, getCurrentUser().getUid());
-    }
+
+
+
+
+//    private void getUserFromDatabase() {
+//        UserRepositoryImpl userRepository = new UserRepositoryImpl(this);
+//        userRepository.getUser(new OnCompleteListener<UserData>() {
+//            @Override
+//            public void onComplete(boolean isSuccess, UserData data) {
+//                if (isSuccess && data != null) {
+//                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
+//                    finishAffinity();
+//                }
+//
+//            }
+//        }, getCurrentUser().getUid());
+//    }
 }

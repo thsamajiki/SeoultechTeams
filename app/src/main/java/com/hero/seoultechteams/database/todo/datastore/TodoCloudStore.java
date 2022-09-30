@@ -14,17 +14,28 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.hero.seoultechteams.database.CloudStore;
 import com.hero.seoultechteams.database.DataType;
-import com.hero.seoultechteams.database.OnCompleteListener;
+import com.hero.seoultechteams.domain.common.OnCompleteListener;
 import com.hero.seoultechteams.database.todo.entity.TodoData;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 public class TodoCloudStore extends CloudStore<TodoData> {
 
-    public TodoCloudStore(Context context) {
+    private static TodoCloudStore instance;
+
+    private TodoCloudStore(Context context) {
         super(context);
+    }
+
+    public static TodoCloudStore getInstance(Context context) {
+        if (instance == null) {
+            instance = new TodoCloudStore(context);
+        }
+
+        return instance;
     }
 
     @Override
@@ -33,7 +44,7 @@ public class TodoCloudStore extends CloudStore<TodoData> {
     }
 
     @Override
-    public void getDataList(OnCompleteListener<ArrayList<TodoData>> onCompleteListener, Object... params) {
+    public void getDataList(OnCompleteListener<List<TodoData>> onCompleteListener, Object... params) {
         DataType type = (DataType) params[0];
         String key = params[1].toString();
         switch (type) {
@@ -123,7 +134,7 @@ public class TodoCloudStore extends CloudStore<TodoData> {
                 });
     }
 
-    private void loadTeamTodoData(String teamKey, final OnCompleteListener<ArrayList<TodoData>> onCompleteListener) {
+    private void loadTeamTodoData(String teamKey, final OnCompleteListener<List<TodoData>> onCompleteListener) {
         getFirestore().collection("Team")
                 .document(teamKey)
                 .collection("Todo")
@@ -135,7 +146,7 @@ public class TodoCloudStore extends CloudStore<TodoData> {
                             onCompleteListener.onComplete(true, null);
                             return;
                         }
-                        ArrayList<TodoData> teamTodoDataList = new ArrayList<>();
+                        List<TodoData> teamTodoDataList = new ArrayList<>();
                         for (DocumentSnapshot documentSnapshot: queryDocumentSnapshots.getDocuments()) {
                             TodoData todoData = documentSnapshot.toObject(TodoData.class);
                             teamTodoDataList.add(todoData);
@@ -155,7 +166,7 @@ public class TodoCloudStore extends CloudStore<TodoData> {
                 });
     }
 
-    private void loadMyTodoData(String userKey, final OnCompleteListener<ArrayList<TodoData>> onCompleteListener) {
+    private void loadMyTodoData(String userKey, final OnCompleteListener<List<TodoData>> onCompleteListener) {
         getFirestore().collectionGroup("Todo")
                 .whereEqualTo("userKey", userKey)
                 .get()
@@ -165,7 +176,7 @@ public class TodoCloudStore extends CloudStore<TodoData> {
                         if (queryDocumentSnapshots.isEmpty()) {
                             return;
                         }
-                        ArrayList<TodoData> myTodoDataList = new ArrayList<>();
+                        List<TodoData> myTodoDataList = new ArrayList<>();
                         for (DocumentSnapshot documentSnapshot: queryDocumentSnapshots.getDocuments()) {
                             TodoData todoData = documentSnapshot.toObject(TodoData.class);
                             myTodoDataList.add(todoData);

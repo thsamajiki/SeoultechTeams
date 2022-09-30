@@ -7,8 +7,10 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity
-public class NoticeData implements Parcelable {
+import com.hero.seoultechteams.domain.notice.entity.NoticeEntity;
+
+@Entity(tableName = "notice_table")
+public class NoticeData {
 
     private String noticeTitle;
     private String noticeDesc;
@@ -18,38 +20,22 @@ public class NoticeData implements Parcelable {
     @NonNull
     private String noticeKey;
 
-    public NoticeData() {
+    public NoticeData(String noticeTitle, String noticeDesc, String noticeDate, @NonNull String noticeKey) {
+        this.noticeTitle = noticeTitle;
+        this.noticeDesc = noticeDesc;
+        this.noticeDate = noticeDate;
+        this.noticeKey = noticeKey;
     }
 
-    protected NoticeData(Parcel in) {
-        noticeTitle = in.readString();
-        noticeDesc = in.readString();
-        noticeKey = in.readString();
-        noticeDate = in.readString();
+    public NoticeEntity toEntity() {
+        return new NoticeEntity(noticeTitle, noticeDesc, noticeDate, noticeKey);
     }
 
-    public static final Creator<NoticeData> CREATOR = new Creator<NoticeData>() {
-        @Override
-        public NoticeData createFromParcel(Parcel in) {
-            return new NoticeData(in);
-        }
-
-        @Override
-        public NoticeData[] newArray(int size) {
-            return new NoticeData[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(noticeTitle);
-        dest.writeString(noticeDesc);
-        dest.writeString(noticeKey);
+    public static NoticeData toData(NoticeEntity noticeEntity) {
+        return new NoticeData(noticeEntity.getNoticeTitle(),
+                noticeEntity.getNoticeDesc(),
+                noticeEntity.getNoticeDate(),
+                noticeEntity.getNoticeKey());
     }
 
     public String getNoticeTitle() {

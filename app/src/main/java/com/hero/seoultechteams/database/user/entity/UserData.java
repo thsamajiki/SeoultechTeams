@@ -9,8 +9,10 @@ import androidx.annotation.Nullable;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.hero.seoultechteams.domain.user.entity.UserEntity;
+
 @Entity
-public class UserData implements Parcelable {
+public class UserData {
 
     private String name;
     private String email;
@@ -20,27 +22,23 @@ public class UserData implements Parcelable {
     @NonNull
     private String key;
 
-    public UserData() {
+    public UserData(String name, String email, String profileImageUrl, @NonNull String key) {
+        this.name = name;
+        this.email = email;
+        this.profileImageUrl = profileImageUrl;
+        this.key = key;
     }
 
-    protected UserData(Parcel in) {
-        name = in.readString();
-        email = in.readString();
-        profileImageUrl = in.readString();
-        key = in.readString();
+    public UserEntity toEntity() {
+        return new UserEntity(name, email, profileImageUrl, key);
     }
 
-    public static final Creator<UserData> CREATOR = new Creator<UserData>() {
-        @Override
-        public UserData createFromParcel(Parcel in) {
-            return new UserData(in);
-        }
-
-        @Override
-        public UserData[] newArray(int size) {
-            return new UserData[size];
-        }
-    };
+    public static UserData toData(UserEntity userEntity) {
+        return new UserData(userEntity.getName(),
+                userEntity.getEmail(),
+                userEntity.getProfileImageUrl(),
+                userEntity.getKey());
+    }
 
     public String getName() {
         return name;
@@ -72,19 +70,6 @@ public class UserData implements Parcelable {
 
     public void setKey(String key) {
         this.key = key;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(name);
-        dest.writeString(email);
-        dest.writeString(profileImageUrl);
-        dest.writeString(key);
     }
 
     @Override

@@ -6,46 +6,55 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
-import com.google.firebase.auth.FirebaseAuth;
+import com.hero.seoultechteams.Injector;
 import com.hero.seoultechteams.R;
-import com.hero.seoultechteams.database.OnCompleteListener;
-import com.hero.seoultechteams.database.team.TeamRepository;
-import com.hero.seoultechteams.database.team.entity.TeamData;
-import com.hero.seoultechteams.database.todo.TodoRepository;
-import com.hero.seoultechteams.database.todo.entity.TodoData;
+
+import com.hero.seoultechteams.database.todo.entity.Event;
+import com.hero.seoultechteams.domain.team.entity.TeamEntity;
+import com.hero.seoultechteams.domain.todo.entity.TodoEntity;
+
 import com.hero.seoultechteams.listener.OnRecyclerItemClickListener;
+import com.hero.seoultechteams.view.main.mytodo.contract.MyTodoListContract;
+import com.hero.seoultechteams.view.main.mytodo.presenter.MyTodoListPresenter;
 import com.hero.seoultechteams.view.main.team.todo.TodoDetailActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import static com.hero.seoultechteams.domain.todo.entity.TodoEntity.TODO_STATE_CONFIRMED;
+import static com.hero.seoultechteams.domain.todo.entity.TodoEntity.TODO_STATE_DISMISSED;
+import static com.hero.seoultechteams.domain.todo.entity.TodoEntity.TODO_STATE_IN_PROGRESS;
+import static com.hero.seoultechteams.domain.todo.entity.TodoEntity.TODO_STATE_SUBMITTED;
 import static com.hero.seoultechteams.view.main.team.todo.TeamTodoListActivity.EXTRA_TODO_DATA;
 
 
-public class MyTodoListFragment extends Fragment implements OnRecyclerItemClickListener<TodoData>, SwipeRefreshLayout.OnRefreshListener {
+public class MyTodoListFragment extends Fragment implements OnRecyclerItemClickListener<TodoEntity>, SwipeRefreshLayout.OnRefreshListener, MyTodoListContract.View {
 
     private TabLayout tlMyTodoList;
     private TabItem tabNowMyTodo, tabCompletedMyTodo;
     private RecyclerView rvMyTodoList;
-    private ArrayList<TodoData> myTodoNowDataList = new ArrayList<>();
-    private ArrayList<TodoData> myTodoCompletedDataList = new ArrayList<>();
+    private final ArrayList<TodoEntity> myTodoNowDataList = new ArrayList<>();
+    private final ArrayList<TodoEntity> myTodoCompletedDataList = new ArrayList<>();
     private MyTodoListAdapter myTodoListAdapter;
     private SwipeRefreshLayout srlMyTodoList;
-    private TodoRepository todoRepository;
+
+
+    private final MyTodoListContract.Presenter presenter =
+            new MyTodoListPresenter(
+                    this,
+                    Injector.getInstance().provideGetMyTodoListUseCase(),
+                    Injector.getInstance().provideGetTeamListUseCase(),
+                    Injector.getInstance().provideSetRefreshUseCase(),
+                    Injector.getInstance().provideUpdateTodoStateUseCase());
 
     @Nullable
     @Override
@@ -61,7 +70,9 @@ public class MyTodoListFragment extends Fragment implements OnRecyclerItemClickL
     @Override
     public void onResume() {
         super.onResume();
-        getMyTodoListFromDatabase();
+        myTodoNowDataList.clear();
+        myTodoCompletedDataList.clear();
+        presenter.getMyTodoListFromDatabase();
     }
 
     private void initView(View view) {
@@ -102,11 +113,10 @@ public class MyTodoListFragment extends Fragment implements OnRecyclerItemClickL
     }
 
     private void initMyTodoListAdapter() {
-        myTodoListAdapter = new MyTodoListAdapter(requireActivity(), new ArrayList<TodoData>(), new MyTodoListAdapter.OnBtnStateMyTodoClickListener() {
+        myTodoListAdapter = new MyTodoListAdapter(requireActivity(), new ArrayList<TodoEntity>(), new MyTodoListAdapter.OnBtnStateMyTodoClickListener() {
             @Override
-            public void btnStateMyTodoOnClick(TodoData data) {
-                myTodoNowDataList.remove(data);
-                myTodoCompletedDataList.add(data);
+            public void btnStateMyTodoOnClick(TodoEntity data) {
+                setTodoCompleted(data);
             }
         });
         myTodoListAdapter.setOnRecyclerItemClickListener(this);
@@ -114,51 +124,73 @@ public class MyTodoListFragment extends Fragment implements OnRecyclerItemClickL
         rvMyTodoList.setAdapter(myTodoListAdapter);
     }
 
-    private void getMyTodoListFromDatabase() {
-        if (todoRepository == null) {
-            todoRepository = new TodoRepository(requireActivity());
-        }
-        String myUserKey = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-        myTodoNowDataList.clear();
-        myTodoCompletedDataList.clear();
-
-        todoRepository.getMyTodoList(new OnCompleteListener<ArrayList<TodoData>>() {
-            @Override
-            public void onComplete(boolean isSuccess, ArrayList<TodoData> data) {
-                if (isSuccess && data != null) {
-                    for (TodoData todoData: data) {
-                        if (todoData.getTodoState().equals(TodoData.TODO_STATE_CONFIRMED)) {
-                            myTodoCompletedDataList.add(todoData);
-                        } else {
-                            myTodoNowDataList.add(todoData);
-                        }
-                    }
-                    if (tlMyTodoList.getSelectedTabPosition() == 0) {
-                        myTodoListAdapter.setMyTodoListOnTab(myTodoNowDataList);
-                    } else {
-                        myTodoListAdapter.setMyTodoListOnTab(myTodoCompletedDataList);
-                    }
-                    getTeamListFromDatabase();
-                } else {
-                    Toast.makeText(requireActivity(), "데이터를 불러올 수 없습니다.", Toast.LENGTH_SHORT).show();
-                }
-                srlMyTodoList.setRefreshing(false);
-            }
-        }, myUserKey);
+    private void setTodoCompleted(TodoEntity data) {
+        myTodoNowDataList.remove(data);
+        myTodoCompletedDataList.add(data);
     }
+
+//    private void getMyTodoListFromDatabase() {
+//        if (todoRepositoryImpl == null) {
+//            todoRepositoryImpl = new TodoRepositoryImpl(requireActivity());
+//        }
+//        String myUserKey = FirebaseAuth.getInstance().getCurrentUser().getUid();
+//
+//        myTodoNowDataList.clear();
+//        myTodoCompletedDataList.clear();
+//
+//        todoRepositoryImpl.getMyTodoList(new OnCompleteListener<ArrayList<TodoEntity>>() {
+//            @Override
+//            public void onComplete(boolean isSuccess, ArrayList<TodoEntity> data) {
+//                if (isSuccess && data != null) {
+//                    for (TodoEntity todoData: data) {
+//                        if (todoData.getTodoState().equals(TodoEntity.TODO_STATE_CONFIRMED)) {
+//                            myTodoCompletedDataList.add(todoData);
+//                        } else {
+//                            myTodoNowDataList.add(todoData);
+//                        }
+//                    }
+//                    if (tlMyTodoList.getSelectedTabPosition() == 0) {
+//                        myTodoListAdapter.setMyTodoListOnTab(myTodoNowDataList);
+//                    } else {
+//                        myTodoListAdapter.setMyTodoListOnTab(myTodoCompletedDataList);
+//                    }
+//                    getTeamListFromDatabase();
+//                } else {
+//                    Toast.makeText(requireActivity(), "데이터를 불러올 수 없습니다.", Toast.LENGTH_SHORT).show();
+//                }
+//                srlMyTodoList.setRefreshing(false);
+//            }
+//        }, myUserKey);
+//    }
 
     private void getTeamListFromDatabase() {
-        TeamRepository teamRepository = new TeamRepository(requireActivity());
-        teamRepository.getTeamList(new OnCompleteListener<ArrayList<TeamData>>() {
-            @Override
-            public void onComplete(boolean isSuccess, ArrayList<TeamData> data) {
-                myTodoListAdapter.setMyTeamDataList(data);
-            }
-        });
+        presenter.getTeamList();
     }
 
-//    @Override
+    @Override
+    public void setMyTeamDataList(List<TeamEntity> data) {
+        myTodoListAdapter.setMyTeamDataList(data);
+    }
+
+    @Override
+    public void updatedTodoState(TodoEntity data, int position) {
+        if (data.getTodoState().equals(TODO_STATE_CONFIRMED)) {
+            myTodoListAdapter.removeItem(position);
+            myTodoListAdapter.notifyItemRemoved(position);
+
+            setTodoCompleted(data);
+        } else {
+            myTodoListAdapter.setItem(position, data);
+            myTodoListAdapter.notifyItemChanged(position);
+        }
+    }
+
+    @Override
+    public void failedUpdateTodo() {
+        Toast.makeText(requireActivity(), "할 일을 갱신하는 데 실패했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+    }
+
+    //    @Override
 //    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
 //        super.onCreateOptionsMenu(menu, inflater);
 //        inflater.inflate(R.menu.menu_mytodo_option, menu);
@@ -196,15 +228,85 @@ public class MyTodoListFragment extends Fragment implements OnRecyclerItemClickL
 //    }
 
     @Override
-    public void onItemClick(int position, View view, TodoData data) {
-        Intent intent = new Intent(requireActivity(), TodoDetailActivity.class);
-        intent.putExtra(EXTRA_TODO_DATA, data);
-        startActivity(intent);
+    public void onItemClick(int position, View view, TodoEntity data) {
+        switch (view.getId()) {
+//                case R.id.btn_mytodo_option_menu:
+//                    showMyTodoOptionMenu();
+//                    break;
+            case R.id.btn_dismiss_mytodo:
+                updateMyTodo(true, position, data);
+                break;
+            case R.id.btn_state_mytodo:
+                updateMyTodo(false, position, data);
+                break;
+            default:
+                Intent intent = new Intent(requireActivity(), TodoDetailActivity.class);
+                intent.putExtra(EXTRA_TODO_DATA, data);
+                startActivity(intent);
+                break;
+        }
     }
 
     @Override
     public void onRefresh() {
-        todoRepository.setRefresh(true);
-        getMyTodoListFromDatabase();
+        presenter.setRefresh(true);
+        myTodoNowDataList.clear();
+        myTodoCompletedDataList.clear();
+        presenter.getMyTodoListFromDatabase();
+    }
+
+    private void updateMyTodo(boolean isDismissed, int position, TodoEntity data) {
+        Event newEvent = new Event();
+        switch (data.getTodoState()) {
+            case TODO_STATE_IN_PROGRESS:
+            case TODO_STATE_DISMISSED:
+                data.setTodoState(TODO_STATE_SUBMITTED);
+                newEvent.setEvent(Event.EVENT_SUBMIT);
+                break;
+            case TODO_STATE_SUBMITTED:
+                if (isDismissed) {
+                    data.setTodoState(TODO_STATE_DISMISSED);
+                    newEvent.setEvent(Event.EVENT_DISMISS);
+                } else {
+                    data.setTodoState(TODO_STATE_CONFIRMED);
+                    newEvent.setEvent(Event.EVENT_CONFIRM);
+                }
+                break;
+
+        }
+
+        newEvent.setTime(System.currentTimeMillis());
+        data.getEventHistory().add(newEvent);
+
+        presenter.updateTodo(data, position);
+    }
+
+    @Override
+    public void onGetMyTodoList(List<TodoEntity> data) {
+        for (TodoEntity todoEntity : data) {
+            if (todoEntity.getTodoState().equals(TodoEntity.TODO_STATE_CONFIRMED)) {
+                myTodoCompletedDataList.add(todoEntity);
+            } else {
+                myTodoNowDataList.add(todoEntity);
+            }
+        }
+        if (tlMyTodoList.getSelectedTabPosition() == 0) {
+            myTodoListAdapter.setMyTodoListOnTab(myTodoNowDataList);
+        } else {
+            myTodoListAdapter.setMyTodoListOnTab(myTodoCompletedDataList);
+        }
+        getTeamListFromDatabase();
+
+        srlMyTodoList.setRefreshing(false);
+    }
+
+    @Override
+    public void emptyMyTodoList() {
+        Toast.makeText(requireActivity(), "나의 할 일이 아직 없습니다.", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void failedGetMyTodoList() {
+        Toast.makeText(requireActivity(), "데이터를 불러올 수 없습니다.", Toast.LENGTH_SHORT).show();
     }
 }

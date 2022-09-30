@@ -1,6 +1,5 @@
 package com.hero.seoultechteams.view.main.account;
 
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,20 +11,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.hero.seoultechteams.R;
-import com.hero.seoultechteams.database.todo.entity.TodoData;
-
+import com.hero.seoultechteams.domain.todo.entity.TodoEntity;
 import com.hero.seoultechteams.view.BaseAdapter;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class AccountNotificationAdapter extends BaseAdapter<AccountNotificationAdapter.AccountNotificationViewHolder, TodoData> implements View.OnClickListener{
+public class AccountNotificationAdapter extends BaseAdapter<AccountNotificationAdapter.AccountNotificationViewHolder, TodoEntity> implements View.OnClickListener{
     private Context context;
-    private ArrayList<TodoData> accountNotificationDataList;
+    private List<TodoEntity> accountNotificationDataList;
 
-    public AccountNotificationAdapter(Context context, ArrayList<TodoData> accountNotificationDataList) {
+    public AccountNotificationAdapter(Context context, List<TodoEntity> accountNotificationDataList) {
         this.context = context;
         this.accountNotificationDataList = accountNotificationDataList;
     }

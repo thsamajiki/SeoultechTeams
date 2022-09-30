@@ -8,8 +8,10 @@ import androidx.annotation.Nullable;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity
-public class TeamData implements Parcelable {
+import com.hero.seoultechteams.domain.team.entity.TeamEntity;
+
+@Entity(tableName = "team_table")
+public class TeamData {
 
     private String teamName;
     private String teamDesc;
@@ -20,42 +22,27 @@ public class TeamData implements Parcelable {
     @NonNull
     private String teamKey;
 
+    public TeamData(String teamName, String teamDesc, String leaderKey, long createdDate, @NonNull String teamKey) {
+        this.teamName = teamName;
+        this.teamDesc = teamDesc;
+        this.leaderKey = leaderKey;
+        this.createdDate = createdDate;
+        this.teamKey = teamKey;
+    }
+
+    public TeamEntity toEntity() {
+        return new TeamEntity(teamName, teamDesc, leaderKey, createdDate, teamKey);
+    }
+
+    public static TeamData toData(TeamEntity teamEntity) {
+        return new TeamData(teamEntity.getTeamName(),
+                teamEntity.getTeamDesc(),
+                teamEntity.getLeaderKey(),
+                teamEntity.getCreatedDate(),
+                teamEntity.getTeamKey());
+    }
+
     public TeamData() {
-    }
-
-
-    protected TeamData(Parcel in) {
-        teamName = in.readString();
-        teamDesc = in.readString();
-        leaderKey = in.readString();
-        createdDate = in.readLong();
-        teamKey = in.readString();
-    }
-
-    public static final Creator<TeamData> CREATOR = new Creator<TeamData>() {
-        @Override
-        public TeamData createFromParcel(Parcel in) {
-            return new TeamData(in);
-        }
-
-        @Override
-        public TeamData[] newArray(int size) {
-            return new TeamData[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(teamName);
-        dest.writeString(teamDesc);
-        dest.writeString(leaderKey);
-        dest.writeLong(createdDate);
-        dest.writeString(teamKey);
     }
 
     public String getTeamName() {
@@ -99,9 +86,7 @@ public class TeamData implements Parcelable {
         this.teamKey = teamKey;
     }
 
-    public static Creator<TeamData> getCREATOR() {
-        return CREATOR;
-    }
+
 
     @Override
     public boolean equals(@Nullable Object obj) {

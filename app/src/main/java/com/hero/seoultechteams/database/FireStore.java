@@ -18,9 +18,11 @@ import com.hero.seoultechteams.database.notice.entity.NoticeData;
 import com.hero.seoultechteams.database.team.entity.TeamData;
 import com.hero.seoultechteams.database.todo.entity.TodoData;
 import com.hero.seoultechteams.database.user.entity.UserData;
+import com.hero.seoultechteams.domain.common.OnCompleteListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class FireStore {
 
@@ -182,7 +184,7 @@ public class FireStore {
 
 
     // 데이터 가져오기
-    public void loadMyTeamData(final OnCompleteListener<ArrayList<TeamData>> onCompleteListener) {
+    public void loadMyTeamData(final OnCompleteListener<List<TeamData>> onCompleteListener) {
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         firestore.collection("User")
@@ -195,7 +197,7 @@ public class FireStore {
                         if (queryDocumentSnapshots.isEmpty()) {
                             return;
                         }
-                        ArrayList<TeamData> teamDataList = new ArrayList<>();
+                        List<TeamData> teamDataList = new ArrayList<>();
                         for (DocumentSnapshot documentSnapshot: queryDocumentSnapshots.getDocuments()) {
                             TeamData teamData = documentSnapshot.toObject(TeamData.class);
                             teamDataList.add(teamData);
@@ -211,7 +213,7 @@ public class FireStore {
                 });
     }
 
-    public void loadTodoData(String teamKey, final OnCompleteListener<ArrayList<TodoData>> onCompleteListener) {
+    public void loadTodoData(String teamKey, final OnCompleteListener<List<TodoData>> onCompleteListener) {
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         firestore.collection("Team")
                 .document(teamKey)
@@ -224,7 +226,7 @@ public class FireStore {
                         if (queryDocumentSnapshots.isEmpty()) {
                             return;
                         }
-                        ArrayList<TodoData> myTodoDataList = new ArrayList<>();
+                        List<TodoData> myTodoDataList = new ArrayList<>();
                         for (DocumentSnapshot documentSnapshot: queryDocumentSnapshots.getDocuments()) {
                             TodoData todoData = documentSnapshot.toObject(TodoData.class);
                             myTodoDataList.add(todoData);
@@ -240,7 +242,7 @@ public class FireStore {
                 });
     }
 
-    public void loadMemberData(String teamKey, final OnCompleteListener<ArrayList<UserData>> onCompleteListener) {
+    public void loadMemberData(String teamKey, final OnCompleteListener<List<UserData>> onCompleteListener) {
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         DocumentReference teamRef = firestore.collection("Team").document();
         firestore.collection("Team")
@@ -254,7 +256,7 @@ public class FireStore {
                         if (queryDocumentSnapshots.isEmpty()) {
                             return;
                         }
-                        ArrayList<UserData> userDataList = new ArrayList<>();
+                        List<UserData> userDataList = new ArrayList<>();
                         for (DocumentSnapshot documentSnapshot: queryDocumentSnapshots.getDocuments()) {
                             UserData userData = documentSnapshot.toObject(UserData.class);
                             userDataList.add(userData);
@@ -270,7 +272,7 @@ public class FireStore {
                 });
     }
 
-    public void loadMyTodoData(final OnCompleteListener<ArrayList<TodoData>> onCompleteListener) {
+    public void loadMyTodoData(final OnCompleteListener<List<TodoData>> onCompleteListener) {
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         firestore.collectionGroup("User")
@@ -283,7 +285,7 @@ public class FireStore {
                         if (queryDocumentSnapshots.isEmpty()) {
                             return;
                         }
-                        ArrayList<TodoData> mytodoDataList = new ArrayList<>();
+                        List<TodoData> mytodoDataList = new ArrayList<>();
                         for (DocumentSnapshot documentSnapshot: queryDocumentSnapshots.getDocuments()) {
                             TodoData todoData = documentSnapshot.toObject(TodoData.class);
                             mytodoDataList.add(todoData);
@@ -299,7 +301,7 @@ public class FireStore {
                 });
     }
 
-//    public void loadMyNotificationData(final OnCompleteListener<ArrayList<MyNotificationData>> onCompleteListener) {
+//    public void loadMyNotificationData(final OnCompleteListener<List<MyNotificationData>> onCompleteListener) {
 //        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 //        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 //        firestore.collectionGroup("User")
@@ -312,7 +314,7 @@ public class FireStore {
 //                        if (queryDocumentSnapshots.isEmpty()) {
 //                            return;
 //                        }
-//                        ArrayList<MyNotificationData> myNotificationDataList = new ArrayList<>();
+//                        List<MyNotificationData> myNotificationDataList = new ArrayList<>();
 //                        for (DocumentSnapshot documentSnapshot: queryDocumentSnapshots.getDocuments()) {
 //                            MyNotificationData myNotificationData = documentSnapshot.toObject(MyNotificationData.class);
 //                            myNotificationDataList.add(myNotificationData);
@@ -328,7 +330,7 @@ public class FireStore {
 //                });
 //    }
 
-    public void loadNoticeData(final OnCompleteListener<ArrayList<NoticeData>> onCompleteListener) {
+    public void loadNoticeData(final OnCompleteListener<List<NoticeData>> onCompleteListener) {
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         firestore.collection("Notice")
                 .orderBy("postDate", Query.Direction.DESCENDING)
@@ -339,7 +341,7 @@ public class FireStore {
                         if (queryDocumentSnapshots.isEmpty()) {
                             return;
                         }
-                        ArrayList<NoticeData> noticeDataList = new ArrayList<>();
+                        List<NoticeData> noticeDataList = new ArrayList<>();
                         for (DocumentSnapshot documentSnapshot: queryDocumentSnapshots.getDocuments()) {
                             NoticeData noticeData = documentSnapshot.toObject(NoticeData.class);
                             noticeDataList.add(noticeData);

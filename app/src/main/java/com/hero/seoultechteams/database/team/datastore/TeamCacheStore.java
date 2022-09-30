@@ -1,10 +1,11 @@
 package com.hero.seoultechteams.database.team.datastore;
 
 import com.hero.seoultechteams.database.CacheStore;
-import com.hero.seoultechteams.database.OnCompleteListener;
+import com.hero.seoultechteams.domain.common.OnCompleteListener;
 import com.hero.seoultechteams.database.team.entity.TeamData;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TeamCacheStore extends CacheStore<TeamData> {
 
@@ -26,7 +27,7 @@ public class TeamCacheStore extends CacheStore<TeamData> {
     }
 
     @Override
-    public void getDataList(OnCompleteListener<ArrayList<TeamData>> onCompleteListener, Object... params) {
+    public void getDataList(OnCompleteListener<List<TeamData>> onCompleteListener, Object... params) {
         if (getDataList().size() == 0) {
             onCompleteListener.onComplete(true, null);
         } else {

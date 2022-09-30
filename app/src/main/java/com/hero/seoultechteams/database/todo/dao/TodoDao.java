@@ -9,10 +9,13 @@ import com.hero.seoultechteams.database.todo.entity.TodoData;
 import java.util.List;
 
 @Dao
-public interface TodoDao extends BaseDao<TodoDao> {
-    @Query("SELECT * FROM TodoData")
+public interface TodoDao extends BaseDao<TodoData> {
+    @Query("SELECT * FROM todo_table")
     List<TodoData> getAllTodos();
 
-    @Query("SELECT * FROM TodoData WHERE userKey = :userKey limit 1")
-    TodoData getUserFromKey(String userKey);
+    @Query("SELECT * FROM todo_table WHERE todoKey = :todoKey limit 1")
+    TodoData getTodoFromKey(String todoKey);
+
+    @Query("SELECT * FROM todo_table WHERE userKey = :userKey limit 1")
+    TodoData getManagerFromKey(String userKey);
 }

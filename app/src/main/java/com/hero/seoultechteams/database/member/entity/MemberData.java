@@ -1,15 +1,14 @@
 package com.hero.seoultechteams.database.member.entity;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity
-public class MemberData implements Parcelable, Comparable<MemberData> {
+import com.hero.seoultechteams.domain.member.entity.MemberEntity;
+
+@Entity(tableName = "member_table")
+public class MemberData implements Comparable<MemberData> {
 
     private String name;
     private String email;
@@ -23,25 +22,27 @@ public class MemberData implements Parcelable, Comparable<MemberData> {
     public MemberData() {
     }
 
-    protected MemberData(Parcel in) {
-        name = in.readString();
-        email = in.readString();
-        profileImageUrl = in.readString();
-        teamKey = in.readString();
-        key = in.readString();
+    public MemberData(String name, String email, String profileImageUrl, String teamKey, @NonNull String key) {
+        this.name = name;
+        this.email = email;
+        this.profileImageUrl = profileImageUrl;
+        this.teamKey = teamKey;
+        this.key = key;
     }
 
-    public static final Creator<MemberData> CREATOR = new Creator<MemberData>() {
-        @Override
-        public MemberData createFromParcel(Parcel in) {
-            return new MemberData(in);
-        }
+    public MemberEntity toEntity() {
+        return new MemberEntity(name, email, profileImageUrl, teamKey, key);
+    }
 
-        @Override
-        public MemberData[] newArray(int size) {
-            return new MemberData[size];
-        }
-    };
+    public static MemberData toData(MemberEntity memberEntity) {
+        return new MemberData(memberEntity.getName(),
+                memberEntity.getEmail(),
+                memberEntity.getProfileImageUrl(),
+                memberEntity.getTeamKey(),
+                memberEntity.getKey());
+    }
+
+
 
     public String getName() {
         return name;
@@ -84,19 +85,7 @@ public class MemberData implements Parcelable, Comparable<MemberData> {
         this.key = key;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(name);
-        dest.writeString(email);
-        dest.writeString(profileImageUrl);
-        dest.writeString(teamKey);
-        dest.writeString(key);
-    }
 
     @Override
     public boolean equals(@Nullable Object obj) {
@@ -105,6 +94,7 @@ public class MemberData implements Parcelable, Comparable<MemberData> {
         }
         return false;
     }
+
 
     @Override
     public int compareTo(MemberData o) {

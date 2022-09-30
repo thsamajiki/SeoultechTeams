@@ -1,12 +1,13 @@
 package com.hero.seoultechteams.database;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class CacheStore<T> implements DataStore<T> {
 
-    private ArrayList<T> dataList = new ArrayList<>();
+    private List<T> dataList = new ArrayList<>();
 
-    public ArrayList<T> getDataList() {
+    public List<T> getDataList() {
         return dataList;
     }
 
@@ -26,7 +27,7 @@ public abstract class CacheStore<T> implements DataStore<T> {
         }
     }
 
-    public void addAll(ArrayList<T> dataList) {
+    public void addAll(List<T> dataList) {
         if (dataList == null) {
             return;
         }

@@ -1,5 +1,10 @@
 package com.hero.seoultechteams.view.main.team.todo;
 
+import static com.hero.seoultechteams.domain.todo.entity.TodoEntity.TODO_STATE_CONFIRMED;
+import static com.hero.seoultechteams.domain.todo.entity.TodoEntity.TODO_STATE_DISMISSED;
+import static com.hero.seoultechteams.domain.todo.entity.TodoEntity.TODO_STATE_IN_PROGRESS;
+import static com.hero.seoultechteams.domain.todo.entity.TodoEntity.TODO_STATE_SUBMITTED;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.text.TextUtils;
@@ -9,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -22,47 +26,52 @@ import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.hero.seoultechteams.R;
-import com.hero.seoultechteams.database.OnCompleteListener;
-import com.hero.seoultechteams.database.todo.TodoRepository;
 import com.hero.seoultechteams.database.todo.entity.Event;
-import com.hero.seoultechteams.database.todo.entity.TodoData;
+import com.hero.seoultechteams.domain.todo.entity.TodoEntity;
 import com.hero.seoultechteams.utils.TimeUtils;
 import com.hero.seoultechteams.view.BaseAdapter;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-
-import static com.hero.seoultechteams.database.todo.entity.TodoData.TODO_STATE_CONFIRMED;
-import static com.hero.seoultechteams.database.todo.entity.TodoData.TODO_STATE_DISMISSED;
-import static com.hero.seoultechteams.database.todo.entity.TodoData.TODO_STATE_IN_PROGRESS;
-import static com.hero.seoultechteams.database.todo.entity.TodoData.TODO_STATE_SUBMITTED;
+import java.util.List;
 
 
-public class TeamTodoListAdapter extends BaseAdapter<TeamTodoListAdapter.TeamTodoListViewHolder, TodoData> {
+public class TeamTodoListAdapter extends BaseAdapter<TeamTodoListAdapter.TeamTodoListViewHolder, TodoEntity> {
 
     private Context context;
-    private ArrayList<TodoData> teamTodoDataList;
+    private List<TodoEntity> teamTodoEntityList;
     private LayoutInflater inflater;
     private RequestManager requestManager;
     private String myKey;
     private boolean isLeader = true;
 
+    public void removeItem(int position) {
+        teamTodoEntityList.remove(position);
+    }
+
+    public void setItem(int position, TodoEntity data) {
+        teamTodoEntityList.set(position, data);
+    }
 
     public interface OnBtnStateTodoClickListener {
-        void btnStateTodoOnClick(TodoData data);
+        void btnStateTodoOnClick(TodoEntity data);
     }
 
     private OnBtnStateTodoClickListener onBtnStateTodoClickListener;
 
-    public TeamTodoListAdapter(Context context, ArrayList<TodoData> teamTodoDataList, OnBtnStateTodoClickListener onBtnStateTodoClickListener) {
-        this.context = context;
-        this.teamTodoDataList = teamTodoDataList;
+    public void todoCallBack(OnBtnStateTodoClickListener onBtnStateTodoClickListener) {
         this.onBtnStateTodoClickListener = onBtnStateTodoClickListener;
+    }
+
+    public TeamTodoListAdapter(Context context, List<TodoEntity> teamTodoEntityList) {
+        this.context = context;
+        this.teamTodoEntityList = teamTodoEntityList;
         inflater = LayoutInflater.from(context);
         requestManager = Glide.with(context);
         myKey = FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
+
+
 
     public void setLeader(boolean leader) {
         isLeader = leader;
@@ -77,30 +86,30 @@ public class TeamTodoListAdapter extends BaseAdapter<TeamTodoListAdapter.TeamTod
 
     @Override
     public void onBindViewHolder(@NonNull TeamTodoListViewHolder holder, int position) {
-        TodoData todoData = teamTodoDataList.get(position);
-        holder.tvTodoTitle.setText(todoData.getTodoTitle());
+        TodoEntity todoEntity = teamTodoEntityList.get(position);
+        holder.tvTodoTitle.setText(todoEntity.getTodoTitle());
 
-        if (TextUtils.isEmpty(todoData.getManagerProfileImageUrl())) {
+        if (TextUtils.isEmpty(todoEntity.getManagerProfileImageUrl())) {
             requestManager.load(R.drawable.sample_profile_image).into(holder.ivUserProfile);
         } else {
-            requestManager.load(todoData.getManagerProfileImageUrl()).into(holder.ivUserProfile);
+            requestManager.load(todoEntity.getManagerProfileImageUrl()).into(holder.ivUserProfile);
         }
 
-        holder.tvTodoStartDate.setText(TimeUtils.getInstance().convertTimeFormat(todoData.getTodoCreatedTime(), "MM월dd일"));
-        holder.tvTodoEndDate.setText(TimeUtils.getInstance().convertTimeFormat(todoData.getTodoEndTime(), "MM월dd일 HH:mm 까지"));
+        holder.tvTodoStartDate.setText(TimeUtils.getInstance().convertTimeFormat(todoEntity.getTodoCreatedTime(), "MM월dd일"));
+        holder.tvTodoEndDate.setText(TimeUtils.getInstance().convertTimeFormat(todoEntity.getTodoEndTime(), "MM월dd일 HH:mm 까지"));
 
-        String profileImageUri = todoData.getManagerProfileImageUrl();
+        String profileImageUri = todoEntity.getManagerProfileImageUrl();
         if (profileImageUri != null) {
             Glide.with(context).load(profileImageUri).into(holder.ivUserProfile);
         } else {
             holder.ivUserProfile.setImageResource(R.drawable.sample_profile_image);
         }
 
-        holder.tvTodoUserName.setText(todoData.getManagerName());
-        holder.tvTodoUserEmail.setText(todoData.getManagerEmail());
+        holder.tvTodoUserName.setText(todoEntity.getManagerName());
+        holder.tvTodoUserEmail.setText(todoEntity.getManagerEmail());
 
-        long todoInterval = todoData.getTodoEndTime() - todoData.getTodoCreatedTime();
-        long todayInterval = System.currentTimeMillis() - todoData.getTodoCreatedTime();
+        long todoInterval = todoEntity.getTodoEndTime() - todoEntity.getTodoCreatedTime();
+        long todayInterval = System.currentTimeMillis() - todoEntity.getTodoCreatedTime();
         long oneDay = 24 * 60 * 60 * 1000;
         int todoIntervalDate = (int) (todoInterval / oneDay);
         int todayIntervalDate = (int) (todayInterval / oneDay);
@@ -116,17 +125,17 @@ public class TeamTodoListAdapter extends BaseAdapter<TeamTodoListAdapter.TeamTod
             }
         }
 
-        setTodoState(holder, todoData);
+        setTodoState(holder, todoEntity);
     }
 
-    private long getDismissedTime(TodoData todoData) {
-        Collections.sort(todoData.getEventHistory(), new Comparator<Event>() {
+    private long getDismissedTime(TodoEntity todoEntity) {
+        Collections.sort(todoEntity.getEventHistory(), new Comparator<Event>() {
             @Override
             public int compare(Event o1, Event o2) {
                 return Long.compare(o2.getTime(), o1.getTime());
             }
         });
-        for (Event event : todoData.getEventHistory()) {
+        for (Event event : todoEntity.getEventHistory()) {
             if (event.getEvent().equals(Event.EVENT_DISMISS)) {
                 return event.getTime();
             }
@@ -134,14 +143,14 @@ public class TeamTodoListAdapter extends BaseAdapter<TeamTodoListAdapter.TeamTod
         return 0;
     }
 
-    private void setTodoState(TeamTodoListViewHolder holder, TodoData todoData) {
+    private void setTodoState(TeamTodoListViewHolder holder, TodoEntity todoEntity) {
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        String todoState = todoData.getTodoState();
+        String todoState = todoEntity.getTodoState();
         holder.btnDismissTodo.setVisibility(View.GONE);
         switch (todoState) {
             case TODO_STATE_IN_PROGRESS:
-                if (todoData.getTodoEndTime() < System.currentTimeMillis()) {
-                    if (todoData.getUserKey().equals(firebaseUser.getUid())) {
+                if (todoEntity.getTodoEndTime() < System.currentTimeMillis()) {
+                    if (todoEntity.getUserKey().equals(firebaseUser.getUid())) {
                         holder.btnStateTodo.setText("지연제출");    // Todo의 버튼은 "지연 제출"로 바뀐다.
                         holder.btnStateTodo.setTextColor(Color.parseColor(context.getString(Integer.parseInt(String.valueOf(R.color.colorPrimaryYellow)))));
                         holder.btnStateTodo.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.colorPrimaryYellow30));
@@ -153,7 +162,7 @@ public class TeamTodoListAdapter extends BaseAdapter<TeamTodoListAdapter.TeamTod
                         holder.btnStateTodo.setClickable(false);
                     }
                 } else {    // Todo의 마감시간이 현재 시간보다 크면
-                    if (todoData.getUserKey().equals(firebaseUser.getUid())) {
+                    if (todoEntity.getUserKey().equals(firebaseUser.getUid())) {
                         holder.btnStateTodo.setText("제출");  // Todo의 버튼은 "제출"로 바뀐다.
                         holder.btnStateTodo.setTextColor(Color.parseColor(context.getString(Integer.parseInt(String.valueOf(R.color.colorPrimary)))));
                         holder.btnStateTodo.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.colorPrimary30));
@@ -167,7 +176,7 @@ public class TeamTodoListAdapter extends BaseAdapter<TeamTodoListAdapter.TeamTod
                 }
                 break;
             case TODO_STATE_DISMISSED:
-                if (todoData.getUserKey().equals(firebaseUser.getUid())) {
+                if (todoEntity.getUserKey().equals(firebaseUser.getUid())) {
                     holder.btnStateTodo.setText("다시제출");
                     holder.btnStateTodo.setTextColor(Color.parseColor(context.getString(Integer.parseInt(String.valueOf(R.color.colorPrimaryRed)))));
                     holder.btnStateTodo.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.colorPrimaryRed60));
@@ -206,7 +215,7 @@ public class TeamTodoListAdapter extends BaseAdapter<TeamTodoListAdapter.TeamTod
 
     @Override
     public int getItemCount() {
-        return teamTodoDataList.size();
+        return teamTodoEntityList.size();
     }
 
     class TeamTodoListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -246,60 +255,9 @@ public class TeamTodoListAdapter extends BaseAdapter<TeamTodoListAdapter.TeamTod
 
         @Override
         public void onClick(View view) {
-            switch (view.getId()) {
-//                case R.id.btn_todo_option_menu:
-//                    openTodoOptionMenu();
-//                    break;
-                case R.id.btn_dismiss_todo:
-                    updateTodo(true, getAdapterPosition());
-                    break;
-                case R.id.btn_state_todo:
-                    updateTodo(false, getAdapterPosition());
-                    break;
-                default:
-                    int position = getAdapterPosition();
-                    getOnRecyclerItemClickListener().onItemClick(position, view, teamTodoDataList.get(position));
-                    break;
-            }
+            int position = getAdapterPosition();
+            getOnRecyclerItemClickListener().onItemClick(position, view, teamTodoEntityList.get(position));
         }
-
-        private void updateTodo(boolean isDismissed, int position) {
-            TodoData todoData = teamTodoDataList.get(position);
-            Event newEvent = new Event();
-            switch (todoData.getTodoState()) {
-                case TODO_STATE_IN_PROGRESS:
-                case TODO_STATE_DISMISSED:
-                    todoData.setTodoState(TODO_STATE_SUBMITTED);
-                    newEvent.setEvent(Event.EVENT_SUBMIT);
-                    break;
-                case TODO_STATE_SUBMITTED:
-                    if (isDismissed) {
-                        todoData.setTodoState(TODO_STATE_DISMISSED);
-                        newEvent.setEvent(Event.EVENT_DISMISS);
-                    } else {
-                        todoData.setTodoState(TODO_STATE_CONFIRMED);
-                        newEvent.setEvent(Event.EVENT_CONFIRM);
-                    }
-                    break;
-
-            }
-
-            newEvent.setTime(System.currentTimeMillis());
-            todoData.getEventHistory().add(newEvent);
-            TodoRepository todoRepository = new TodoRepository(context);
-            todoRepository.updateTodo(new OnCompleteListener<TodoData>() {
-                @Override
-                public void onComplete(boolean isSuccess, TodoData data) {
-                    if (isSuccess) {
-                        teamTodoDataList.set(position, data);
-                        notifyItemChanged(position);
-                    } else {
-                        Toast.makeText(context, "데이터 처리에 실패했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }, todoData);
-        }
-
 
 //        private void openTodoOptionMenu() {
 //            PopupMenu popupMenu = new PopupMenu(context, btnTodoOptionMenu);
@@ -340,17 +298,17 @@ public class TeamTodoListAdapter extends BaseAdapter<TeamTodoListAdapter.TeamTod
 //        }
 
         private void removeTeamTodo() {
-            TodoRepository todoRepository = new TodoRepository(context);
-            todoRepository.removeTodo(new OnCompleteListener<TodoData>() {
-                @Override
-                public void onComplete(boolean isSuccess, TodoData data) {
-                    if (isSuccess) {
-                        Toast.makeText(context, "할 일을 삭제했습니다.", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(context, "할 일을 삭제하지 못했습니다.", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }, teamTodoDataList.get(getAdapterPosition()));
+//            TodoRepositoryImpl todoRepositoryImpl = new TodoRepositoryImpl(context);
+//            todoRepositoryImpl.removeTodo(new OnCompleteListener<TodoEntity>() {
+//                @Override
+//                public void onComplete(boolean isSuccess, TodoEntity data) {
+//                    if (isSuccess) {
+//                        Toast.makeText(context, "할 일을 삭제했습니다.", Toast.LENGTH_SHORT).show();
+//                    } else {
+//                        Toast.makeText(context, "할 일을 삭제하지 못했습니다.", Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//            }, teamTodoEntityList.get(getAdapterPosition()));
         }
     }
 }

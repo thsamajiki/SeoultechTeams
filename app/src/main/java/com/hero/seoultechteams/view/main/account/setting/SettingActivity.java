@@ -22,20 +22,24 @@ import com.google.android.play.core.tasks.OnSuccessListener;
 import com.google.android.play.core.tasks.Task;
 import com.hero.seoultechteams.R;
 import com.hero.seoultechteams.view.main.account.OpenSourceLicenseDialog;
+import com.hero.seoultechteams.view.main.account.setting.contract.SettingContract;
 import com.hero.seoultechteams.view.main.account.setting.notice.NoticeListActivity;
 
-public class SettingActivity extends AppCompatActivity implements View.OnClickListener {
+public class SettingActivity extends AppCompatActivity implements View.OnClickListener, SettingContract.View {
 
     private ImageView btnBack;
     private RelativeLayout rlItemNotice, rlItemFont, rlItemDeleteCache, rlItemInquiry, rlItemReview, rlItemOpenSource;
     private ReviewManager reviewManager;
     private ReviewInfo reviewInfo;
+    public static final String EXTRA_SETTING_DATA = "settingData";
+//    private final SettingContract.Presenter presenter = new SettingPresenter(this, getBaseContext());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         initView();
+//        presenter.getSettingFromDatabase();
         setOnClickListener();
         readyPlayStoreReview();
     }
@@ -179,5 +183,18 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     private void openOpenSource() {
         OpenSourceLicenseDialog openSourceLicenseDialog = new OpenSourceLicenseDialog(this);
         openSourceLicenseDialog.getOpenSourceLicenseDialog();
+    }
+
+    @Override
+    public void onGetSetting() {
+        Intent intent = new Intent();
+//            intent.putExtra(EXTRA_SETTING_DATA, data);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
+    @Override
+    public void failedGetSetting() {
+        Toast.makeText(SettingActivity.this, "설정을 불러오는 데 실패했습니다.", Toast.LENGTH_SHORT).show();
     }
 }

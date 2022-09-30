@@ -9,19 +9,49 @@ import androidx.annotation.StringDef;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.hero.seoultechteams.domain.todo.entity.TodoEntity;
+
 import java.util.ArrayList;
 
+@Entity(tableName = "todo_table")
+public class TodoData implements Comparable<TodoData> {
+    public TodoData(String todoTitle, String todoDesc, String userKey, String managerProfileImageUrl, String managerName, String managerEmail, String todoState, String teamName, String teamKey, long todoCreatedTime, long todoEndTime, ArrayList<Event> eventHistory, @NonNull String todoKey) {
+        this.todoTitle = todoTitle;
+        this.todoDesc = todoDesc;
+        this.userKey = userKey;
+        this.managerProfileImageUrl = managerProfileImageUrl;
+        this.managerName = managerName;
+        this.managerEmail = managerEmail;
+        this.todoState = todoState;
+        this.teamName = teamName;
+        this.teamKey = teamKey;
+        this.todoCreatedTime = todoCreatedTime;
+        this.todoEndTime = todoEndTime;
+        this.eventHistory = eventHistory;
+        this.todoKey = todoKey;
+    }
 
-@Entity
-public class TodoData implements Parcelable, Comparable<TodoData> {
+    public TodoEntity toEntity() {
+        return new TodoEntity(todoTitle, todoDesc, userKey, managerProfileImageUrl,
+                managerName, managerEmail, todoState, teamName, teamKey,
+                todoCreatedTime, todoEndTime, eventHistory, todoKey);
+    }
 
-    public static final String TODO_STATE_IN_PROGRESS = "inProgress";
-    public static final String TODO_STATE_DISMISSED = "dismissed";
-    public static final String TODO_STATE_CONFIRMED = "confirmed";
-    public static final String TODO_STATE_SUBMITTED = "submitted";
-
-    @StringDef({TODO_STATE_IN_PROGRESS, TODO_STATE_DISMISSED, TODO_STATE_CONFIRMED, TODO_STATE_SUBMITTED})
-    public @interface TodoState{}
+    public static TodoData toData(TodoEntity todoEntity) {
+        return new TodoData(todoEntity.getTodoTitle(),
+                todoEntity.getTodoDesc(),
+                todoEntity.getUserKey(),
+                todoEntity.getManagerProfileImageUrl(),
+                todoEntity.getManagerName(),
+                todoEntity.getManagerEmail(),
+                todoEntity.getTodoState(),
+                todoEntity.getTeamName(),
+                todoEntity.getTeamKey(),
+                todoEntity.getTodoCreatedTime(),
+                todoEntity.getTodoEndTime(),
+                todoEntity.getEventHistory(),
+                todoEntity.getTodoKey());
+    }
 
     private String todoTitle;
     private String todoDesc;
@@ -30,7 +60,6 @@ public class TodoData implements Parcelable, Comparable<TodoData> {
     private String managerName;
     private String managerEmail;
 
-    @TodoState
     private String todoState;   // 현재 상태 기준으로 분기 처리를 위한 데이터
 
     private String teamName;
@@ -39,42 +68,12 @@ public class TodoData implements Parcelable, Comparable<TodoData> {
     private long todoEndTime;
     private ArrayList<Event> eventHistory;  // 이벤트 발생마다의 로그
 
-    @PrimaryKey
-    @NonNull
+    @PrimaryKey(autoGenerate = true)
     private String todoKey;
 
     public TodoData() {
     }
 
-
-    protected TodoData(Parcel in) {
-        this.todoTitle = in.readString();
-        this.todoDesc = in.readString();
-        this.userKey = in.readString();
-        this.managerProfileImageUrl = in.readString();
-        this.managerName = in.readString();
-        this.managerEmail = in.readString();
-        this.todoState = in.readString();
-        this.teamName = in.readString();
-        this.teamKey = in.readString();
-        this.todoCreatedTime = in.readLong();
-        this.todoEndTime = in.readLong();
-        this.eventHistory = new ArrayList<>();
-        in.readTypedList(this.eventHistory, Event.CREATOR);
-        this.todoKey = in.readString();
-    }
-
-    public static final Creator<TodoData> CREATOR = new Creator<TodoData>() {
-        @Override
-        public TodoData createFromParcel(Parcel in) {
-            return new TodoData(in);
-        }
-
-        @Override
-        public TodoData[] newArray(int size) {
-            return new TodoData[size];
-        }
-    };
 
     public String getTodoTitle() {
         return todoTitle;
@@ -124,12 +123,11 @@ public class TodoData implements Parcelable, Comparable<TodoData> {
         this.managerEmail = managerEmail;
     }
 
-    @TodoState
     public String getTodoState() {
         return todoState;
     }
 
-    public void setTodoState(@TodoState String todoState) {
+    public void setTodoState(String todoState) {
         this.todoState = todoState;
     }
 
@@ -191,44 +189,6 @@ public class TodoData implements Parcelable, Comparable<TodoData> {
         }
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.todoTitle);
-        dest.writeString(this.todoDesc);
-        dest.writeString(this.userKey);
-        dest.writeString(this.managerProfileImageUrl);
-        dest.writeString(this.managerName);
-        dest.writeString(this.managerEmail);
-        dest.writeString(this.todoState);
-        dest.writeString(this.teamName);
-        dest.writeString(this.teamKey);
-        dest.writeLong(this.todoCreatedTime);
-        dest.writeLong(this.todoEndTime);
-        dest.writeTypedList(this.eventHistory);
-        dest.writeString(this.todoKey);
-    }
-
-    public void readFromParcel(Parcel source) {
-        this.todoTitle = source.readString();
-        this.todoDesc = source.readString();
-        this.userKey = source.readString();
-        this.managerProfileImageUrl = source.readString();
-        this.managerName = source.readString();
-        this.managerEmail = source.readString();
-        this.todoState = source.readString();
-        this.teamName = source.readString();
-        this.teamKey = source.readString();
-        this.todoCreatedTime = source.readLong();
-        this.todoEndTime = source.readLong();
-        this.eventHistory = new ArrayList<>();
-        source.readTypedList(this.eventHistory,Event.CREATOR);
-        this.todoKey = source.readString();
-    }
 
     @Override
     public int compareTo(TodoData o) {

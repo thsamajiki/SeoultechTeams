@@ -13,13 +13,16 @@ import android.widget.Toast;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.hero.seoultechteams.R;
+import com.hero.seoultechteams.view.login.contract.SignUp01Contract;
+import com.hero.seoultechteams.view.login.presenter.SignUp01Presenter;
 
 
-public class SignUp01Activity extends AppCompatActivity implements View.OnClickListener {
+public class SignUp01Activity extends AppCompatActivity implements View.OnClickListener, SignUp01Contract.View {
 
     private ImageView ivBack;
     private MaterialButton btnNextStepSignUp;
     private TextInputEditText editEmail, editPwd, editPwdConfirm;
+    private SignUp01Contract.Presenter presenter = new SignUp01Presenter(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,54 +63,16 @@ public class SignUp01Activity extends AppCompatActivity implements View.OnClickL
         String pwd = editPwd.getText().toString();
         String pwdConfirm = editPwdConfirm.getText().toString();
 
-        if (checkLoginForm(email, pwd, pwdConfirm)) {
+        if (presenter.checkLoginForm(email, pwd, pwdConfirm)) {
             Intent intent = new Intent(this, SignUp02Activity.class);
             intent.putExtra("email", email);
             intent.putExtra("pwd", pwd);
             startActivity(intent);
         }
-
     }
 
-    private boolean checkLoginForm(String email, String pwd, String pwdConfirm) {
-
-        if(TextUtils.isEmpty(email)) {
-            Toast.makeText(this, "이메일을 입력해주세요", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-
-        if(TextUtils.isEmpty(pwd)) {
-            Toast.makeText(this, "패스워드를 입력해주세요", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-
-        if (!checkEmailValid(email)) {
-            Toast.makeText(this, "이메일 양식을 확인해주세요", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-
-        if (!checkPwdValid(pwd)) {
-            Toast.makeText(this, "비밀번호는 6자리 이상입니다", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-
-        if (TextUtils.isEmpty(pwdConfirm) || !pwd.equals(pwdConfirm)) {
-            Toast.makeText(this, "입력한 패스워드와 다릅니다", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-
-        return true;
-    }
-
-    private boolean checkPwdValid(String pwd) {
-        return pwd.length() > 6;
-    }
-
-    private boolean checkEmailValid(String email) {
-        if (TextUtils.isEmpty(email)) {
-            return false;
-        }
-
-        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    @Override
+    public void onInvalidUserInfo(InvalidUserInfoType invalidUserInfoType) {
+        Toast.makeText(this, invalidUserInfoType.getMessage(), Toast.LENGTH_SHORT).show();
     }
 }

@@ -1,23 +1,23 @@
 package com.hero.seoultechteams;
 
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.TextUtils;
 
-import com.hero.seoultechteams.database.OnCompleteListener;
-import com.hero.seoultechteams.database.team.TeamRepository;
-import com.hero.seoultechteams.database.team.entity.TeamData;
-import com.hero.seoultechteams.database.user.UserRepository;
-import com.hero.seoultechteams.database.user.entity.UserData;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.hero.seoultechteams.view.login.LoginActivity;
+import com.hero.seoultechteams.view.login.contract.SplashContract;
+import com.hero.seoultechteams.view.login.presenter.SplashPresenter;
 import com.hero.seoultechteams.view.main.MainActivity;
 
-import java.util.ArrayList;
 
+public class SplashActivity extends BaseActivity implements SplashContract.View {
 
-public class SplashActivity extends BaseActivity {
+    private SplashContract.Presenter presenter = new SplashPresenter(this,
+            Injector.getInstance().provideGetTeamListUseCase(),
+            Injector.getInstance().provideGetUserUseCase(),
+            Injector.getInstance().provideGetAccountProfileUseCase());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,38 +38,60 @@ public class SplashActivity extends BaseActivity {
             startActivity(new Intent(SplashActivity.this, LoginActivity.class));
             finish();
         } else {
-            getTeamListFromDatabase();
+            presenter.getTeamListFromDatabase();
         }
     }
 
-    private void getTeamListFromDatabase() {
-        TeamRepository teamRepository = new TeamRepository(this);
-        teamRepository.getTeamList(new OnCompleteListener<ArrayList<TeamData>>() {
-            @Override
-            public void onComplete(boolean isSuccess, ArrayList<TeamData> data) {
-                getUserFromDatabase();
-            }
-        });
+    @Override
+    public void goToMainActivity() {
+        startActivity(new Intent(SplashActivity.this, MainActivity.class));
+        finish();
     }
 
-    private void getUserFromDatabase() {
-        UserRepository userRepository = new UserRepository(this);
-        userRepository.getUser(new OnCompleteListener<UserData>() {
-            @Override
-            public void onComplete(boolean isSuccess, UserData data) {
-                if (isSuccess && data != null) {
-                    Uri userLocalProfileUri = getCurrentUser().getPhotoUrl();
-                    if (userLocalProfileUri != null && !TextUtils.isEmpty(data.getProfileImageUrl())) {
-                        String userLocalName = getCurrentUser().getDisplayName();
-                        if (!userLocalProfileUri.toString().equals(data.getProfileImageUrl()) ||
-                                !userLocalName.equals(data.getName())) {
-                            userRepository.updateLocalUser(data);
-                        }
+    @Override
+    public void failedGetUserInfo() {
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(R.string.splash_error_title)
+                .setMessage(R.string.splash_error_message)
+                .setPositiveButton(R.string.splash_error_quit, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finishAffinity();
                     }
-                }
-                startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                finish();
-            }
-        }, getCurrentUser().getUid());
+                })
+                .create()
+                .show();
     }
+
+//    private void getTeamListFromDatabase() {
+//        TeamRepositoryImpl teamRepositoryImpl = new TeamRepositoryImpl(this);
+//        teamRepositoryImpl.getTeamList(new OnCompleteListener<ArrayList<TeamData>>() {
+//            @Override
+//            public void onComplete(boolean isSuccess, ArrayList<TeamData> data) {
+//                getUserFromDatabase();
+//            }
+//        });
+//    }
+
+//    private void getUserFromDatabase() {
+//
+//        UserRepositoryImpl userRepositoryImpl = new UserRepositoryImpl(this);
+//        userRepositoryImpl.getUser(new OnCompleteListener<UserData>() {
+//            @Override
+//            public void onComplete(boolean isSuccess, UserData data) {
+//                if (isSuccess && data != null) {
+//                    Uri userLocalProfileUri = getCurrentUser().getPhotoUrl();
+//                    if (userLocalProfileUri != null && !TextUtils.isEmpty(data.getProfileImageUrl())) {
+//                        String userLocalName = getCurrentUser().getDisplayName();
+//                        if (!userLocalProfileUri.toString().equals(data.getProfileImageUrl()) ||
+//                                !userLocalName.equals(data.getName())) {
+//                            userRepositoryImpl.updateLocalUser(data);
+//                        }
+//                    }
+//                }
+//                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+//                finish();
+//            }
+//        }, getCurrentUser().getUid());
+//    }
 }

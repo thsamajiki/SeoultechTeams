@@ -10,7 +10,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.hero.seoultechteams.database.CloudStore;
-import com.hero.seoultechteams.database.OnCompleteListener;
+import com.hero.seoultechteams.domain.common.OnCompleteListener;
 import com.hero.seoultechteams.database.notice.entity.NoticeData;
 
 import java.util.ArrayList;

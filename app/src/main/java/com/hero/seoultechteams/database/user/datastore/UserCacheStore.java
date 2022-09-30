@@ -1,10 +1,11 @@
 package com.hero.seoultechteams.database.user.datastore;
 
 import com.hero.seoultechteams.database.CacheStore;
-import com.hero.seoultechteams.database.OnCompleteListener;
+import com.hero.seoultechteams.domain.common.OnCompleteListener;
 import com.hero.seoultechteams.database.user.entity.UserData;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class UserCacheStore extends CacheStore<UserData> {
 
@@ -44,7 +45,7 @@ public class UserCacheStore extends CacheStore<UserData> {
 
     // 팀에서 멤버 목록을 불러오는 메소드
     @Override
-    public void getDataList(OnCompleteListener<ArrayList<UserData>> onCompleteListener, Object... params) {
+    public void getDataList(OnCompleteListener<List<UserData>> onCompleteListener, Object... params) {
         String type = params[0].toString();
         String key = params[1].toString();
         if (type.equals(TYPE_MY_TEAM)) {
@@ -54,22 +55,18 @@ public class UserCacheStore extends CacheStore<UserData> {
         }
     }
 
-    private void getTeamMemberList(OnCompleteListener<ArrayList<UserData>> onCompleteListener, String userKey) {
-        ArrayList<UserData> userDataList = getDataList();
+    private void getTeamMemberList(OnCompleteListener<List<UserData>> onCompleteListener, String userKey) {
+        List<UserData> userDataList = getDataList();
         if (userDataList.isEmpty()) {
             onCompleteListener.onComplete(true, null);
         } else {
-            ArrayList<UserData> teamMemberList = new ArrayList<>();
+            List<UserData> teamMemberList = new ArrayList<>();
             for (UserData userData: teamMemberList) {
                 if (userData.getKey().equals(userKey)) {
                     userDataList.add(userData);
                 }
             }
-            if (teamMemberList.isEmpty()) {
-                onCompleteListener.onComplete(true, null);
-            } else {
-                onCompleteListener.onComplete(true, teamMemberList);
-            }
+            onCompleteListener.onComplete(true, null);
         }
     }
 

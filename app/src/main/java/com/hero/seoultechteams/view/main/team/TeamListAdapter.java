@@ -17,27 +17,28 @@ import com.bumptech.glide.RequestManager;
 import com.google.android.material.card.MaterialCardView;
 import com.hero.seoultechteams.R;
 import com.hero.seoultechteams.database.team.entity.TeamData;
+import com.hero.seoultechteams.domain.team.entity.TeamEntity;
 import com.hero.seoultechteams.view.BaseAdapter;
 
 import java.util.ArrayList;
 
 
-public class TeamListAdapter extends BaseAdapter<TeamListAdapter.TeamListViewHolder, TeamData> {
+public class TeamListAdapter extends BaseAdapter<TeamListAdapter.TeamListViewHolder, TeamEntity> {
 
     private Context context;
-    private ArrayList<TeamData> teamDataList;
+    private ArrayList<TeamEntity> teamDataList;
     private LayoutInflater inflater;
     private RequestManager requestManager;
     private String myUserKey;
     public static final int UPDATE_TEAM_REQ_CODE = 222;
 
     public interface OnPopupClickListener {
-        void popupOnClick(TeamData teamData);
+        void popupOnClick(TeamEntity teamData);
     }
 
     private OnPopupClickListener onPopupClickListener;
 
-    public TeamListAdapter(Context context, ArrayList<TeamData> teamDataList, OnPopupClickListener onPopupClickListener) {
+    public TeamListAdapter(Context context, ArrayList<TeamEntity> teamDataList, OnPopupClickListener onPopupClickListener) {
         this.context = context;
         this.teamDataList = teamDataList;
         this.onPopupClickListener = onPopupClickListener;
@@ -54,7 +55,7 @@ public class TeamListAdapter extends BaseAdapter<TeamListAdapter.TeamListViewHol
 
     @Override
     public void onBindViewHolder(@NonNull TeamListViewHolder holder, int position) {
-        TeamData teamData = teamDataList.get(position);
+        TeamEntity teamData = teamDataList.get(position);
 
         holder.tvTeamName.setText(teamData.getTeamName());
         holder.tvTeamDesc.setText(teamData.getTeamDesc());
@@ -67,7 +68,7 @@ public class TeamListAdapter extends BaseAdapter<TeamListAdapter.TeamListViewHol
         });
     }
 
-    private void openTeamOptionMenu(@NonNull TeamListViewHolder holder, TeamData teamData) {
+    private void openTeamOptionMenu(@NonNull TeamListViewHolder holder, TeamEntity teamData) {
         PopupMenu popupMenu = new PopupMenu(context, holder.ivTeamOptionMenu);
         popupMenu.getMenuInflater().inflate(R.menu.menu_team_option, popupMenu.getMenu());
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {

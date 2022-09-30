@@ -1,16 +1,16 @@
 package com.hero.seoultechteams.view.main.team.option_menu;
 
-import com.hero.seoultechteams.database.member.entity.MemberData;
+import com.hero.seoultechteams.domain.member.entity.MemberEntity;
 
 public class MemberParticipation {
-    private MemberData memberData;
+    private MemberEntity memberData;
     private ParticipationData participationData;
 
-    public MemberData getMemberData() {
+    public MemberEntity getMemberData() {
         return memberData;
     }
 
-    public void setMemberData(MemberData memberData) {
+    public void setMemberData(MemberEntity memberData) {
         this.memberData = memberData;
     }
 

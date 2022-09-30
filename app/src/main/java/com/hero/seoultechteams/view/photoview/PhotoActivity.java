@@ -3,6 +3,7 @@ package com.hero.seoultechteams.view.photoview;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -36,6 +37,7 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void loadImage() {
+        Log.d("loadphoto", "loadImage: " + getPhotoUrl());
         Glide.with(this).load(getPhotoUrl()).into(photoView);
     }
 

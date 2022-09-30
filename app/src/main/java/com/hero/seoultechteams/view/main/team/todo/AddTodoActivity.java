@@ -23,25 +23,25 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.hero.seoultechteams.BaseActivity;
+import com.hero.seoultechteams.Injector;
 import com.hero.seoultechteams.R;
-import com.hero.seoultechteams.database.OnCompleteListener;
-import com.hero.seoultechteams.database.member.MemberRepository;
-import com.hero.seoultechteams.database.member.entity.MemberData;
-import com.hero.seoultechteams.database.team.entity.TeamData;
-import com.hero.seoultechteams.database.todo.TodoRepository;
-import com.hero.seoultechteams.database.todo.entity.Event;
-import com.hero.seoultechteams.database.todo.entity.TodoData;
+import com.hero.seoultechteams.domain.member.entity.MemberEntity;
+import com.hero.seoultechteams.domain.team.entity.TeamEntity;
+import com.hero.seoultechteams.domain.todo.entity.TodoEntity;
 import com.hero.seoultechteams.listener.OnRecyclerItemClickListener;
 import com.hero.seoultechteams.view.main.team.option_menu.TeamMemberListAdapter;
+import com.hero.seoultechteams.view.main.team.todo.contract.AddTodoContract;
+import com.hero.seoultechteams.view.main.team.todo.presenter.AddTodoPresenter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.hero.seoultechteams.view.main.team.TeamListFragment.EXTRA_TEAM_DATA;
 
-public class AddTodoActivity extends BaseActivity implements View.OnClickListener, TextWatcher, OnRecyclerItemClickListener<MemberData> {
+public class AddTodoActivity extends BaseActivity implements View.OnClickListener, TextWatcher, OnRecyclerItemClickListener<MemberEntity>, AddTodoContract.View {
 
     private MaterialButton btnFinishAddTodo;
     private EditText editAddTodoTitle;
@@ -50,11 +50,13 @@ public class AddTodoActivity extends BaseActivity implements View.OnClickListene
     private LinearLayout llSetManager;
     private RecyclerView rvTeamMemberList;
     private TeamMemberListAdapter teamMemberListAdapter;
-    private ArrayList<MemberData> teamMemberDataList = new ArrayList<>();
+    private ArrayList<MemberEntity> teamMemberDataList = new ArrayList<>();
     public static final String EXTRA_ADD_TODO = "addTodo";
     public static final String EXTRA_MEMBER_DATA = "memberData";
-    private MemberData managerData;
-
+    private MemberEntity managerData;
+    private AddTodoContract.Presenter presenter = new AddTodoPresenter(this,
+            Injector.getInstance().provideAddTodoUseCase(),
+            Injector.getInstance().provideGetMemberListUseCase());
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -89,10 +91,11 @@ public class AddTodoActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void initTeamMemberListAdapter() {
-        teamMemberListAdapter = new TeamMemberListAdapter(this, teamMemberDataList, new TeamMemberListAdapter.OnMemberProfileImageClickListener() {
+        teamMemberListAdapter = new TeamMemberListAdapter(this, teamMemberDataList);
+        teamMemberListAdapter.memberCallBack(new TeamMemberListAdapter.OnMemberProfileImageClickListener() {
             @Override
             public void profileImageOnClick(String profileImageUrl) {
-
+                Log.d("aaa", "profileImageOnClick: " + profileImageUrl);
             }
         });
         teamMemberListAdapter.setOnRecyclerItemClickListener(this);
@@ -124,16 +127,11 @@ public class AddTodoActivity extends BaseActivity implements View.OnClickListene
 
         final AlertDialog dialog = memberListDialog.create();
         RecyclerView rvTeamMemberList = view.findViewById(R.id.rv_team_member_list);
-        teamMemberListAdapter = new TeamMemberListAdapter(this, teamMemberDataList, new TeamMemberListAdapter.OnMemberProfileImageClickListener() {
-            @Override
-            public void profileImageOnClick(String profileImageUrl) {
-
-            }
-        });
+        teamMemberListAdapter = new TeamMemberListAdapter(this, teamMemberDataList);
         teamMemberListAdapter.setLeaderKey(getTeamData().getLeaderKey());
-        teamMemberListAdapter.setOnRecyclerItemClickListener(new OnRecyclerItemClickListener<MemberData>() {
+        teamMemberListAdapter.setOnRecyclerItemClickListener(new OnRecyclerItemClickListener<MemberEntity>() {
             @Override
-            public void onItemClick(int position, View view, MemberData data) {
+            public void onItemClick(int position, View view, MemberEntity data) {
                 managerData = data;
                 setManagerProfile(data);
 
@@ -145,7 +143,7 @@ public class AddTodoActivity extends BaseActivity implements View.OnClickListene
         dialog.show();
     }
 
-    private void setManagerProfile(MemberData memberData) {
+    private void setManagerProfile(MemberEntity memberData) {
         if (TextUtils.isEmpty(memberData.getProfileImageUrl())) {
             Glide.with(this).load(R.drawable.sample_profile_image).into(ivManagerProfile);
         } else {
@@ -154,25 +152,11 @@ public class AddTodoActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void getTeamMemberListFromDatabase() {
-        MemberRepository memberRepository = new MemberRepository(this);
-        memberRepository.getMemberList(new OnCompleteListener<ArrayList<MemberData>>() {
-            @Override
-            public void onComplete(boolean isSuccess, ArrayList<MemberData> data) {
-                if (isSuccess && data != null) {
-                    managerData = getMyDataFromMemberList(data);
-                    if (managerData != null) {
-                        setManagerProfile(managerData);
-                    }
-                    teamMemberDataList.addAll(data);
-                } else {
-                    Toast.makeText(AddTodoActivity.this, "데이터를 불러올 수 없습니다.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }, getTeamData().getTeamKey());
+        presenter.getTeamMemberList(getTeamData().getTeamKey());
     }
 
-    private MemberData getMyDataFromMemberList(ArrayList<MemberData> memberDataList) {
-        for (MemberData memberData : memberDataList) {
+    private MemberEntity getMyDataFromMemberList(List<MemberEntity> memberDataList) {
+        for (MemberEntity memberData : memberDataList) {
             if (memberData.getKey().equals(getCurrentUser().getUid())) {
                 return memberData;
             }
@@ -181,7 +165,7 @@ public class AddTodoActivity extends BaseActivity implements View.OnClickListene
     }
 
 
-    private TeamData getTeamData() {
+    private TeamEntity getTeamData() {
         return getIntent().getParcelableExtra(EXTRA_TEAM_DATA);
     }
 
@@ -210,52 +194,38 @@ public class AddTodoActivity extends BaseActivity implements View.OnClickListene
                 calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
                 calendar.set(Calendar.MINUTE, minute);
                 long todoEndDateTime = calendar.getTimeInMillis();
-                addTodoToDatabase(createTodoData(todoEndDateTime));
+
+                presenter.addTodoToDatabase(editAddTodoTitle.getText().toString(), todoEndDateTime, managerData, getTeamData());
             }
         }, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE),false);
         timePickerDialog.show();
     }
 
-    private void addTodoToDatabase(TodoData todoData) {
-        TodoRepository todoRepository = new TodoRepository(this);
-        todoRepository.addTodo(new OnCompleteListener<TodoData>() {
-            @Override
-            public void onComplete(boolean isSuccess, TodoData data) {
-                if (isSuccess) {
-                    Intent intent = new Intent();
-                    intent.putExtra(EXTRA_ADD_TODO, data);
-                    setResult(RESULT_OK, intent);
-                    finish();
-                } else {
-                    Toast.makeText(AddTodoActivity.this, "할 일 생성에 실패했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }, todoData);
+    @Override
+    public void addedTodoList(TodoEntity data) {
+        Intent intent = new Intent();
+        intent.putExtra(EXTRA_ADD_TODO, data);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
-    private TodoData createTodoData(long todoEndDateTime) {
-        TodoData todoData = new TodoData();
-        todoData.setTodoTitle(editAddTodoTitle.getText().toString());
-        todoData.setTeamKey(getTeamData().getTeamKey());
-        todoData.setTeamName(getTeamData().getTeamName());
-        todoData.setManagerEmail(managerData.getEmail());
-        if (managerData.getProfileImageUrl() != null) {
-            todoData.setManagerProfileImageUrl(managerData.getProfileImageUrl());
+    @Override
+    public void failedAddTodo() {
+        Toast.makeText(AddTodoActivity.this, "할 일 생성에 실패했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onTeamMemberList(List<MemberEntity> data) {
+        managerData = getMyDataFromMemberList(data);
+        if (managerData != null) {
+            setManagerProfile(managerData);
         }
-        todoData.setManagerName(managerData.getName());
-        todoData.setTodoCreatedTime(System.currentTimeMillis());
-        todoData.setTodoState(TodoData.TODO_STATE_IN_PROGRESS);
-        todoData.setTodoEndTime(todoEndDateTime);
-        todoData.setUserKey(managerData.getKey());
+        teamMemberDataList.addAll(data);
+    }
 
-        ArrayList<Event> eventHistory = new ArrayList<>();
-        Event event = new Event();
-        event.setEvent(Event.EVENT_CREATE);
-        event.setTime(System.currentTimeMillis());
-        eventHistory.add(event);
-        todoData.setEventHistory(eventHistory);
-
-        return todoData;
+    @Override
+    public void failedTeamMemberList() {
+        Toast.makeText(AddTodoActivity.this, "데이터를 불러올 수 없습니다.", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -270,15 +240,11 @@ public class AddTodoActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void afterTextChanged(Editable s) {
-        if (s.length() > 0) {
-            btnFinishAddTodo.setEnabled(true);
-        } else {
-            btnFinishAddTodo.setEnabled(false);
-        }
+        btnFinishAddTodo.setEnabled(s.length() > 0);
     }
 
     @Override
-    public void onItemClick(int position, View view, MemberData data) {
+    public void onItemClick(int position, View view, MemberEntity data) {
 
     }
 }

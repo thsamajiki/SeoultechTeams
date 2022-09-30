@@ -15,10 +15,10 @@ import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.firebase.auth.FirebaseAuth;
+import com.google.android.material.navigation.NavigationBarView;
 import com.hero.seoultechteams.FragmentAdapter;
+import com.hero.seoultechteams.Injector;
 import com.hero.seoultechteams.R;
-import com.hero.seoultechteams.utils.CacheManager;
 import com.hero.seoultechteams.view.login.LoginActivity;
 import com.hero.seoultechteams.view.main.account.AboutUsDialog;
 import com.hero.seoultechteams.view.main.account.AccountFragment;
@@ -27,12 +27,14 @@ import com.hero.seoultechteams.view.main.mytodo.MyTodoListFragment;
 import com.hero.seoultechteams.view.main.team.TeamListFragment;
 
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, MainContract.View {
 
     private ViewPager2 mainViewPager;
     private BottomNavigationView mainBottomNav;
     private TextView tvMainTitle;
     private ImageView ivAccountOptionMenu;
+    private final MainContract.Presenter presenter = new MainPresenter(this,
+            Injector.getInstance().provideSignOutUseCase());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void setBottomNavClickListener() {
-        mainBottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        mainBottomNav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
@@ -164,8 +166,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void signOut() {
-        FirebaseAuth.getInstance().signOut();
-        CacheManager.getInstance().allClear();
+        presenter.signOut();
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         this.finishAffinity();

@@ -16,19 +16,21 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.hero.seoultechteams.R;
 import com.hero.seoultechteams.database.member.entity.MemberData;
+import com.hero.seoultechteams.domain.member.entity.MemberEntity;
 import com.hero.seoultechteams.view.BaseAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-public class TeamMemberListAdapter extends BaseAdapter<TeamMemberListAdapter.TeamMemberViewHolder, MemberData> {
+public class TeamMemberListAdapter extends BaseAdapter<TeamMemberListAdapter.TeamMemberViewHolder, MemberEntity> {
 
     private Context context;
-    private ArrayList<MemberData> teamMemberDataList;
-    private LayoutInflater inflater;
-    private RequestManager requestManager;
+    private List<MemberEntity> teamMemberDataList;
+    private final LayoutInflater inflater;
+    private final RequestManager requestManager;
     private String leaderKey;
 
     public interface OnMemberProfileImageClickListener {
@@ -37,10 +39,13 @@ public class TeamMemberListAdapter extends BaseAdapter<TeamMemberListAdapter.Tea
 
     private OnMemberProfileImageClickListener onMemberProfileImageClickListener;
 
-    public TeamMemberListAdapter(Context context, ArrayList<MemberData> teamMemberDataList, OnMemberProfileImageClickListener onMemberProfileImageClickListener) {
+    public void memberCallBack(OnMemberProfileImageClickListener onMemberProfileImageClickListener) {
+        this.onMemberProfileImageClickListener = onMemberProfileImageClickListener;
+    }
+
+    public TeamMemberListAdapter(Context context, List<MemberEntity> teamMemberDataList) {
         this.context = context;
         this.teamMemberDataList = teamMemberDataList;
-        this.onMemberProfileImageClickListener = onMemberProfileImageClickListener;
         inflater = LayoutInflater.from(context);
         requestManager = Glide.with(context);
     }
@@ -59,25 +64,25 @@ public class TeamMemberListAdapter extends BaseAdapter<TeamMemberListAdapter.Tea
 
     @Override
     public void onBindViewHolder(@NonNull TeamMemberViewHolder holder, int position) {
-        MemberData memberData = teamMemberDataList.get(position);
+        MemberEntity memberEntity = teamMemberDataList.get(position);
 
-        if (TextUtils.isEmpty(memberData.getProfileImageUrl())) {
+        if (TextUtils.isEmpty(memberEntity.getProfileImageUrl())) {
             requestManager.load(R.drawable.sample_profile_image).into(holder.ivMemberProfile);
         } else {
-            requestManager.load(memberData.getProfileImageUrl()).into(holder.ivMemberProfile);
+            requestManager.load(memberEntity.getProfileImageUrl()).into(holder.ivMemberProfile);
         }
 
         holder.ivMemberProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onMemberProfileImageClickListener.profileImageOnClick(memberData.getProfileImageUrl());
+                onMemberProfileImageClickListener.profileImageOnClick(memberEntity.getProfileImageUrl());
             }
         });
 
-        holder.tvMemberName.setText(memberData.getName());
-        holder.tvMemberEmail.setText(memberData.getEmail());
+        holder.tvMemberName.setText(memberEntity.getName());
+        holder.tvMemberEmail.setText(memberEntity.getEmail());
 
-        boolean isLeader = leaderKey.equals(memberData.getKey());
+        boolean isLeader = leaderKey.equals(memberEntity.getKey());
         if (isLeader) {
             holder.ivTeamLeader.setVisibility(View.VISIBLE);
         } else {

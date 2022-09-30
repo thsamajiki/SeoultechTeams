@@ -1,38 +1,32 @@
 package com.hero.seoultechteams.view.main.team.todo;
 
-import androidx.appcompat.widget.PopupMenu;
-
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.hero.seoultechteams.BaseActivity;
+import com.hero.seoultechteams.Injector;
 import com.hero.seoultechteams.R;
-import com.hero.seoultechteams.database.OnCompleteListener;
-import com.hero.seoultechteams.database.todo.TodoRepository;
-import com.hero.seoultechteams.database.todo.entity.TodoData;
+import com.hero.seoultechteams.domain.todo.entity.TodoEntity;
+import com.hero.seoultechteams.view.main.team.todo.contract.TodoDetailContract;
+import com.hero.seoultechteams.view.main.team.todo.presenter.TodoDetailPresenter;
 
 import static com.hero.seoultechteams.view.main.team.todo.TeamTodoListActivity.EXTRA_TODO_DATA;
 
-
-public class TodoDetailActivity extends BaseActivity implements View.OnClickListener {
-
-    private ImageView ivBack, btnOptionMenu;
+public class TodoDetailActivity extends BaseActivity implements View.OnClickListener, TodoDetailContract.View {
+    private ImageView ivBack, ivOptionMenu;
     private EditText editTodoTitle, editTodoDesc;
     public static final String EXTRA_UPDATE_TODO = "updateTodo";
+    private final TodoDetailContract.Presenter presenter = new TodoDetailPresenter(this,
+            Injector.getInstance().provideUpdateTodoDetailUseCase());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,28 +37,21 @@ public class TodoDetailActivity extends BaseActivity implements View.OnClickList
         addTextWatcher();
     }
 
+    private TodoEntity initTodoEntity;
+
     private void initView() {
         ivBack = findViewById(R.id.iv_back);
-        btnOptionMenu = findViewById(R.id.iv_option_menu);
+        ivOptionMenu = findViewById(R.id.iv_option_menu);
         editTodoTitle = findViewById(R.id.edit_team_name);
         editTodoDesc = findViewById(R.id.edit_todo_desc);
 
-        showUpdatedTodoDetail();
+        initTodoEntity = getIntent().getParcelableExtra(EXTRA_TODO_DATA);
+        initializeTodoDetail(initTodoEntity);
     }
 
-    private void setOnClickListener() {
-        ivBack.setOnClickListener(this);
-        btnOptionMenu.setOnClickListener(this);
-    }
-
-    private TodoData getTodoData() {
-        return getIntent().getParcelableExtra(EXTRA_TODO_DATA);
-    }
-
-    private void showUpdatedTodoDetail() {
-        TodoData todoData = getTodoData();
+    private void initializeTodoDetail(TodoEntity todoEntity) {
         String myUserKey = getCurrentUser().getUid();
-        if (myUserKey.equals(todoData.getUserKey())) {
+        if (myUserKey.equals(todoEntity.getUserKey())) {
             toggleEditText(editTodoTitle, true);
             toggleEditText(editTodoDesc, true);
         } else {
@@ -72,8 +59,8 @@ public class TodoDetailActivity extends BaseActivity implements View.OnClickList
             toggleEditText(editTodoDesc, false);
         }
 
-        String todoTitle = todoData.getTodoTitle();
-        String todoDesc = todoData.getTodoDesc();
+        String todoTitle = todoEntity.getTodoTitle();
+        String todoDesc = todoEntity.getTodoDesc();
         editTodoTitle.setText(todoTitle);
         editTodoDesc.setText(todoDesc);
         if (TextUtils.isEmpty(todoDesc)) {
@@ -89,6 +76,23 @@ public class TodoDetailActivity extends BaseActivity implements View.OnClickList
             editTodoTitle.clearFocus();
             editTodoDesc.clearFocus();
         }
+    }
+
+    private void setOnClickListener() {
+        ivBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateTodoDetail();
+            }
+        });
+
+        ivOptionMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                showTodoDetailOptionMenu();
+//                break;
+            }
+        });
     }
 
     private void toggleEditText(EditText editText, boolean enabled) {
@@ -134,27 +138,23 @@ public class TodoDetailActivity extends BaseActivity implements View.OnClickList
     }
 
     private void updateTodoDetail() {
-        TodoRepository todoRepository = new TodoRepository(this);
         final String todoTitle = editTodoTitle.getText().toString();
         final String todoDesc = editTodoDesc.getText().toString();
 
-        final TodoData todoData = getTodoData();
-        todoData.setTodoTitle(todoTitle);
-        todoData.setTodoDesc(todoDesc);
+        presenter.updateTodoDetail(todoTitle, todoDesc, initTodoEntity);
+    }
 
-        todoRepository.updateTodo(new OnCompleteListener<TodoData>() {
-            @Override
-            public void onComplete(boolean isSuccess, TodoData data) {
-                if (isSuccess) {
-                    Intent intent = new Intent();
-                    intent.putExtra(EXTRA_UPDATE_TODO, todoData);
-                    setResult(RESULT_OK, intent);
-                    finish();
-                } else {
-                    Toast.makeText(TodoDetailActivity.this, "데이터가 수정되지 않았습니다.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }, todoData);
+    @Override
+    public void updatedTodoDetail(TodoEntity data) {
+        Intent intent = new Intent();
+        intent.putExtra(EXTRA_UPDATE_TODO, data);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
+    @Override
+    public void failedUpdateTodoDetail() {
+        Toast.makeText(TodoDetailActivity.this, "데이터가 수정되지 않았습니다.", Toast.LENGTH_SHORT).show();
     }
 
 //    private void showTodoDetailOptionMenu(){

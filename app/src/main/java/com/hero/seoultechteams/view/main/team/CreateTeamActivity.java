@@ -12,18 +12,20 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
+import com.hero.seoultechteams.Injector;
 import com.hero.seoultechteams.R;
-import com.hero.seoultechteams.database.OnCompleteListener;
-import com.hero.seoultechteams.database.team.TeamRepository;
-import com.hero.seoultechteams.database.team.entity.TeamData;
+import com.hero.seoultechteams.domain.team.entity.TeamEntity;
+import com.hero.seoultechteams.view.main.team.contract.CreateTeamContract;
+import com.hero.seoultechteams.view.main.team.presenter.CreateTeamPresenter;
 
-
-public class CreateTeamActivity extends AppCompatActivity implements View.OnClickListener {
+public class CreateTeamActivity extends AppCompatActivity implements View.OnClickListener, CreateTeamContract.View {
 
     private ImageView btnBack;
     private MaterialButton btnFinishCreateTeam;
     private EditText editCreateTeamName, editCreateTeamDesc;
     public static final String EXTRA_CREATE_TEAM = "createTeam";
+    private CreateTeamContract.Presenter presenter = new CreateTeamPresenter(this,
+            Injector.getInstance().provideAddTeamUseCase());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,28 +84,20 @@ public class CreateTeamActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void addTeamToDatabase() {
-        TeamRepository teamRepository = new TeamRepository(this);
-        teamRepository.addTeam(new OnCompleteListener<TeamData>() {
-            @Override
-            public void onComplete(boolean isSuccess, TeamData data) {
-                if (isSuccess) {
-                    Intent intent = new Intent();
-                    intent.putExtra(EXTRA_CREATE_TEAM, data);
-                    setResult(RESULT_OK, intent);
-                    finish();
-                } else {
-                    Toast.makeText(CreateTeamActivity.this, "팀 생성에 실패했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }, createTeamData());
+        presenter.addTeamToDatabase(editCreateTeamName.getText().toString(),
+                editCreateTeamDesc.getText().toString());
     }
 
-    private TeamData createTeamData() {
-        TeamData teamData = new TeamData();
-        teamData.setTeamName(editCreateTeamName.getText().toString());
-        teamData.setTeamDesc(editCreateTeamDesc.getText().toString());
-        teamData.setCreatedDate(System.currentTimeMillis());
+    @Override
+    public void addedTeamList(TeamEntity data) {
+        Intent intent = new Intent();
+        intent.putExtra(EXTRA_CREATE_TEAM, data);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
 
-        return teamData;
+    @Override
+    public void failedAddTeam() {
+        Toast.makeText(CreateTeamActivity.this, "팀 생성에 실패했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
     }
 }

@@ -3,7 +3,6 @@ package com.hero.seoultechteams.view.main.team.option_menu;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,36 +16,44 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.hero.seoultechteams.R;
-import com.hero.seoultechteams.database.member.entity.MemberData;
-import com.hero.seoultechteams.database.user.entity.UserData;
+import com.hero.seoultechteams.domain.user.entity.UserEntity;
 import com.hero.seoultechteams.view.BaseAdapter;
 import com.hero.seoultechteams.view.photoview.PhotoActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 import static com.hero.seoultechteams.view.photoview.PhotoActivity.EXTRA_PROFILE_IMAGE_URL;
 
 
-public class InviteAdapter extends BaseAdapter<InviteAdapter.InviteViewHolder, UserData> {
+public class InviteAdapter extends BaseAdapter<InviteAdapter.InviteViewHolder, UserEntity> {
 
     private Context context;
-    private ArrayList<UserData> searchedUserDataList;
-    private ArrayList<UserData> inviteUserDataList = new ArrayList<>();
+    private List<UserEntity> searchedUserDataList = new ArrayList<>();
+    private ArrayList<UserEntity> inviteUserDataList = new ArrayList<>();
     private LayoutInflater inflater;
     private RequestManager requestManager;
 
+    public void replaceAll(List<UserEntity> data) {
+        searchedUserDataList.clear();
+        searchedUserDataList.addAll(data);
+        notifyDataSetChanged();
+    }
+
+    public ArrayList<UserEntity> getInviteUserDataList() {
+        return inviteUserDataList;
+    }
+
     public interface OnInviteMemberItemCheckListener {
-        void inviteMemberOnCheck(UserData data);
+        void inviteMemberOnCheck(UserEntity data);
     }
 
     private OnInviteMemberItemCheckListener onInviteMemberItemCheckListener;
 
-    public InviteAdapter(Context context, ArrayList<UserData> searchedUserDataList, OnInviteMemberItemCheckListener onInviteMemberItemCheckListener) {
+    public InviteAdapter(Context context) {
         this.context = context;
-        this.searchedUserDataList = searchedUserDataList;
-        this.onInviteMemberItemCheckListener = onInviteMemberItemCheckListener;
         inflater = LayoutInflater.from(context);
         requestManager = Glide.with(context);
     }
@@ -60,30 +67,9 @@ public class InviteAdapter extends BaseAdapter<InviteAdapter.InviteViewHolder, U
 
     @Override
     public void onBindViewHolder(@NonNull InviteViewHolder holder, int position) {
-        UserData userData = searchedUserDataList.get(position);
+        UserEntity userData = searchedUserDataList.get(position);
 
-        if (TextUtils.isEmpty(userData.getProfileImageUrl())) {
-            requestManager.load(R.drawable.sample_profile_image).into(holder.ivSearchedUserProfile);
-        } else {
-            requestManager.load(userData.getProfileImageUrl()).into(holder.ivSearchedUserProfile);
-        }
-
-        holder.tvSearchedUserName.setText(userData.getName());
-        holder.tvSearchedUserEmail.setText(userData.getEmail());
-
-        holder.chkboxInvite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (holder.chkboxInvite.isChecked()) {
-                    onInviteMemberItemCheckListener.inviteMemberOnCheck(userData);
-                    inviteUserDataList.add(userData);
-                    Log.d("qwer3", "InviteAdapter-onBindViewHolder-체크된 사용자 목록의 크기 : " + inviteUserDataList.size());
-                    for (UserData userData : inviteUserDataList) {
-                        Log.d("qwer4", "InviteAdapter-onBindViewHolder-체크된 사용자의 이름 : " + userData.getName());
-                    }
-                }
-            }
-        });
+        holder.bind(userData);
     }
 
     @Override
@@ -115,31 +101,36 @@ public class InviteAdapter extends BaseAdapter<InviteAdapter.InviteViewHolder, U
 
         @Override
         public void onClick(View view) {
-            switch (view.getId()) {
-                case R.id.iv_member_profile:
-                    break;
-                case R.id.chkbox_invite:
-                    addCheckedUsersToList();
-                    break;
-                default:
-                    int position = getAdapterPosition();
-                    getOnRecyclerItemClickListener().onItemClick(position, view, inviteUserDataList.get(position));
-                    break;
-            }
+            int position = getAdapterPosition();
+            getOnRecyclerItemClickListener().onItemClick(position, view, inviteUserDataList.get(position));
         }
 
-        private void addCheckedUsersToList() {
-            UserData userData = new UserData();
 
-            if (chkboxInvite.isChecked()) {
-                inviteUserDataList.add(userData);
-            }
-        }
 
         private void intentPhoto(String profileImageUrl) {
             Intent intent = new Intent(context, PhotoActivity.class);
             intent.putExtra(EXTRA_PROFILE_IMAGE_URL, profileImageUrl);
             //startActivity(intent);
+        }
+
+        public void bind(UserEntity userData) {
+            if (TextUtils.isEmpty(userData.getProfileImageUrl())) {
+                requestManager.load(R.drawable.sample_profile_image).into(ivSearchedUserProfile);
+            } else {
+                requestManager.load(userData.getProfileImageUrl()).into(ivSearchedUserProfile);
+            }
+
+            tvSearchedUserName.setText(userData.getName());
+            tvSearchedUserEmail.setText(userData.getEmail());
+
+            chkboxInvite.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (chkboxInvite.isChecked()) {
+                        inviteUserDataList.add(userData);
+                    }
+                }
+            });
         }
     }
 }

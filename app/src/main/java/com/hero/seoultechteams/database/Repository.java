@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public abstract class Repository<T> {    // 리포지토리는 데이터스토어들의 객체를 가지고 있어야 한다.(Setting)
 
     private CloudStore<T> cloudStore;
-    private LocalDataStore<T> localStore;
+    private LocalStore<T> localStore;
     private CacheStore<T> cacheStore;
     private Context context;
 
@@ -23,13 +23,13 @@ public abstract class Repository<T> {    // 리포지토리는 데이터스토�
     }
 
     protected abstract CloudStore<T> createCloudStore(Context context);
-    protected abstract LocalDataStore<T> createLocalStore(Context context);
+    protected abstract LocalStore<T> createLocalStore(Context context);
     protected abstract CacheStore<T> createCacheStore();
 
     protected CloudStore<T> getCloudStore() {
         return cloudStore;
     }
-    protected LocalDataStore<T> getLocalStore() {
+    protected LocalStore<T> getLocalStore() {
         return localStore;
     }
     protected CacheStore<T> getCacheStore() {

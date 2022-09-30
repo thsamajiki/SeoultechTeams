@@ -1,16 +1,19 @@
 package com.hero.seoultechteams.view.main.mytodo;
 
+import static com.hero.seoultechteams.domain.todo.entity.TodoEntity.TODO_STATE_CONFIRMED;
+import static com.hero.seoultechteams.domain.todo.entity.TodoEntity.TODO_STATE_DISMISSED;
+import static com.hero.seoultechteams.domain.todo.entity.TodoEntity.TODO_STATE_IN_PROGRESS;
+import static com.hero.seoultechteams.domain.todo.entity.TodoEntity.TODO_STATE_SUBMITTED;
+
 import android.content.Context;
 import android.graphics.Color;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -20,41 +23,42 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.hero.seoultechteams.R;
-import com.hero.seoultechteams.database.OnCompleteListener;
-import com.hero.seoultechteams.database.team.entity.TeamData;
-import com.hero.seoultechteams.database.todo.TodoRepository;
-import com.hero.seoultechteams.database.todo.entity.Event;
-import com.hero.seoultechteams.database.todo.entity.TodoData;
+import com.hero.seoultechteams.domain.team.entity.TeamEntity;
+import com.hero.seoultechteams.domain.todo.entity.TodoEntity;
 import com.hero.seoultechteams.utils.TimeUtils;
 import com.hero.seoultechteams.view.BaseAdapter;
 
 import java.util.ArrayList;
 import java.util.Collections;
-
-import static com.hero.seoultechteams.database.todo.entity.TodoData.TODO_STATE_CONFIRMED;
-import static com.hero.seoultechteams.database.todo.entity.TodoData.TODO_STATE_DISMISSED;
-import static com.hero.seoultechteams.database.todo.entity.TodoData.TODO_STATE_IN_PROGRESS;
-import static com.hero.seoultechteams.database.todo.entity.TodoData.TODO_STATE_SUBMITTED;
+import java.util.List;
 
 
-public class MyTodoListAdapter extends BaseAdapter<MyTodoListAdapter.MyTodoListViewHolder, TodoData> implements View.OnClickListener {
+public class MyTodoListAdapter extends BaseAdapter<MyTodoListAdapter.MyTodoListViewHolder, TodoEntity> implements View.OnClickListener {
 
     private Context context;
-    LayoutInflater inflater;
-    private ArrayList<TodoData> myTodoDataList;
+    private LayoutInflater inflater;
+    private List<TodoEntity> myTodoDataList;
     private String myKey;
-    private ArrayList<TeamData> myTeamDataList = new ArrayList<>();
+    private List<TeamEntity> myTeamDataList = new ArrayList<>();
     public static final String EXTRA_SUBMIT_MY_TODO = "submitMyTodo";
     public static final String EXTRA_SUBMIT_LATE_MY_TODO = "submitLateMyTodo";
     public static final String EXTRA_RESUBMIT_MY_TODO = "resubmitMyTodo";
 
+    public void removeItem(int position) {
+        myTodoDataList.remove(position);
+    }
+
+    public void setItem(int position, TodoEntity data) {
+        myTodoDataList.set(position, data);
+    }
+
     public interface OnBtnStateMyTodoClickListener {
-        void btnStateMyTodoOnClick(TodoData data);
+        void btnStateMyTodoOnClick(TodoEntity data);
     }
 
     private OnBtnStateMyTodoClickListener onBtnStateMyTodoClickListener;
 
-    public MyTodoListAdapter(Context context, ArrayList<TodoData> myTodoDataList, OnBtnStateMyTodoClickListener onBtnStateMyTodoClickListener) {
+    public MyTodoListAdapter(Context context, List<TodoEntity> myTodoDataList, OnBtnStateMyTodoClickListener onBtnStateMyTodoClickListener) {
         this.context = context;
         this.myTodoDataList = myTodoDataList;
         this.onBtnStateMyTodoClickListener = onBtnStateMyTodoClickListener;
@@ -62,7 +66,7 @@ public class MyTodoListAdapter extends BaseAdapter<MyTodoListAdapter.MyTodoListV
         myKey = FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
-    public void setMyTeamDataList(ArrayList<TeamData> myTeamDataList) {
+    public void setMyTeamDataList(List<TeamEntity> myTeamDataList) {
         if (myTeamDataList != null) {
             this.myTeamDataList.clear();
             this.myTeamDataList.addAll(myTeamDataList);
@@ -77,16 +81,16 @@ public class MyTodoListAdapter extends BaseAdapter<MyTodoListAdapter.MyTodoListV
         return new MyTodoListViewHolder(view);
     }
 
-    public void setMyTodoListOnTab(ArrayList<TodoData> myTodoDataList) {
+    public void setMyTodoListOnTab(ArrayList<TodoEntity> myTodoDataList) {
         this.myTodoDataList.clear();
         this.myTodoDataList.addAll(myTodoDataList);
-        Collections.sort(this.myTodoDataList);
+        Collections.sort(myTodoDataList);
         notifyDataSetChanged();
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyTodoListViewHolder holder, int position) {
-        TodoData todoData = myTodoDataList.get(position);
+        TodoEntity todoData = myTodoDataList.get(position);
         holder.tvMyTodoTitle.setText(todoData.getTodoTitle());
 
         if (TextUtils.isEmpty(todoData.getTodoDesc())) {
@@ -121,8 +125,8 @@ public class MyTodoListAdapter extends BaseAdapter<MyTodoListAdapter.MyTodoListV
         setTodoState(holder, todoData, isLeader(todoData));
     }
 
-    private boolean isLeader(TodoData todoData) {
-        for (TeamData teamData : myTeamDataList) {
+    private boolean isLeader(TodoEntity todoData) {
+        for (TeamEntity teamData : myTeamDataList) {
             if (teamData.getTeamKey().equals(todoData.getTeamKey()) && teamData.getLeaderKey().equals(myKey)) {
                 return true;
             }
@@ -130,12 +134,12 @@ public class MyTodoListAdapter extends BaseAdapter<MyTodoListAdapter.MyTodoListV
         return false;
     }
 
-    private void setTodoState(MyTodoListViewHolder holder, TodoData todoData, boolean isLeader) {
-        String todoState = todoData.getTodoState();
+    private void setTodoState(MyTodoListViewHolder holder, TodoEntity todoEntity, boolean isLeader) {
+        String todoState = todoEntity.getTodoState();
         holder.btnDismissMyTodo.setVisibility(View.GONE);
         switch (todoState) {
             case TODO_STATE_IN_PROGRESS:
-                if (todoData.getTodoEndTime() < System.currentTimeMillis()) {
+                if (todoEntity.getTodoEndTime() < System.currentTimeMillis()) {
                     holder.btnStateMyTodo.setText("지연제출");    // Todo의 버튼은 "지연 제출"로 바뀐다.
                     holder.btnStateMyTodo.setTextColor(Color.parseColor(context.getString(Integer.parseInt(String.valueOf(R.color.colorPrimaryYellow)))));
                     holder.btnStateMyTodo.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.colorPrimaryYellow30));
@@ -225,65 +229,11 @@ public class MyTodoListAdapter extends BaseAdapter<MyTodoListAdapter.MyTodoListV
 
         @Override
         public void onClick(View view) {
-            switch (view.getId()) {
-//                case R.id.btn_mytodo_option_menu:
-//                    showMyTodoOptionMenu();
-//                    break;
-                case R.id.btn_dismiss_mytodo:
-                    updateMyTodo(true, getAdapterPosition());
-                    break;
-                case R.id.btn_state_mytodo:
-                    updateMyTodo(false, getAdapterPosition());
-                    break;
-                default:
-                    int position = getAdapterPosition();
-                    getOnRecyclerItemClickListener().onItemClick(position, view, myTodoDataList.get(position));
-                    break;
-            }
+            int position = getAdapterPosition();
+            getOnRecyclerItemClickListener().onItemClick(position, view, myTodoDataList.get(position));
         }
 
-        private void updateMyTodo(boolean isDismissed, int position) {
-            TodoData todoData = myTodoDataList.get(position);
-            Event newEvent = new Event();
-            switch (todoData.getTodoState()) {
-                case TODO_STATE_IN_PROGRESS:
-                case TODO_STATE_DISMISSED:
-                    todoData.setTodoState(TODO_STATE_SUBMITTED);
-                    newEvent.setEvent(Event.EVENT_SUBMIT);
-                    break;
-                case TODO_STATE_SUBMITTED:
-                    if (isDismissed) {
-                        todoData.setTodoState(TODO_STATE_DISMISSED);
-                        newEvent.setEvent(Event.EVENT_DISMISS);
-                    } else {
-                        todoData.setTodoState(TODO_STATE_CONFIRMED);
-                        newEvent.setEvent(Event.EVENT_CONFIRM);
-                    }
-                    break;
 
-            }
-
-            newEvent.setTime(System.currentTimeMillis());
-            todoData.getEventHistory().add(newEvent);
-            TodoRepository todoRepository = new TodoRepository(context);
-            todoRepository.updateTodo(new OnCompleteListener<TodoData>() {
-                @Override
-                public void onComplete(boolean isSuccess, TodoData data) {
-                    if (isSuccess) {
-                        if (data.getTodoState().equals(TODO_STATE_CONFIRMED)) {
-                            myTodoDataList.remove(position);
-                            notifyItemRemoved(position);
-                            onBtnStateMyTodoClickListener.btnStateMyTodoOnClick(data);
-                        } else {
-                            myTodoDataList.set(position, data);
-                            notifyItemChanged(position);
-                        }
-                    } else {
-                        Toast.makeText(context, "데이터 처리에 실패했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }, todoData);
-        }
 
 
 //        private void showMyTodoOptionMenu() {

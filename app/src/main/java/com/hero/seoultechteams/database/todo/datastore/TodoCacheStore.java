@@ -1,13 +1,12 @@
 package com.hero.seoultechteams.database.todo.datastore;
 
-import android.util.Log;
-
 import com.hero.seoultechteams.database.CacheStore;
 import com.hero.seoultechteams.database.DataType;
-import com.hero.seoultechteams.database.OnCompleteListener;
+import com.hero.seoultechteams.domain.common.OnCompleteListener;
 import com.hero.seoultechteams.database.todo.entity.TodoData;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TodoCacheStore extends CacheStore<TodoData> {
 
@@ -30,7 +29,7 @@ public class TodoCacheStore extends CacheStore<TodoData> {
     }
 
     @Override
-    public void getDataList(OnCompleteListener<ArrayList<TodoData>> onCompleteListener, Object... params) {
+    public void getDataList(OnCompleteListener<List<TodoData>> onCompleteListener, Object... params) {
         DataType type = (DataType) params[0];
         String key = params[1].toString();
 
@@ -46,13 +45,13 @@ public class TodoCacheStore extends CacheStore<TodoData> {
         }
     }
 
-    private void getMyTodoList(OnCompleteListener<ArrayList<TodoData>> onCompleteListener, String userKey) {
-        ArrayList<TodoData> todoDataList = getDataList();
+    private void getMyTodoList(OnCompleteListener<List<TodoData>> onCompleteListener, String userKey) {
+        List<TodoData> todoDataList = getDataList();
         if (todoDataList.isEmpty()) {
             onCompleteListener.onComplete(true, null);
         } else {
-            ArrayList<TodoData> myTodoList = new ArrayList<>();
-            for (TodoData todoData: todoDataList) {
+            List<TodoData> myTodoList = new ArrayList<>();
+            for (TodoData todoData : todoDataList) {
                 if (todoData.getUserKey().equals(userKey)) {
                     myTodoList.add(todoData);
                 }
@@ -65,13 +64,13 @@ public class TodoCacheStore extends CacheStore<TodoData> {
         }
     }
 
-    private void getTeamTodoList(OnCompleteListener<ArrayList<TodoData>> onCompleteListener, String teamKey) {
-        ArrayList<TodoData> todoDataList = getDataList();
+    private void getTeamTodoList(OnCompleteListener<List<TodoData>> onCompleteListener, String teamKey) {
+        List<TodoData> todoDataList = getDataList();
         if (todoDataList.isEmpty()) {
             onCompleteListener.onComplete(true, null);
         } else {
-            ArrayList<TodoData> teamTodoList = new ArrayList<>();
-            for (TodoData todoData: todoDataList) {
+            List<TodoData> teamTodoList = new ArrayList<>();
+            for (TodoData todoData : todoDataList) {
                 if (todoData.getTeamKey().equals(teamKey)) {
                     teamTodoList.add(todoData);
                 }

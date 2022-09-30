@@ -15,26 +15,33 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Transaction;
-import com.hero.seoultechteams.database.CacheStore;
 import com.hero.seoultechteams.database.CloudStore;
-import com.hero.seoultechteams.database.OnCompleteListener;
-import com.hero.seoultechteams.database.member.datastore.MemberCacheStore;
-import com.hero.seoultechteams.database.member.entity.MemberData;
-import com.hero.seoultechteams.database.team.TeamRepository;
-import com.hero.seoultechteams.database.team.entity.TeamData;
+import com.hero.seoultechteams.database.team.datastore.TeamCacheStore;
+import com.hero.seoultechteams.database.todo.datastore.TodoCloudStore;
 import com.hero.seoultechteams.database.todo.entity.TodoData;
+import com.hero.seoultechteams.domain.common.OnCompleteListener;
+import com.hero.seoultechteams.database.member.entity.MemberData;
+import com.hero.seoultechteams.database.team.entity.TeamData;
 import com.hero.seoultechteams.database.user.entity.UserData;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class UserCloudStore extends CloudStore<UserData> {
 
-    public UserCloudStore(Context context) {
+    private final TeamCacheStore teamCacheStore;
+    private final TodoCloudStore todoCloudStore;
+
+    public UserCloudStore(Context context, TeamCacheStore teamCacheStore, TodoCloudStore todoCloudStore) {
         super(context);
+
+        this.teamCacheStore = teamCacheStore;
+        this.todoCloudStore = todoCloudStore;
     }
 
     @Override
@@ -63,7 +70,7 @@ public class UserCloudStore extends CloudStore<UserData> {
                 });
     }
 
-    public void getDataByUserName(final OnCompleteListener<ArrayList<UserData>> onCompleteListener, String userName) {
+    public void getDataByUserName(final OnCompleteListener<List<UserData>> onCompleteListener, String userName) {
         if (TextUtils.isEmpty(userName)) {
             onCompleteListener.onComplete(false, null);
             return;
@@ -94,7 +101,7 @@ public class UserCloudStore extends CloudStore<UserData> {
                 });
     }
 
-    public void getDataByUserEmail(final OnCompleteListener<ArrayList<UserData>> onCompleteListener, String userEmail) {
+    public void getDataByUserEmail(final OnCompleteListener<List<UserData>> onCompleteListener, String userEmail) {
         if (TextUtils.isEmpty(userEmail)) {
             onCompleteListener.onComplete(false, null);
             return;
@@ -126,7 +133,7 @@ public class UserCloudStore extends CloudStore<UserData> {
     }
     
     @Override
-    public void getDataList(final OnCompleteListener<ArrayList<UserData>> onCompleteListener, Object... params) {
+    public void getDataList(final OnCompleteListener<List<UserData>> onCompleteListener, Object... params) {
         if (params == null || params.length == 0) {
             onCompleteListener.onComplete(false, null);
             return;
@@ -169,55 +176,16 @@ public class UserCloudStore extends CloudStore<UserData> {
                 });
     }
 
-    public void addUserListToTeam(final OnCompleteListener<ArrayList<UserData>> onCompleteListener, final TeamData teamData, ArrayList<UserData> userDataList, ArrayList<MemberData> memberDataList) {
-        getFirestore().runTransaction(new Transaction.Function<ArrayList<UserData>>() {
+    public void addUserListToTeam(final OnCompleteListener<List<UserData>> onCompleteListener, final TeamData teamData, List<UserData> userDataList, List<MemberData> memberDataList) {
+        getFirestore().runTransaction(new Transaction.Function<List<UserData>>() {
             @Nullable
             @Override
-            public ArrayList<UserData> apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
-
-                Log.d("qwer9", "UserCloudStore-addUserListToTeam() - 초대하고 싶은 사용자들 수 : " + userDataList.size());
-                for (UserData userData1 : userDataList) {
-                    Log.d("qwer10", "UserCloudStore-addUserListToTeam - 초대하고 싶은 사용자의 이름 : " + userData1.getName());
-                }
-
-                Log.d("qwer11", "UserCloudStore-초대하기 전 팀원들 수 : " + memberDataList.size());
-                for (MemberData memberData : memberDataList) {
-                    Log.d("qwer12", "UserCloudStore-초대하기 전 팀원의 이름 : " + memberData.getName());
-                }
-
+            public List<UserData> apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
                 MemberData newMemberData = new MemberData();
-//                for (MemberData memberData : memberDataList) {
-//                    for (UserData userData : userDataList) {
-//                        if (!userData.getKey().equals(memberData.getKey())) {
-//                            Log.d("qwer13", "UserCloudStore-초대하기 전 팀원들 수 : " + memberDataList.size());
-//                            for (MemberData memberData01 : memberDataList) {
-//                                Log.d("qwer14", "UserCloudStore-초대하기 전 팀원의 이름 : " + memberData01.getName());
-//                            }
-//                            newMemberData.setProfileImageUrl(userData.getProfileImageUrl());
-//                            newMemberData.setName(userData.getName());
-//
-//                            newMemberData.setTeamKey(teamData.getTeamKey());
-//
-//                            newMemberData.setEmail(userData.getEmail());
-//
-//                            newMemberData.setKey(userData.getKey());
-//
-//                            memberDataList.add(newMemberData);
-//                            Log.d("qwer15", "UserCloudStore-초대한 후 팀원들 수 : " + memberDataList.size());
-//                            for (MemberData memberData02 : memberDataList) {
-//                                Log.d("qwer16", "UserCloudStore-초대한 후 팀원의 이름 : " + memberData02.getName());
-//                            }
-//                        }
-//                        Log.d("qwer17", "UserCloudStore- userDataList() : " + userDataList.size());
-//                        for (UserData user: userDataList) {
-//                            Log.d("qwer18", "UserCloudStore- userDataList() : " + user.getName());
-//                        }
-//                    }
-//                    //Log.d("qwer-no_print", "UserCloudStore- userData.getName() : " + userData.getName());
-//                }
 
                 for (UserData userData : userDataList) {
                     if (isNotMember(userData, memberDataList)) {
+                        // db에 저장할 객체 만듦
                         newMemberData.setProfileImageUrl(userData.getProfileImageUrl());
                         newMemberData.setName(userData.getName());
 
@@ -227,26 +195,26 @@ public class UserCloudStore extends CloudStore<UserData> {
 
                         newMemberData.setKey(userData.getKey());
 
-                        memberDataList.add(newMemberData);
+//                        memberDataList.add(newMemberData);
+
+                        // db에 저장함
+                        DocumentReference teamRef = getFirestore().collection("Team").document(teamData.getTeamKey());
+                        DocumentReference memberRef = teamRef.collection("Member").document(userData.getKey());
+                        transaction.set(memberRef, newMemberData);
+
+                        DocumentReference userRef = getFirestore().collection("User")
+                                .document(userData.getKey());
+                        DocumentReference myTeamRef = userRef.collection("MyTeam")
+                                .document(teamData.getTeamKey());
+                        transaction.set(myTeamRef, teamData);
                     }
                 }
 
-                for (UserData data : userDataList) {
-                    DocumentReference teamRef = getFirestore().collection("Team").document(teamData.getTeamKey());
-                    DocumentReference memberRef = teamRef.collection("Member").document(data.getKey());
-                    transaction.set(memberRef, newMemberData);
-
-                    DocumentReference userRef = getFirestore().collection("User")
-                            .document(data.getKey());
-                    DocumentReference myTeamRef = userRef.collection("MyTeam")
-                            .document(teamData.getTeamKey());
-                    transaction.set(myTeamRef, teamData);
-                }
                 return userDataList;
             }
-        }).addOnSuccessListener(new OnSuccessListener<ArrayList<UserData>>() {
+        }).addOnSuccessListener(new OnSuccessListener<List<UserData>>() {
             @Override
-            public void onSuccess(ArrayList<UserData> userDataList) {
+            public void onSuccess(List<UserData> userDataList) {
 //                UserCacheStore.getInstance().add(null, userDataList);
                 onCompleteListener.onComplete(true, userDataList);
             }
@@ -259,11 +227,11 @@ public class UserCloudStore extends CloudStore<UserData> {
         });
     }
 
-    private boolean isNotMember(UserData data, ArrayList<MemberData> teamMemberDataList) {
+    private boolean isNotMember(UserData data, List<MemberData> teamMemberDataList) {
         return !isMember(data, teamMemberDataList);
     }
 
-    private boolean isMember(UserData data, ArrayList<MemberData> teamMemberDataList) {
+    private boolean isMember(UserData data, List<MemberData> teamMemberDataList) {
         for (MemberData memberData : teamMemberDataList) {
             if (data.getKey().equals(memberData.getKey())) {
                 return true;
@@ -279,21 +247,57 @@ public class UserCloudStore extends CloudStore<UserData> {
     //  3. MemberData의 profileImageUrl, name
     @Override
     public void update(final OnCompleteListener<UserData> onCompleteListener, final UserData userData) {
-        TeamRepository teamRepository = new TeamRepository(getContext());
-        teamRepository.getTeamList(new OnCompleteListener<ArrayList<TeamData>>() {
+        // 동작을 동일하게 하기 위해, 근데 Repository 호출은 여기서 안할거니까
+        // 기존 코드를 보고 똑같이 가져온거.
+        
+        /* 최상위에서 하위로
+        CloudStore / LocalStore / CacheStore
+        ------------------------------------
+        ~~RemoteDataSource
+        ------------------------------------
+        ~~Repository
+        ------------------------------------
+        ~~UseCase
+        ------------------------------------
+        ~~Presenter
+       */
+        
+        teamCacheStore.getDataList(new OnCompleteListener<List<TeamData>>() {
             @Override
-            public void onComplete(boolean isSuccess, ArrayList<TeamData> data) {
-                if (isSuccess) {
-                    if (data == null) {
-                        // 그냥 업데이트
-                        updateUser(onCompleteListener, userData);
-                    } else {
-                        // 트랜잭션을 통한 업데이트
-                        updateUserWithMemberAndTodo(onCompleteListener, data, userData);
+            public void onComplete(boolean isSuccess, List<TeamData> teamList) {
+                todoCloudStore.getDataList(new OnCompleteListener<List<TodoData>>() {
+                    @Override
+                    public void onComplete(boolean isSuccess, List<TodoData> todoList) {
+                        if (isSuccess) {
+                            // TODO: 2022-09-29 ||로 해야할 수도??
+                            if (teamList == null && todoList == null) {
+                                // 그냥 업데이트
+                                updateUser(onCompleteListener, userData);
+                            } else {
+                                // 트랜잭션을 통한 업데이트
+                                updateUserWithMemberAndTodo(onCompleteListener, teamList, todoList, userData);
+                            }
+                        }
                     }
-                }
+                });
             }
-        });
+        }, userData.getKey());
+
+//        TeamRepositoryImpl teamRepositoryImpl = new TeamRepositoryImpl(getContext());
+//        teamRepositoryImpl.getTeamList(new OnCompleteListener<List<TeamData>>() {
+//            @Override
+//            public void onComplete(boolean isSuccess, List<TeamData> data) {
+//                if (isSuccess) {
+//                    if (data == null) {
+//                        // 그냥 업데이트
+//                        updateUser(onCompleteListener, userData);
+//                    } else {
+//                        // 트랜잭션을 통한 업데이트
+//                        updateUserWithMemberAndTodo(onCompleteListener, data, userData);
+//                    }
+//                }
+//            }
+//        });
     }
 
     private void updateUser(final OnCompleteListener<UserData> onCompleteListener, final UserData userData) {
@@ -321,6 +325,7 @@ public class UserCloudStore extends CloudStore<UserData> {
                 });
     }
 
+    // FirebaseAuth 객체 수정
     public void updateLocalUser(UserData userData) {
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         UserProfileChangeRequest.Builder builder = new UserProfileChangeRequest.Builder()
@@ -350,27 +355,51 @@ public class UserCloudStore extends CloudStore<UserData> {
     //  2. TodoData의 managerProfileImageUrl, managerName
     //  3. MemberData의 profileImageUrl, name
     private void updateUserWithMemberAndTodo(final OnCompleteListener<UserData> onCompleteListener,
-                                             final ArrayList<TeamData> teamDataList,
+                                             final List<TeamData> teamDataList,
+                                             final List<TodoData> todoDataList,
                                              final UserData userData) {
         getFirestore().runTransaction(new Transaction.Function<Object>() {
             @Nullable
             @Override
             public Object apply(@NonNull final Transaction transaction) throws FirebaseFirestoreException {
-                DocumentReference userRef = getFirestore().collection("User").document(userData.getKey());
-//                DocumentReference teamRef = getFirestore().collection("Team").document();
-//                TodoData todoData = transaction.get(teamRef).toObject(TodoData.class);
-//                DocumentReference todoRef = getFirestore().collection("Team")
-//                        .document(todoData.getTeamKey())
-//                        .collection("Todo")
-//                        .document(todoData.getTodoKey());
-                // 파이어베이스 지침상 최대 500까지만 업데이트 가능 -> 팀을 500개 이상 가입하지 못한다는 뜻
+
+                // 1. UserData의 profileImageUrl, name
                 HashMap<String, Object> editUserData = new HashMap<>();
                 if (!TextUtils.isEmpty(userData.getProfileImageUrl())) {
                     editUserData.put("profileImageUrl", userData.getProfileImageUrl());
-                    //editUserData.put("managerProfileImageUrl", todoData.getManagerProfileImageUrl());
                 }
                 editUserData.put("name", userData.getName());
-//                editUserData.put("managerName", todoData.getManagerName());
+                DocumentReference userRef = getFirestore().collection("User")
+                        .document(userData.getKey());
+                transaction.update(userRef, editUserData);
+
+
+                // 2. TodoData의 managerProfileImageUrl, managerName
+                HashMap<String, Object> editTodoData = new HashMap<>();
+                if (!TextUtils.isEmpty(userData.getProfileImageUrl())) {
+                    editTodoData.put("managerProfileImageUrl", userData.getProfileImageUrl());
+
+                }
+                editTodoData.put("name", userData.getName());
+
+                for (TodoData todoData : todoDataList) {
+                    DocumentReference todoRef = getFirestore()
+                            .collection("Team")
+                            .document(todoData.getTeamKey())
+                            .collection("Todo")
+                            .document(todoData.getTodoKey());
+
+                    transaction.update(todoRef, editTodoData);
+                }
+
+
+                // 3. MemberData의 profileImageUrl, name
+                // 파이어베이스 지침상 최대 500까지만 업데이트 가능 -> 팀을 500개 이상 가입하지 못한다는 뜻
+                HashMap<String, Object> editMemberData = new HashMap<>();
+                if (!TextUtils.isEmpty(userData.getProfileImageUrl())) {
+                    editMemberData.put("profileImageUrl", userData.getProfileImageUrl());
+                }
+                editMemberData.put("managerName", userData.getName());
                 for (TeamData teamData : teamDataList) {
                     DocumentReference memberRef = getFirestore()
                             .collection("Team")
@@ -378,10 +407,8 @@ public class UserCloudStore extends CloudStore<UserData> {
                             .collection("Member")
                             .document(userData.getKey());
                     transaction.update(memberRef, editUserData);
-
-                    
-//                    transaction.update(todoRef, editUserData);
                 }
+
                 transaction.update(userRef, editUserData);
 
                 return null;
@@ -427,15 +454,32 @@ public class UserCloudStore extends CloudStore<UserData> {
                 });
     }
 
-    /* TODO: 2021-03-12 탈퇴 기능 추가시 해야 할 것
-    * 1. 유저정보 삭제
-    * 2. 각각의 팀들의 멤버 정보 삭제
-    * 3. 각각의 팀들의 투두 정보 삭제
-    * 4. 1, 2, 3번이 한 트랜잭션 안에서 무결성을 이뤄야 함
-    */ 
+
 
     @Override
     public void remove(final OnCompleteListener<UserData> onCompleteListener, final UserData userData) {
+        /* TODO: 2021-03-12 탈퇴 기능 추가시 해야 할 것
+         * 1. 유저정보 삭제
+         * 2. 각각의 팀들의 멤버 정보 삭제
+         * 3. 각각의 팀들의 투두 정보 삭제
+         * 4. 1, 2, 3번이 한 트랜잭션 안에서 무결성을 이뤄야 함
+         */
+//        teamCacheStore.getDataList(new OnCompleteListener<List<TeamData>>() {
+//            @Override
+//            public void onComplete(boolean isSuccess, List<TeamData> teamList) {
+//                todoCloudStore.getDataList(new OnCompleteListener<List<TodoData>>() {
+//                    @Override
+//                    public void onComplete(boolean isSuccess, List<TodoData> todoList) {
+//                        if (isSuccess) {
+//                            removeUser(onCompleteListener, teamList, todoList, userData);
+//                        } else {
+//
+//                        }
+//                    }
+//                });
+//            }
+//        });
+//
 //        final FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 //        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 //        firestore.collection("Team")
@@ -455,5 +499,15 @@ public class UserCloudStore extends CloudStore<UserData> {
 //                        onCompleteListener.onComplete(false, null);
 //                    }
 //                });
+    }
+
+    private void removeUser(final OnCompleteListener<UserData> onCompleteListener, List<TeamData> teamDataList, List<TodoData> todoDataList, UserData userData) {
+        getFirestore().runTransaction(new Transaction.Function<Object>() {
+            @Nullable
+            @Override
+            public Object apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
+                return null;
+            }
+        });
     }
 }

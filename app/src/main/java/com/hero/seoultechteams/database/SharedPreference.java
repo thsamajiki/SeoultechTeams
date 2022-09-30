@@ -3,8 +3,6 @@ package com.hero.seoultechteams.database;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -12,6 +10,8 @@ import java.util.List;
 import java.util.Set;
 
 import static android.content.Context.MODE_PRIVATE;
+
+import com.google.gson.Gson;
 
 public class SharedPreference {
 
@@ -175,7 +175,7 @@ public class SharedPreference {
         editor.apply();
     }
 
-    public ArrayList<String> loadList(Context context, String key) {
+    public List<String> loadList(Context context, String key) {
 
         SharedPreferences pref;
         List<String> favorites;
@@ -188,7 +188,7 @@ public class SharedPreference {
             favorites = new ArrayList<>(favorites);
         } else
             return null;
-        return (ArrayList<String>) favorites;
+        return favorites;
     }
 
     public void addList(Context context, String key, String country) {
@@ -208,7 +208,7 @@ public class SharedPreference {
     }
 
     public void removeList(Context context, String key, String country) {
-        ArrayList favorites = loadList(context,key);
+        List favorites = loadList(context,key);
         if (favorites != null) {
             favorites.remove(country);
             storeList(context, key, favorites);
@@ -216,7 +216,7 @@ public class SharedPreference {
     }
 
     public void deleteList(Context context,String key) {
-        ArrayList<String> list = loadList(context,key);
+        List<String> list = loadList(context,key);
         if (list != null) {
             list.clear();
         }

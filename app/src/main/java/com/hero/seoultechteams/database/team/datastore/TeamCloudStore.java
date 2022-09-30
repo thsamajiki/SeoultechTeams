@@ -16,14 +16,14 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Transaction;
 import com.hero.seoultechteams.database.CloudStore;
-import com.hero.seoultechteams.database.OnCompleteListener;
+import com.hero.seoultechteams.domain.common.OnCompleteListener;
 import com.hero.seoultechteams.database.member.entity.MemberData;
 import com.hero.seoultechteams.database.team.entity.TeamData;
-import com.hero.seoultechteams.database.todo.entity.TodoData;
 import com.hero.seoultechteams.database.user.entity.UserData;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class TeamCloudStore extends CloudStore<TeamData> {
 
@@ -37,7 +37,7 @@ public class TeamCloudStore extends CloudStore<TeamData> {
     }
 
     @Override
-    public void getDataList(final OnCompleteListener<ArrayList<TeamData>> onCompleteListener, Object... params) {
+    public void getDataList(final OnCompleteListener<List<TeamData>> onCompleteListener, Object... params) {
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         getFirestore().collection("User")
                 .document(firebaseUser.getUid())
@@ -77,12 +77,11 @@ public class TeamCloudStore extends CloudStore<TeamData> {
             @Override
             public TeamData apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
                 DocumentReference teamRef = getFirestore().collection("Team").document();
-                FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-                teamData.setLeaderKey(firebaseUser.getUid());
+
                 teamData.setTeamKey(teamRef.getId());
 
                 DocumentReference myRef = getFirestore().collection("User")
-                        .document(firebaseUser.getUid());
+                        .document(teamData.getLeaderKey());
                 DocumentReference myTeamRef = myRef.collection("MyTeam")
                         .document(teamRef.getId());
 
@@ -92,7 +91,7 @@ public class TeamCloudStore extends CloudStore<TeamData> {
                 memberData.setName(userData.getName());
                 memberData.setTeamKey(teamData.getTeamKey());
                 memberData.setEmail(userData.getEmail());
-                memberData.setKey(firebaseUser.getUid());
+                memberData.setKey(teamData.getLeaderKey());
 
                 DocumentReference memberRef = teamRef.collection("Member")
                         .document(memberData.getKey());
@@ -120,7 +119,7 @@ public class TeamCloudStore extends CloudStore<TeamData> {
     //  1. TeamData
     //     1) teamName
     //     2) teamDesc
-    //  2. TodoData
+    //  2. TodoEntity
     //     1) teamName
     @Override
     public void update(final OnCompleteListener<TeamData> onCompleteListener, final TeamData teamData) {

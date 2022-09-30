@@ -1,10 +1,11 @@
 package com.hero.seoultechteams.database.member.datastore;
 
 import com.hero.seoultechteams.database.CacheStore;
-import com.hero.seoultechteams.database.OnCompleteListener;
+import com.hero.seoultechteams.domain.common.OnCompleteListener;
 import com.hero.seoultechteams.database.member.entity.MemberData;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MemberCacheStore extends CacheStore<MemberData> {
 
@@ -42,17 +43,17 @@ public class MemberCacheStore extends CacheStore<MemberData> {
 
     // 팀에서 멤버 목록을 불러오는 메소드
     @Override
-    public void getDataList(OnCompleteListener<ArrayList<MemberData>> onCompleteListener, Object... params) {
+    public void getDataList(OnCompleteListener<List<MemberData>> onCompleteListener, Object... params) {
         String key = params[0].toString();
         getTeamMemberList(onCompleteListener, key);
     }
 
-    private void getTeamMemberList(OnCompleteListener<ArrayList<MemberData>> onCompleteListener, String teamKey) {
-        ArrayList<MemberData> memberDataList = getDataList();
+    private void getTeamMemberList(OnCompleteListener<List<MemberData>> onCompleteListener, String teamKey) {
+        List<MemberData> memberDataList = getDataList();
         if (memberDataList.isEmpty()) {
             onCompleteListener.onComplete(true, null);
         } else {
-            ArrayList<MemberData> teamMemberList = new ArrayList<>();
+            List<MemberData> teamMemberList = new ArrayList<>();
             for (MemberData memberData: teamMemberList) {
                 if (memberData.getTeamKey().equals(teamKey)) {
                     memberDataList.add(memberData);

@@ -14,19 +14,21 @@ import com.bumptech.glide.RequestManager;
 import com.google.android.material.card.MaterialCardView;
 import com.hero.seoultechteams.R;
 import com.hero.seoultechteams.database.notice.entity.NoticeData;
+import com.hero.seoultechteams.domain.notice.entity.NoticeEntity;
 import com.hero.seoultechteams.view.BaseAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
-public class NoticeListAdapter extends BaseAdapter<NoticeListAdapter.NoticeViewHolder, NoticeData> implements View.OnClickListener {
+public class NoticeListAdapter extends BaseAdapter<NoticeListAdapter.NoticeViewHolder, NoticeEntity> implements View.OnClickListener {
 
     private Context context;
-    private ArrayList<NoticeData> noticeDataList;
+    private List<NoticeEntity> noticeDataList;
     private RequestManager requestManager;
 
 
-    public NoticeListAdapter(Context context, ArrayList<NoticeData> noticeDataList) {
+    public NoticeListAdapter(Context context, List<NoticeEntity> noticeDataList) {
         this.context = context;
         this.noticeDataList = noticeDataList;
     }
@@ -42,7 +44,7 @@ public class NoticeListAdapter extends BaseAdapter<NoticeListAdapter.NoticeViewH
 
     @Override
     public void onBindViewHolder(@NonNull NoticeViewHolder holder, int position) {
-        NoticeData noticeData = noticeDataList.get(position);
+        NoticeEntity noticeData = noticeDataList.get(position);
 
         holder.tvDateNoticeItem.setText(noticeData.getNoticeDate());
         holder.tvTitleNoticeItem.setText(noticeData.getNoticeTitle());
