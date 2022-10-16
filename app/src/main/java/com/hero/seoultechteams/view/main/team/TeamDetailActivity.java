@@ -19,14 +19,14 @@ import com.hero.seoultechteams.domain.team.entity.TeamEntity;
 import com.hero.seoultechteams.view.main.team.contract.TeamDetailContract;
 import com.hero.seoultechteams.view.main.team.presenter.TeamDetailPresenter;
 
-import static com.hero.seoultechteams.view.main.team.TeamListFragment.EXTRA_TEAM_DATA;
-
 public class TeamDetailActivity extends BaseActivity implements View.OnClickListener, TeamDetailContract.View {
     private ImageView ivBack, ivOptionMenu;
     private EditText editTeamName, editTeamDesc;
     public static final String EXTRA_UPDATE_TEAM = "updateTeam";
-    private TeamDetailContract.Presenter presenter = new TeamDetailPresenter(this,
-            Injector.getInstance().provideUpdateTeamDetailUseCase());
+    public static final String EXTRA_TEAM_KEY = "teamKey";
+    private final TeamDetailContract.Presenter presenter = new TeamDetailPresenter(this,
+            Injector.getInstance().provideUpdateTeamDetailUseCase(),
+            Injector.getInstance().provideGetTeamUseCase());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,16 +37,15 @@ public class TeamDetailActivity extends BaseActivity implements View.OnClickList
         addTextWatcher();
     }
 
-    private TeamEntity initTeamEntity;
-
     private void initView() {
         ivBack = findViewById(R.id.iv_back);
         ivOptionMenu = findViewById(R.id.iv_option_menu);
         editTeamName = findViewById(R.id.edit_team_name);
         editTeamDesc = findViewById(R.id.edit_team_desc);
 
-        initTeamEntity = getIntent().getParcelableExtra(EXTRA_TEAM_DATA);
-        initializeTeamDetail(initTeamEntity);
+        String teamKey = getIntent().getStringExtra(EXTRA_TEAM_KEY);
+
+        presenter.requestTeamData(teamKey);
     }
 
     private void initializeTeamDetail(TeamEntity teamEntity) {
@@ -80,10 +79,6 @@ public class TeamDetailActivity extends BaseActivity implements View.OnClickList
     private void setOnClickListener() {
         ivBack.setOnClickListener(this);
         ivOptionMenu.setOnClickListener(this);
-    }
-
-    private TeamEntity getTeamData() {
-        return getIntent().getParcelableExtra(EXTRA_TEAM_DATA);
     }
 
     private void toggleEditText(EditText editText, boolean enabled) {
@@ -131,7 +126,7 @@ public class TeamDetailActivity extends BaseActivity implements View.OnClickList
     private void updateTeamDetail() {
         final String teamName = editTeamName.getText().toString();
         final String teamDesc = editTeamDesc.getText().toString();
-        presenter.updateTeamDetail(teamName, teamDesc, initTeamEntity);
+        presenter.updateTeamDetail(teamName, teamDesc);
     }
 
     @Override
@@ -145,6 +140,16 @@ public class TeamDetailActivity extends BaseActivity implements View.OnClickList
     @Override
     public void failedUpdateTeamDetail() {
         Toast.makeText(TeamDetailActivity.this, "데이터가 수정되지 않았습니다.", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onLoadTeam(TeamEntity data) {
+        initializeTeamDetail(data);
+    }
+
+    @Override
+    public void failedLoadTeam() {
+        Toast.makeText(this, "데이터를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show();
     }
 
 

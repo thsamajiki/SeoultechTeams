@@ -5,7 +5,6 @@ import com.hero.seoultechteams.database.member.datastore.MemberCacheStore;
 import com.hero.seoultechteams.database.member.datastore.MemberLocalStore;
 import com.hero.seoultechteams.database.member.entity.MemberData;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MemberLocalDataSourceImpl implements MemberLocalDataSource {
@@ -31,7 +30,7 @@ public class MemberLocalDataSourceImpl implements MemberLocalDataSource {
                             if (isSuccess) {
                                 onCompleteListener.onComplete(true, data);
                             } else {
-
+                                onCompleteListener.onComplete(false, null);
                             }
                         }
                     });
@@ -54,12 +53,12 @@ public class MemberLocalDataSourceImpl implements MemberLocalDataSource {
                             if (isSuccess) {
                                 onCompleteListener.onComplete(true, data);
                             } else {
-
+                                onCompleteListener.onComplete(false, null);
                             }
                         }
                     });
                 }
             }
-        });
+        }, teamKey);
     }
 }

@@ -30,13 +30,13 @@ public class TeamLocalDataSourceImpl implements TeamLocalDataSource {
                             if (isSuccess) {
                                 onCompleteListener.onComplete(true, data);
                             } else {
-
+                                onCompleteListener.onComplete(false, null);
                             }
                         }
-                    });
+                    }, teamKey);
                 }
             }
-        });
+        }, teamKey);
     }
 
     @Override
@@ -53,28 +53,81 @@ public class TeamLocalDataSourceImpl implements TeamLocalDataSource {
                             if (isSuccess) {
                                 onCompleteListener.onComplete(true, data);
                             } else {
-
+                                onCompleteListener.onComplete(false, null);
                             }
                         }
                     });
                 }
-
             }
         }, userKey);
     }
 
     @Override
     public void add(OnCompleteListener<TeamData> onCompleteListener, TeamData teamData) {
-        teamLocalStore.add(onCompleteListener, teamData);
+        teamLocalStore.add(new OnCompleteListener<TeamData>() {
+            @Override
+            public void onComplete(boolean isSuccess, TeamData localData) {
+                if (isSuccess) {
+                    teamCacheStore.add(new OnCompleteListener<TeamData>() {
+                        @Override
+                        public void onComplete(boolean isSuccess, TeamData cacheData) {
+                            if (isSuccess) {
+                                onCompleteListener.onComplete(true, cacheData);
+                            } else {
+                                onCompleteListener.onComplete(true, localData);
+                            }
+                        }
+                    }, teamData);
+                } else {
+                    onCompleteListener.onComplete(false, null);
+                }
+            }
+        }, teamData);
     }
 
     @Override
     public void update(OnCompleteListener<TeamData> onCompleteListener, TeamData teamData) {
-        teamLocalStore.update(onCompleteListener, teamData);
+        teamLocalStore.update(new OnCompleteListener<TeamData>() {
+            @Override
+            public void onComplete(boolean isSuccess, TeamData localData) {
+                if (isSuccess) {
+                    teamCacheStore.update(new OnCompleteListener<TeamData>() {
+                        @Override
+                        public void onComplete(boolean isSuccess, TeamData cacheData) {
+                            if (isSuccess) {
+                                onCompleteListener.onComplete(true, cacheData);
+                            } else {
+                                onCompleteListener.onComplete(true, localData);
+                            }
+                        }
+                    }, teamData);
+                } else {
+                    onCompleteListener.onComplete(false, null);
+                }
+            }
+        }, teamData);
     }
 
     @Override
     public void remove(OnCompleteListener<TeamData> onCompleteListener, TeamData teamData) {
-        teamLocalStore.remove(onCompleteListener, teamData);
+        teamLocalStore.remove(new OnCompleteListener<TeamData>() {
+            @Override
+            public void onComplete(boolean isSuccess, TeamData localData) {
+                if (isSuccess) {
+                    teamCacheStore.remove(new OnCompleteListener<TeamData>() {
+                        @Override
+                        public void onComplete(boolean isSuccess, TeamData cacheData) {
+                            if (isSuccess) {
+                                onCompleteListener.onComplete(true, cacheData);
+                            } else {
+                                onCompleteListener.onComplete(true, localData);
+                            }
+                        }
+                    }, teamData);
+                } else {
+                    onCompleteListener.onComplete(false, null);
+                }
+            }
+        }, teamData);
     }
 }

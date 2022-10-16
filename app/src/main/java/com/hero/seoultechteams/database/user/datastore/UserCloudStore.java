@@ -15,20 +15,21 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Transaction;
 import com.hero.seoultechteams.database.CloudStore;
+import com.hero.seoultechteams.database.DataType;
+import com.hero.seoultechteams.database.member.entity.MemberData;
 import com.hero.seoultechteams.database.team.datastore.TeamCacheStore;
+import com.hero.seoultechteams.database.team.entity.TeamData;
 import com.hero.seoultechteams.database.todo.datastore.TodoCloudStore;
 import com.hero.seoultechteams.database.todo.entity.TodoData;
-import com.hero.seoultechteams.domain.common.OnCompleteListener;
-import com.hero.seoultechteams.database.member.entity.MemberData;
-import com.hero.seoultechteams.database.team.entity.TeamData;
 import com.hero.seoultechteams.database.user.entity.UserData;
+import com.hero.seoultechteams.domain.common.OnCompleteListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -58,7 +59,7 @@ public class UserCloudStore extends CloudStore<UserData> {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         UserData userData = documentSnapshot.toObject(UserData.class);
-                        UserCacheStore.getInstance().add(userData);
+//                        UserCacheStore.getInstance().add(userData);
                         onCompleteListener.onComplete(true, userData);
                     }
                 })
@@ -82,7 +83,7 @@ public class UserCloudStore extends CloudStore<UserData> {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         if (queryDocumentSnapshots.isEmpty()) {
-                            onCompleteListener.onComplete(true, null);
+                            onCompleteListener.onComplete(true, Collections.emptyList());
                             return;
                         }
                         ArrayList<UserData> userDataList = new ArrayList<>();
@@ -164,7 +165,7 @@ public class UserCloudStore extends CloudStore<UserData> {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        UserCacheStore.getInstance().add(null, userData);
+//                        UserCacheStore.getInstance().add(null, userData);
                         onCompleteListener.onComplete(true, userData);
                     }
                 })
@@ -202,10 +203,13 @@ public class UserCloudStore extends CloudStore<UserData> {
                         DocumentReference memberRef = teamRef.collection("Member").document(userData.getKey());
                         transaction.set(memberRef, newMemberData);
 
+                        //
                         DocumentReference userRef = getFirestore().collection("User")
                                 .document(userData.getKey());
                         DocumentReference myTeamRef = userRef.collection("MyTeam")
                                 .document(teamData.getTeamKey());
+
+                        // 내 팀 db에 신규 데이터 추가
                         transaction.set(myTeamRef, teamData);
                     }
                 }
@@ -279,7 +283,7 @@ public class UserCloudStore extends CloudStore<UserData> {
                             }
                         }
                     }
-                });
+                }, DataType.MY, userData.getKey());
             }
         }, userData.getKey());
 
@@ -416,7 +420,6 @@ public class UserCloudStore extends CloudStore<UserData> {
         }).addOnSuccessListener(new OnSuccessListener<Object>() {
             @Override
             public void onSuccess(Object o) {
-                UserCacheStore.getInstance().update(null, userData);
                 updateLocalUser(userData);
                 onCompleteListener.onComplete(true, userData);
             }
@@ -458,12 +461,13 @@ public class UserCloudStore extends CloudStore<UserData> {
 
     @Override
     public void remove(final OnCompleteListener<UserData> onCompleteListener, final UserData userData) {
-        /* TODO: 2021-03-12 탈퇴 기능 추가시 해야 할 것
-         * 1. 유저정보 삭제
-         * 2. 각각의 팀들의 멤버 정보 삭제
-         * 3. 각각의 팀들의 투두 정보 삭제
-         * 4. 1, 2, 3번이 한 트랜잭션 안에서 무결성을 이뤄야 함
-         */
+        // TODO: 2021-03-12 탈퇴 기능 추가시 해야 할 것
+        // 1. 유저정보 삭제
+
+        // 2. 각각의 팀들의 멤버 정보 삭제
+        // 3. 각각의 팀들의 투두 정보 삭제
+        // 4. 1, 2, 3번이 한 트랜잭션 안에서 무결성을 이뤄야 함
+        //
 //        teamCacheStore.getDataList(new OnCompleteListener<List<TeamData>>() {
 //            @Override
 //            public void onComplete(boolean isSuccess, List<TeamData> teamList) {
@@ -501,12 +505,48 @@ public class UserCloudStore extends CloudStore<UserData> {
 //                });
     }
 
-    private void removeUser(final OnCompleteListener<UserData> onCompleteListener, List<TeamData> teamDataList, List<TodoData> todoDataList, UserData userData) {
+    private void removeUser(final OnCompleteListener<UserData> onCompleteListener, List<TeamData> teamDataList, UserData userData) {
         getFirestore().runTransaction(new Transaction.Function<Object>() {
             @Nullable
             @Override
             public Object apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
+                DocumentReference userRef = getFirestore().collection("User")
+                        .document(userData.getKey());
+                transaction.delete(userRef);
+
+
+//                for (TodoData todoData : todoDataList) {
+//                    DocumentReference todoRef = getFirestore()
+//                            .collection("Team")
+//                            .document(todoData.getTeamKey())
+//                            .collection("Todo")
+//                            .document(todoData.getUserKey());
+//
+//                    transaction.delete(todoRef);
+//                }
+
+
+                for (TeamData teamData : teamDataList) {
+                    DocumentReference memberRef = getFirestore()
+                            .collection("Team")
+                            .document(teamData.getTeamKey())
+                            .collection("Member")
+                            .document(userData.getKey());
+                    transaction.delete(memberRef);
+                }
+
+
                 return null;
+            }
+        }).addOnSuccessListener(new OnSuccessListener<Object>() {
+            @Override
+            public void onSuccess(Object o) {
+                onCompleteListener.onComplete(true, userData);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                onCompleteListener.onComplete(false, null);
             }
         });
     }

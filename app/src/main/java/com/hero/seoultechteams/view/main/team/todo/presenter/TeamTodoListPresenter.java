@@ -1,18 +1,12 @@
 package com.hero.seoultechteams.view.main.team.todo.presenter;
 
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.hero.seoultechteams.domain.common.OnCompleteListener;
-import com.hero.seoultechteams.database.team.entity.TeamData;
-import com.hero.seoultechteams.domain.member.entity.MemberEntity;
-import com.hero.seoultechteams.domain.member.usecase.GetMemberListUseCase;
 import com.hero.seoultechteams.domain.todo.entity.TodoEntity;
 import com.hero.seoultechteams.domain.todo.usecase.GetTeamTodoListUseCase;
 import com.hero.seoultechteams.domain.todo.usecase.SetRefreshUseCase;
 import com.hero.seoultechteams.domain.todo.usecase.UpdateTodoStateUseCase;
 import com.hero.seoultechteams.view.main.team.todo.contract.TeamTodoListContract;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TeamTodoListPresenter implements TeamTodoListContract.Presenter {

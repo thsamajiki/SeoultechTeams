@@ -4,28 +4,33 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.hero.seoultechteams.database.LocalStore;
+import com.hero.seoultechteams.database.member.entity.MemberData;
+import com.hero.seoultechteams.database.notice.dao.NoticeDao;
 import com.hero.seoultechteams.database.notice.database.AppNoticeDatabase;
 import com.hero.seoultechteams.database.notice.entity.NoticeData;
 import com.hero.seoultechteams.domain.common.OnCompleteListener;
+import com.hero.seoultechteams.utils.AppExecutors;
 
 import java.util.List;
 
 public class NoticeLocalStore extends LocalStore<NoticeData> {
 
     private AppNoticeDatabase appNoticeDatabase;
+    private NoticeDao noticeDao;
     private static NoticeLocalStore instance;
+    private final AppExecutors appExecutors = new AppExecutors();
 
-    public NoticeLocalStore(Context context, AppNoticeDatabase appNoticeDatabase) {
+    public NoticeLocalStore(Context context, NoticeDao noticeDao) {
         super(context);
-        this.appNoticeDatabase = appNoticeDatabase;
+        this.noticeDao = noticeDao;
     }
 
     private NoticeLocalStore() {
     }
 
-    public static NoticeLocalStore getInstance() {
+    public static NoticeLocalStore getInstance(Context context, NoticeDao noticeDao) {
         if (instance == null) {
-            instance = new NoticeLocalStore();
+            instance = new NoticeLocalStore(context, noticeDao);
         }
         return instance;
     }
@@ -37,12 +42,20 @@ public class NoticeLocalStore extends LocalStore<NoticeData> {
             return;
         }
 
-        AsyncTask.execute(new Runnable() {
+        appExecutors.networkIO().execute(new Runnable() {
             @Override
             public void run() {
                 String noticeKey = params[0].toString();
-                NoticeData noticeData = getNoticeDatabase().getNoticeDao().getNoticeFromKey(noticeKey);
-                onCompleteListener.onComplete(true, noticeData);
+                NoticeData noticeData = noticeDao.getNoticeFromKey(noticeKey);
+                // 위에 까지는 서브 스레드에서
+
+                // onCompleteListener는 메인 스레드에서
+                appExecutors.mainThread().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        onCompleteListener.onComplete(true, noticeData);
+                    }
+                });
             }
         });
     }
@@ -54,11 +67,25 @@ public class NoticeLocalStore extends LocalStore<NoticeData> {
             return;
         }
 
-        List<NoticeData> noticeDataList = getNoticeDatabase().getNoticeDao().getAllNotices();
-        onCompleteListener.onComplete(true, noticeDataList);
+        appExecutors.networkIO().execute(new Runnable() {
+            @Override
+            public void run() {
+//                List<NoticeData> noticeDataList = getNoticeDatabase().getNoticeDao().getAllNotices();
+                List<NoticeData> noticeDataList = noticeDao.getAllNotices();
+                // 위에 까지는 서브 스레드에서
+
+                // onCompleteListener는 메인 스레드에서
+                appExecutors.mainThread().execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        onCompleteListener.onComplete(true, noticeDataList);
+                    }
+                });
+            }
+        });
     }
 
-    public AppNoticeDatabase getNoticeDatabase() {
+    private AppNoticeDatabase getNoticeDatabase() {
         return appNoticeDatabase;
     }
 

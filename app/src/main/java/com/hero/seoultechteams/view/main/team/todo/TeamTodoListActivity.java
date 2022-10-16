@@ -1,5 +1,14 @@
 package com.hero.seoultechteams.view.main.team.todo;
 
+import static com.hero.seoultechteams.domain.todo.entity.TodoEntity.TODO_STATE_CONFIRMED;
+import static com.hero.seoultechteams.domain.todo.entity.TodoEntity.TODO_STATE_DISMISSED;
+import static com.hero.seoultechteams.domain.todo.entity.TodoEntity.TODO_STATE_IN_PROGRESS;
+import static com.hero.seoultechteams.domain.todo.entity.TodoEntity.TODO_STATE_SUBMITTED;
+import static com.hero.seoultechteams.view.main.team.TeamListFragment.EXTRA_TEAM_DATA;
+import static com.hero.seoultechteams.view.main.team.todo.AddTodoActivity.EXTRA_ADD_TODO;
+import static com.hero.seoultechteams.view.main.team.todo.TodoDetailActivity.EXTRA_TODO_KEY;
+import static com.hero.seoultechteams.view.main.team.todo.TodoDetailActivity.EXTRA_UPDATE_TODO;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -19,27 +28,17 @@ import com.google.android.material.card.MaterialCardView;
 import com.hero.seoultechteams.BaseActivity;
 import com.hero.seoultechteams.Injector;
 import com.hero.seoultechteams.R;
-import com.hero.seoultechteams.database.team.entity.TeamData;
-
 import com.hero.seoultechteams.database.todo.entity.Event;
-import com.hero.seoultechteams.domain.member.entity.MemberEntity;
+import com.hero.seoultechteams.domain.team.entity.TeamEntity;
 import com.hero.seoultechteams.domain.todo.entity.TodoEntity;
 import com.hero.seoultechteams.listener.OnRecyclerItemClickListener;
-import com.hero.seoultechteams.view.main.team.option_menu.TeamParticipationActivity;
 import com.hero.seoultechteams.view.main.team.option_menu.TeamMemberListActivity;
+import com.hero.seoultechteams.view.main.team.option_menu.TeamParticipationActivity;
 import com.hero.seoultechteams.view.main.team.todo.contract.TeamTodoListContract;
 import com.hero.seoultechteams.view.main.team.todo.presenter.TeamTodoListPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.hero.seoultechteams.domain.todo.entity.TodoEntity.TODO_STATE_CONFIRMED;
-import static com.hero.seoultechteams.domain.todo.entity.TodoEntity.TODO_STATE_DISMISSED;
-import static com.hero.seoultechteams.domain.todo.entity.TodoEntity.TODO_STATE_IN_PROGRESS;
-import static com.hero.seoultechteams.domain.todo.entity.TodoEntity.TODO_STATE_SUBMITTED;
-import static com.hero.seoultechteams.view.main.team.TeamListFragment.EXTRA_TEAM_DATA;
-import static com.hero.seoultechteams.view.main.team.todo.AddTodoActivity.EXTRA_ADD_TODO;
-import static com.hero.seoultechteams.view.main.team.todo.TodoDetailActivity.EXTRA_UPDATE_TODO;
 
 public class TeamTodoListActivity extends BaseActivity implements View.OnClickListener, OnRecyclerItemClickListener<TodoEntity>, SwipeRefreshLayout.OnRefreshListener, TeamTodoListContract.View {
 
@@ -47,14 +46,16 @@ public class TeamTodoListActivity extends BaseActivity implements View.OnClickLi
     private MaterialCardView mcvCreateTodo;
     private RecyclerView rvTeamTodoList;
     private SwipeRefreshLayout srlTeamTodoList;
-    private List<TodoEntity> teamTodoDataList = new ArrayList<>();
+    private final List<TodoEntity> teamTodoDataList = new ArrayList<>();
     private TeamTodoListAdapter teamTodoListAdapter;
 
-    public static final int ADD_TODO_REQ_CODE = 333;   // Todo를 생성하는 요청 코드
-    public static final int UPDATE_TODO_REQ_CODE = 888; // Todo를 업데이트하는 요청 코드
-    public static final int UPDATE_MEMBER_REQ_CODE = 999;   // Todo를 담당한 멤버에 대한 성과를 업데이트하는 요청 코드
-    public static final String EXTRA_TODO_DATA = "todoData";
     public static final String EXTRA_TEAM_MEMBER_LIST = "teamMemberDataList";
+
+    private final TeamTodoListContract.Presenter presenter = new TeamTodoListPresenter(this,
+            Injector.getInstance().provideGetTeamTodoListUseCase(),
+            Injector.getInstance().provideUpdateTodoStateUseCase(),
+            Injector.getInstance().provideSetRefreshUseCase());
+
 
     private final ActivityResultLauncher<Intent> addTodoResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -93,11 +94,6 @@ public class TeamTodoListActivity extends BaseActivity implements View.OnClickLi
             }
     );
 
-    private final TeamTodoListContract.Presenter presenter = new TeamTodoListPresenter(this,
-            Injector.getInstance().provideGetTeamTodoListUseCase(),
-            Injector.getInstance().provideUpdateTodoStateUseCase(),
-            Injector.getInstance().provideSetRefreshUseCase());
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,7 +128,7 @@ public class TeamTodoListActivity extends BaseActivity implements View.OnClickLi
         rvTeamTodoList.setAdapter(teamTodoListAdapter);
     }
 
-    private TeamData getTeamData() {
+    private TeamEntity getTeamData() {
         return getIntent().getParcelableExtra(EXTRA_TEAM_DATA);
     }
 
@@ -167,12 +163,12 @@ public class TeamTodoListActivity extends BaseActivity implements View.OnClickLi
                 switch (item.getItemId()) {
                     case R.id.menu_team_member_list:
                         intent = new Intent(TeamTodoListActivity.this, TeamMemberListActivity.class);
-                        intent.putExtra(EXTRA_TEAM_DATA, getTeamData().toEntity());
+                        intent.putExtra(EXTRA_TEAM_DATA, getTeamData());
                         startActivity(intent);
                         break;
                     case R.id.menu_team_participation:
                         intent = new Intent(TeamTodoListActivity.this, TeamParticipationActivity.class);
-                        intent.putExtra(EXTRA_TEAM_DATA, getTeamData().toEntity());
+                        intent.putExtra(EXTRA_TEAM_DATA, getTeamData());
                         startActivity(intent);
                         break;
                 }
@@ -184,7 +180,7 @@ public class TeamTodoListActivity extends BaseActivity implements View.OnClickLi
 
     private void intentAddTodo() {
         Intent intent = new Intent(this, AddTodoActivity.class);
-        intent.putExtra(EXTRA_TEAM_DATA, getTeamData().toEntity());
+        intent.putExtra(EXTRA_TEAM_DATA, getTeamData());
         addTodoResultLauncher.launch(intent);
     }
 
@@ -199,7 +195,7 @@ public class TeamTodoListActivity extends BaseActivity implements View.OnClickLi
                 break;
             default:
                 Intent intent = new Intent(this, TodoDetailActivity.class);
-                intent.putExtra(EXTRA_TODO_DATA, data);
+                intent.putExtra(EXTRA_TODO_KEY, data.getTodoKey());
                 updateTodoResultLauncher.launch(intent);
                 break;
         }

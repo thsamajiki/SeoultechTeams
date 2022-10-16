@@ -1,14 +1,9 @@
 package com.hero.seoultechteams.view.main.team;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.PopupMenu;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
+import static android.app.Activity.RESULT_OK;
+import static com.hero.seoultechteams.view.main.team.CreateTeamActivity.EXTRA_CREATE_TEAM;
+import static com.hero.seoultechteams.view.main.team.TeamDetailActivity.EXTRA_TEAM_KEY;
+import static com.hero.seoultechteams.view.main.team.TeamDetailActivity.EXTRA_UPDATE_TEAM;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,24 +14,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.PopupMenu;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.hero.seoultechteams.Injector;
 import com.hero.seoultechteams.R;
-import com.hero.seoultechteams.database.team.entity.TeamData;
 import com.hero.seoultechteams.domain.team.entity.TeamEntity;
 import com.hero.seoultechteams.listener.OnRecyclerItemClickListener;
 import com.hero.seoultechteams.view.main.team.contract.TeamListContract;
-import com.hero.seoultechteams.view.main.team.option_menu.TeamParticipationActivity;
 import com.hero.seoultechteams.view.main.team.presenter.TeamListPresenter;
 import com.hero.seoultechteams.view.main.team.todo.TeamTodoListActivity;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.app.Activity.RESULT_OK;
-import static com.hero.seoultechteams.view.main.team.CreateTeamActivity.EXTRA_CREATE_TEAM;
-import static com.hero.seoultechteams.view.main.team.TeamDetailActivity.EXTRA_UPDATE_TEAM;
 
 
 public class TeamListFragment extends Fragment implements View.OnClickListener, OnRecyclerItemClickListener<TeamEntity>, TeamListContract.View {
@@ -44,10 +43,10 @@ public class TeamListFragment extends Fragment implements View.OnClickListener, 
     private RecyclerView rvTeamList;
     private FloatingActionButton btnCreateTeam;
     private TeamListAdapter teamListAdapter;
-    private ArrayList<TeamEntity> teamDataList = new ArrayList<>();
-    private static final int CREATE_TEAM_REQ_CODE = 333;
-    private static final int UPDATE_TEAM_DETAIL_REQ_CODE = 444;
+    private final List<TeamEntity> teamDataList = new ArrayList<>();
     public static final String EXTRA_TEAM_DATA = "teamData";
+    private final TeamListContract.Presenter presenter = new TeamListPresenter(this,
+            Injector.getInstance().provideGetTeamListUseCase());
 
     private final ActivityResultLauncher<Intent> addTeamLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -58,9 +57,9 @@ public class TeamListFragment extends Fragment implements View.OnClickListener, 
                     Intent data = result.getData();
 
                     if (resultCode == RESULT_OK && data != null) {
-                        TeamData teamData = data.getParcelableExtra(EXTRA_CREATE_TEAM);
-                        if (teamData != null) {
-                            teamDataList.add(0, teamData.toEntity());
+                        TeamEntity teamEntity = data.getParcelableExtra(EXTRA_CREATE_TEAM);
+                        if (teamEntity != null) {
+                            teamDataList.add(0, teamEntity);
                             teamListAdapter.notifyDataSetChanged();
                         }
                     }
@@ -77,10 +76,10 @@ public class TeamListFragment extends Fragment implements View.OnClickListener, 
                     Intent data = result.getData();
 
                     if (resultCode == RESULT_OK && data != null) {
-                        TeamData teamData = data.getParcelableExtra(EXTRA_UPDATE_TEAM);
-                        int index = teamDataList.indexOf(teamData);
+                        TeamEntity teamEntity = data.getParcelableExtra(EXTRA_UPDATE_TEAM);
+                        int index = teamDataList.indexOf(teamEntity);
                         if (index != -1) {
-                            teamDataList.set(index, teamData.toEntity());
+                            teamDataList.set(index, teamEntity);
                             teamListAdapter.notifyItemChanged(index);
                         }
                     }
@@ -88,76 +87,56 @@ public class TeamListFragment extends Fragment implements View.OnClickListener, 
             }
     );
 
-    private final TeamListContract.Presenter presenter = new TeamListPresenter(this,
-            Injector.getInstance().provideGetTeamListUseCase());
 
-    @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_team_list, container, false);
         initView(view);
         initTeamListAdapter();
         presenter.getTeamListFromDatabase();
+        setOnClickListener();
+
         return view;
     }
 
     private void initView(View view) {
         rvTeamList = view.findViewById(R.id.rv_team_list);
         btnCreateTeam = view.findViewById(R.id.btn_create_team);
-        btnCreateTeam.setOnClickListener(this);
+
     }
 
     private void initTeamListAdapter() {
-        teamListAdapter = new TeamListAdapter(requireActivity(), teamDataList, new TeamListAdapter.OnPopupClickListener() {
+        teamListAdapter = new TeamListAdapter(requireActivity(), teamDataList);
+        teamListAdapter.teamCallBack(new TeamListAdapter.OnPopupClickListener() {
             @Override
-            public void popupOnClick(TeamEntity data) {
-                Intent intent = new Intent(requireActivity(), TeamDetailActivity.class);
-                intent.putExtra(EXTRA_TEAM_DATA, data);
-                startActivityForResult(intent, UPDATE_TEAM_DETAIL_REQ_CODE);
+            public void popupOnClick(TeamEntity teamData) {
+
             }
         });
+
         teamListAdapter.setOnRecyclerItemClickListener(this);
         teamListAdapter.notifyDataSetChanged();
         rvTeamList.setAdapter(teamListAdapter);
     }
 
-//    private void getTeamListFromDatabase() {
-//        TeamRepositoryImpl teamRepository = new TeamRepositoryImpl(requireActivity());
-//        teamRepository.getTeamList(new OnCompleteListener<ArrayList<TeamData>>() {
-//            @Override
-//            public void onComplete(boolean isSuccess, ArrayList<TeamData> data) {
-//                if (isSuccess && data != null) {
-//                    teamDataList.clear();
-//                    teamDataList.addAll(data);
-//                    teamListAdapter.notifyDataSetChanged();
-//                } else {
-//                    Toast.makeText(requireActivity(), "데이터를 불러올 수 없습니다.", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
-//    }
+    private void setOnClickListener() {
+        btnCreateTeam.setOnClickListener(this);
+    }
 
     @Override
     public void onItemClick(int position, View view, TeamEntity data) {
         switch (view.getId()) {
             case R.id.iv_team_option_menu:
-                //openTeamOptionMenu(data);
+                openTeamOptionMenu(data);
                 break;
             default:
                 intentTeamTodoList(data);
-                //intentTeamParticipation(data);
                 break;
         }
     }
 
     private void intentTeamTodoList(TeamEntity data) {
         Intent intent = new Intent(requireActivity(), TeamTodoListActivity.class);
-        intent.putExtra(EXTRA_TEAM_DATA, data);
-        startActivity(intent);
-    }
-
-    private void intentTeamParticipation(TeamEntity data) {
-        Intent intent = new Intent(requireActivity(), TeamParticipationActivity.class);
         intent.putExtra(EXTRA_TEAM_DATA, data);
         startActivity(intent);
     }
@@ -181,7 +160,7 @@ public class TeamListFragment extends Fragment implements View.OnClickListener, 
 
     private void intentTeamDetail(TeamEntity teamData) {
         Intent intent = new Intent(requireActivity(), TeamDetailActivity.class);
-        intent.putExtra(EXTRA_TEAM_DATA, teamData);
+        intent.putExtra(EXTRA_TEAM_KEY, teamData.getTeamKey());
         updateTeamDetailLauncher.launch(intent);
     }
 
@@ -217,12 +196,6 @@ public class TeamListFragment extends Fragment implements View.OnClickListener, 
 //        }
 //        return super.onOptionsItemSelected(item);
 //    }
-
-    private void intentTeamDetailAct() {
-        Intent intent = new Intent(requireActivity(), TeamDetailActivity.class);
-        //intent.putExtra(EXTRA_TEAM_DATA, getTeamData());
-        startActivityForResult(intent, UPDATE_TEAM_DETAIL_REQ_CODE);
-    }
 
     private void deleteTeam() {
         String askIfDelete = "팀을 삭제하시겠습니까?";

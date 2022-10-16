@@ -43,7 +43,7 @@ public class SharedPreference {
         editor.putString("fcmToken", value);
         editor.apply();
     }
-    public void put(Context context,String key, long value) {
+    public void put(Context context, String key, long value) {
         SharedPreferences pref = context.getSharedPreferences(PREF_NAME,
                 MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
@@ -57,7 +57,7 @@ public class SharedPreference {
         editor.putStringSet(key,value);
         editor.apply();
     }
-    public void put(Context context,String key, boolean value) {
+    public void put(Context context, String key, boolean value) {
         SharedPreferences pref = context.getSharedPreferences(PREF_NAME,
                 MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
@@ -65,7 +65,7 @@ public class SharedPreference {
         editor.putBoolean(key, value);
         editor.apply();
     }
-    public void putFirstOpen(Context context,String key , boolean value){
+    public void putFirstOpen(Context context, String key, boolean value){
         SharedPreferences pref = context.getSharedPreferences("firstopen",
                 MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
@@ -73,7 +73,7 @@ public class SharedPreference {
         editor.putBoolean(key, value);
         editor.apply();
     }
-    public boolean getFisrtOpen(Context context,String key,boolean dftValue){
+    public boolean getFirstOpen(Context context, String key, boolean dftValue){
         SharedPreferences pref = context.getSharedPreferences("firstopen",
                 MODE_PRIVATE);
 
@@ -83,7 +83,7 @@ public class SharedPreference {
             return dftValue;
         }
     }
-    public void put(Context context,String key, int value) {
+    public void put(Context context, String key, int value) {
         SharedPreferences pref = context.getSharedPreferences(PREF_NAME,
                 MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
@@ -92,14 +92,14 @@ public class SharedPreference {
         editor.apply();
     }
     public void remove(Context context){
-        SharedPreferences pref = context.getSharedPreferences(PREF_NAME,MODE_PRIVATE);
+        SharedPreferences pref = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = pref.edit();
         editor.clear();
         editor.apply();
     }
 
 
-    public String getValue(Context context,String key, String dftValue) {
+    public String getValue(Context context, String key, String dftValue) {
         SharedPreferences pref = context.getSharedPreferences(PREF_NAME,
                 MODE_PRIVATE);
 
@@ -124,12 +124,12 @@ public class SharedPreference {
     public Set<String> getValue(Context context, String key, HashSet<String> value){
         SharedPreferences pref = context.getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         try {
-            return pref.getStringSet(key,value);
+            return pref.getStringSet(key, value);
         }catch (Exception e){
             return value;
         }
     }
-    public int getValue(Context context,String key, int dftValue) {
+    public int getValue(Context context, String key, int dftValue) {
         SharedPreferences pref = context.getSharedPreferences(PREF_NAME,
                 MODE_PRIVATE);
 
@@ -140,7 +140,7 @@ public class SharedPreference {
         }
 
     }
-    public long getValue(Context context,String key, long dftValue) {
+    public long getValue(Context context, String key, long dftValue) {
         SharedPreferences pref = context.getSharedPreferences(PREF_NAME,
                 MODE_PRIVATE);
 
@@ -152,7 +152,7 @@ public class SharedPreference {
 
     }
 
-    public boolean getValue(Context context ,String key, boolean dftValue) {
+    public boolean getValue(Context context, String key, boolean dftValue) {
         SharedPreferences pref = context.getSharedPreferences(PREF_NAME,
                 MODE_PRIVATE);
 
@@ -163,7 +163,7 @@ public class SharedPreference {
         }
     }
 
-    public void storeList(Context context, String key, List countries) {
+    public void storeList(Context context, String key, List<String> countries) {
 
         SharedPreferences settings;
         SharedPreferences.Editor editor;
@@ -192,7 +192,7 @@ public class SharedPreference {
     }
 
     public void addList(Context context, String key, String country) {
-        List<String> favorites = loadList(context,key);
+        List<String> favorites = loadList(context, key);
         if (favorites == null)
             favorites = new ArrayList<>();
 
@@ -203,20 +203,20 @@ public class SharedPreference {
         }
         favorites.add(country);
 
-        storeList(context,key, favorites);
+        storeList(context, key, favorites);
 
     }
 
     public void removeList(Context context, String key, String country) {
-        List favorites = loadList(context,key);
+        List<String> favorites = loadList(context, key);
         if (favorites != null) {
             favorites.remove(country);
             storeList(context, key, favorites);
         }
     }
 
-    public void deleteList(Context context,String key) {
-        List<String> list = loadList(context,key);
+    public void deleteList(Context context, String key) {
+        List<String> list = loadList(context, key);
         if (list != null) {
             list.clear();
         }

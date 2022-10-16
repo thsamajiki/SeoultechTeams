@@ -18,7 +18,7 @@ public class InviteNewMemberListUseCase {
 
     public void invoke(final OnCompleteListener<List<UserEntity>> onCompleteListener,
                        TeamEntity teamEntity,
-                       List<UserEntity> inviteUserDataList,
+                       ArrayList<UserEntity> inviteUserDataList,
                        List<MemberEntity> teamMemberDataList) {
         userRepository.addMemberListToTeam(onCompleteListener, teamEntity, inviteUserDataList, teamMemberDataList);
     }

@@ -1,8 +1,8 @@
 package com.hero.seoultechteams.view.login.presenter;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -10,16 +10,17 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.hero.seoultechteams.BaseActivity;
+import com.google.firebase.auth.FirebaseUser;
 import com.hero.seoultechteams.domain.common.OnCompleteListener;
 import com.hero.seoultechteams.domain.user.entity.UserEntity;
 import com.hero.seoultechteams.domain.user.usecase.GetUserUseCase;
 import com.hero.seoultechteams.view.login.InvalidLoginInfoType;
 import com.hero.seoultechteams.view.login.contract.LoginContract;
 
-public class LoginPresenter extends BaseActivity implements LoginContract.Presenter {
-    private LoginContract.View view;
-    private GetUserUseCase getUserUseCase;
+public class LoginPresenter implements LoginContract.Presenter {
+    private final LoginContract.View view;
+    private final GetUserUseCase getUserUseCase;
+    private static final String TAG = LoginPresenter.class.getName() +" 로그";
 
     public LoginPresenter(LoginContract.View view, GetUserUseCase getUserUseCase) {
         this.view = view;
@@ -43,12 +44,17 @@ public class LoginPresenter extends BaseActivity implements LoginContract.Presen
             return;
         }
 
-        getUserUseCase.invoke(new OnCompleteListener<UserEntity>() {
-            @Override
-            public void onComplete(boolean isSuccess, UserEntity data) {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
 
-            }
-        }, getCurrentUser().getUid());
+        Log.i(TAG, "firebaseLogin: getUser = "+ mAuth.getCurrentUser());
+
+//        getUserUseCase.invoke(new OnCompleteListener<UserEntity>() {
+//            @Override
+//            public void onComplete(boolean isSuccess, UserEntity data) {
+//
+//            }
+//        }, getCurrentUser().getUid());
 
         FirebaseAuth.getInstance().signInWithEmailAndPassword(email, pwd)
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
@@ -90,5 +96,9 @@ public class LoginPresenter extends BaseActivity implements LoginContract.Presen
                 }
             }
         }, getCurrentUser().getUid());
+    }
+
+    public FirebaseUser getCurrentUser() {
+        return FirebaseAuth.getInstance().getCurrentUser();
     }
 }

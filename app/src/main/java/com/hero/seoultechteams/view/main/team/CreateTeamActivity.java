@@ -1,7 +1,5 @@
 package com.hero.seoultechteams.view.main.team;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -10,6 +8,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.button.MaterialButton;
 import com.hero.seoultechteams.Injector;
@@ -24,8 +24,9 @@ public class CreateTeamActivity extends AppCompatActivity implements View.OnClic
     private MaterialButton btnFinishCreateTeam;
     private EditText editCreateTeamName, editCreateTeamDesc;
     public static final String EXTRA_CREATE_TEAM = "createTeam";
-    private CreateTeamContract.Presenter presenter = new CreateTeamPresenter(this,
-            Injector.getInstance().provideAddTeamUseCase());
+    private final CreateTeamContract.Presenter presenter = new CreateTeamPresenter(this,
+            Injector.getInstance().provideAddTeamUseCase(),
+            Injector.getInstance().provideGetAccountProfileUseCase());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

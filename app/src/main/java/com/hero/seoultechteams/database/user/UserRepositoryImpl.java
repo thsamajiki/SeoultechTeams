@@ -4,7 +4,6 @@ import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.hero.seoultechteams.data.user.local.UserLocalDataSource;
 import com.hero.seoultechteams.data.user.remote.UserRemoteDataSource;
 
@@ -17,7 +16,6 @@ import com.hero.seoultechteams.domain.member.entity.MemberEntity;
 import com.hero.seoultechteams.domain.team.entity.TeamEntity;
 import com.hero.seoultechteams.domain.user.entity.UserEntity;
 import com.hero.seoultechteams.domain.user.repository.UserRepository;
-import com.hero.seoultechteams.utils.CacheManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,17 +32,24 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     public void addUser(OnCompleteListener<UserEntity> onCompleteListener, OnFailedListener onFailedListener, String userName, String email, String pwd) {
-        userLocalDataSource.add(new OnCompleteListener<UserData>() {
-            @Override
-            public void onComplete(boolean isSuccess, UserData data) {
-                onCompleteListener.onComplete(isSuccess, data.toEntity());
-            }
-        }, onFailedListener, userName, email, pwd);
-
         userRemoteDataSource.addUser(new OnCompleteListener<UserData>() {
             @Override
-            public void onComplete(boolean isSuccess, UserData data) {
-                onCompleteListener.onComplete(isSuccess, data.toEntity());
+            public void onComplete(boolean isSuccess, UserData remoteData) {
+                if (isSuccess) {
+                    userLocalDataSource.addUser(new OnCompleteListener<UserData>() {
+                        @Override
+                        public void onComplete(boolean isSuccess, UserData localData) {
+                            if (isSuccess) {
+                                onCompleteListener.onComplete(true, localData.toEntity());
+                            } else {
+                                onCompleteListener.onComplete(true, remoteData.toEntity());
+                            }
+
+                        }
+                    }, onFailedListener, remoteData);
+                } else {
+                    onCompleteListener.onComplete(false, null);
+                }
             }
         }, onFailedListener, userName, email, pwd);
     }
@@ -52,17 +57,24 @@ public class UserRepositoryImpl implements UserRepository {
     public void updateUser(OnCompleteListener<UserEntity> onCompleteListener, UserEntity userEntity) {
         UserData userData = UserData.toData(userEntity);
 
-        userLocalDataSource.update(new OnCompleteListener<UserData>() {
-            @Override
-            public void onComplete(boolean isSuccess, UserData data) {
-                onCompleteListener.onComplete(isSuccess, data.toEntity());
-            }
-        }, userData);
-
         userRemoteDataSource.updateUser(new OnCompleteListener<UserData>() {
             @Override
-            public void onComplete(boolean isSuccess, UserData data) {
-                onCompleteListener.onComplete(isSuccess, data.toEntity());
+            public void onComplete(boolean isSuccess, UserData remoteData) {
+                if (isSuccess) {
+                    userLocalDataSource.updateUser(new OnCompleteListener<UserData>() {
+                        @Override
+                        public void onComplete(boolean isSuccess, UserData localData) {
+                            if (isSuccess) {
+                                onCompleteListener.onComplete(true, localData.toEntity());
+                            } else {
+                                onCompleteListener.onComplete(true, remoteData.toEntity());
+                            }
+                        }
+                    }, userData);
+                } else {
+                    onCompleteListener.onComplete(false, null);
+                }
+
             }
         }, userData);
     }
@@ -74,7 +86,26 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     public void getUser(final OnCompleteListener<UserEntity> onCompleteListener, final String userKey) {
-        getUserFromCloud(onCompleteListener, userKey);
+        getUserFromLocal(new OnCompleteListener<UserData>() {
+            @Override
+            public void onComplete(boolean isSuccess, UserData localData) {
+                if (isSuccess) {
+                    onCompleteListener.onComplete(true, localData.toEntity());
+                } else {
+                    getUserFromCloud(new OnCompleteListener<UserEntity>() {
+                        @Override
+                        public void onComplete(boolean isSuccess, UserEntity cloudData) {
+                            if (isSuccess) {
+                                onCompleteListener.onComplete(true, cloudData);
+                            } else {
+                                onCompleteListener.onComplete(false, null);
+                            }
+                        }
+                    }, userKey);
+                }
+            }
+        }, userKey);
+
         // TODO: 2022-09-22 나중에 캐시 데이터를 통합하는 방법을 고려해보기
 //        getUserFromCache(new OnCompleteListener<UserData>() {
 //            @Override
@@ -127,17 +158,17 @@ public class UserRepositoryImpl implements UserRepository {
         return userRemoteDataSource.getFirebaseAuthProfile().toEntity();
     }
 
-    public void getUserFromCache(final OnCompleteListener<UserData> onCompleteListener, String userKey) {
-        userLocalDataSource.getData(new OnCompleteListener<UserData>() {
-            @Override
-            public void onComplete(boolean isSuccess, UserData data) {
-                onCompleteListener.onComplete(isSuccess, data);
-            }
-        }, userKey);
-    }
+//    public void getUserFromCache(final OnCompleteListener<UserData> onCompleteListener, String userKey) {
+//        userLocalDataSource.getData(new OnCompleteListener<UserData>() {
+//            @Override
+//            public void onComplete(boolean isSuccess, UserData data) {
+//                onCompleteListener.onComplete(isSuccess, data);
+//            }
+//        }, userKey);
+//    }
 
     // TODO: 2022-09-30 getUserFromCache와 똑같은데 굳이 만들어줄 필요가 있는지???
-    public void getUserFromLocal(final OnCompleteListener<UserData> onCompleteListener, String userKey) {
+    private void getUserFromLocal(final OnCompleteListener<UserData> onCompleteListener, String userKey) {
         userLocalDataSource.getData(new OnCompleteListener<UserData>() {
             @Override
             public void onComplete(boolean isSuccess, UserData data) {
@@ -146,7 +177,7 @@ public class UserRepositoryImpl implements UserRepository {
         }, userKey);
     }
 
-    public void getUserFromCloud(final OnCompleteListener<UserEntity> onCompleteListener, String userKey) {
+    private void getUserFromCloud(final OnCompleteListener<UserEntity> onCompleteListener, String userKey) {
         userRemoteDataSource.getData(new OnCompleteListener<UserData>() {
             @Override
             public void onComplete(boolean isSuccess, UserData data) {
@@ -166,7 +197,7 @@ public class UserRepositoryImpl implements UserRepository {
         }, userKey);
     }
 
-    public void getSearchedUserListByUserNameFromCloud(final OnCompleteListener<List<UserEntity>> onCompleteListener, String userName) {
+    private void getSearchedUserListByUserNameFromCloud(final OnCompleteListener<List<UserEntity>> onCompleteListener, String userName) {
         userRemoteDataSource.getDataByUserName(new OnCompleteListener<List<UserData>>() {
             @Override
             public void onComplete(boolean isSuccess, List<UserData> data) {
@@ -175,7 +206,7 @@ public class UserRepositoryImpl implements UserRepository {
         }, userName);
     }
 
-    public void getSearchedUserListByUserEmailFromCloud(final OnCompleteListener<List<UserEntity>> onCompleteListener, String userEmail) {
+    private void getSearchedUserListByUserEmailFromCloud(final OnCompleteListener<List<UserEntity>> onCompleteListener, String userEmail) {
         userRemoteDataSource.getDataByUserEmail(new OnCompleteListener<List<UserData>>() {
             @Override
             public void onComplete(boolean isSuccess, List<UserData> data) {
@@ -196,14 +227,13 @@ public class UserRepositoryImpl implements UserRepository {
         }, teamData, userDataList, memberDataList);
     }
 
-    public void updateLocalUser(UserData userData) {
+    private void updateLocalUser(UserData userData) {
         userRemoteDataSource.updateUser(new OnCompleteListener<UserData>() {
             @Override
             public void onComplete(boolean isSuccess, UserData data) {
 
             }
         }, userData);
-//        ((UserCloudStore)getCloudStore()).updateLocalUser(userData);
     }
 
     @NonNull
@@ -238,17 +268,27 @@ public class UserRepositoryImpl implements UserRepository {
             teamMemberList.add(MemberData.toData(memberEntity));
         }
 
+        final TeamData teamData = TeamData.toData(teamEntity);
         userRemoteDataSource.addUserList(new OnCompleteListener<List<UserData>>() {
             @Override
             public void onComplete(boolean isSuccess, List<UserData> data) {
-                ArrayList<UserEntity> result = new ArrayList<>();
-
-                for (UserData userData : data) {
-                    result.add(userData.toEntity());
+                if (isSuccess) {
+                    onCompleteListener.onComplete(true, getEntities(data));
+                } else {
+                    onCompleteListener.onComplete(false ,null);
                 }
 
-                onCompleteListener.onComplete(isSuccess, result);
             }
-        }, TeamData.toData(teamEntity), userDataList, teamMemberList);
+        }, teamData, userDataList, teamMemberList);
+    }
+
+    @NonNull
+    private List<UserEntity> getEntities(List<UserData> data) {
+        List<UserEntity> result = new ArrayList<>();
+
+        for (UserData userData : data) {
+            result.add(userData.toEntity());
+        }
+        return result;
     }
 }

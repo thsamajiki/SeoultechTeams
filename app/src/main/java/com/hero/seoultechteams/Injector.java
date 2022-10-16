@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import com.google.firebase.auth.FirebaseAuth;
 import com.hero.seoultechteams.data.member.local.MemberLocalDataSourceImpl;
 import com.hero.seoultechteams.data.member.remote.MemberRemoteDataSourceImpl;
+import com.hero.seoultechteams.data.notice.local.NoticeLocalDataSourceImpl;
 import com.hero.seoultechteams.data.notice.remote.NoticeRemoteDataSourceImpl;
 import com.hero.seoultechteams.data.team.local.TeamLocalDataSourceImpl;
 import com.hero.seoultechteams.data.team.remote.TeamRemoteDataSourceImpl;
@@ -13,39 +14,46 @@ import com.hero.seoultechteams.data.todo.remote.TodoRemoteDataSourceImpl;
 import com.hero.seoultechteams.data.user.local.UserLocalDataSourceImpl;
 import com.hero.seoultechteams.data.user.remote.UserRemoteDataSourceImpl;
 import com.hero.seoultechteams.database.member.MemberRepositoryImpl;
+import com.hero.seoultechteams.database.member.database.AppMemberDatabase;
 import com.hero.seoultechteams.database.member.datastore.MemberCacheStore;
 import com.hero.seoultechteams.database.member.datastore.MemberCloudStore;
 import com.hero.seoultechteams.database.member.datastore.MemberLocalStore;
 import com.hero.seoultechteams.database.notice.NoticeRepositoryImpl;
+import com.hero.seoultechteams.database.notice.database.AppNoticeDatabase;
 import com.hero.seoultechteams.database.notice.datastore.NoticeCloudStore;
+import com.hero.seoultechteams.database.notice.datastore.NoticeLocalStore;
 import com.hero.seoultechteams.database.team.TeamRepositoryImpl;
+import com.hero.seoultechteams.database.team.database.AppTeamDatabase;
 import com.hero.seoultechteams.database.team.datastore.TeamCacheStore;
 import com.hero.seoultechteams.database.team.datastore.TeamCloudStore;
 import com.hero.seoultechteams.database.team.datastore.TeamLocalStore;
 import com.hero.seoultechteams.database.todo.TodoRepositoryImpl;
+import com.hero.seoultechteams.database.todo.database.AppTodoDatabase;
 import com.hero.seoultechteams.database.todo.datastore.TodoCacheStore;
 import com.hero.seoultechteams.database.todo.datastore.TodoCloudStore;
 import com.hero.seoultechteams.database.todo.datastore.TodoLocalStore;
 import com.hero.seoultechteams.database.user.UserRepositoryImpl;
-import com.hero.seoultechteams.database.user.datastore.UserCacheStore;
+import com.hero.seoultechteams.database.user.database.AppUserDatabase;
 import com.hero.seoultechteams.database.user.datastore.UserCloudStore;
 import com.hero.seoultechteams.database.user.datastore.UserLocalStore;
 import com.hero.seoultechteams.domain.member.repository.MemberRepository;
-import com.hero.seoultechteams.domain.member.usecase.InviteNewMemberListUseCase;
 import com.hero.seoultechteams.domain.member.usecase.GetMemberListUseCase;
 import com.hero.seoultechteams.domain.member.usecase.GetUserListByEmailUseCase;
 import com.hero.seoultechteams.domain.member.usecase.GetUserListByNameUseCase;
+import com.hero.seoultechteams.domain.member.usecase.InviteNewMemberListUseCase;
 import com.hero.seoultechteams.domain.notice.repository.NoticeRepository;
 import com.hero.seoultechteams.domain.notice.usecase.GetNoticeListUseCase;
 import com.hero.seoultechteams.domain.team.repository.TeamRepository;
 import com.hero.seoultechteams.domain.team.usecase.AddTeamUseCase;
 import com.hero.seoultechteams.domain.team.usecase.GetMemberParticipationUseCase;
 import com.hero.seoultechteams.domain.team.usecase.GetTeamListUseCase;
+import com.hero.seoultechteams.domain.team.usecase.GetTeamUseCase;
 import com.hero.seoultechteams.domain.team.usecase.UpdateTeamDetailUseCase;
 import com.hero.seoultechteams.domain.todo.repository.TodoRepository;
 import com.hero.seoultechteams.domain.todo.usecase.AddTodoUseCase;
 import com.hero.seoultechteams.domain.todo.usecase.GetMyTodoListUseCase;
 import com.hero.seoultechteams.domain.todo.usecase.GetTeamTodoListUseCase;
+import com.hero.seoultechteams.domain.todo.usecase.GetTodoUseCase;
 import com.hero.seoultechteams.domain.todo.usecase.SetRefreshUseCase;
 import com.hero.seoultechteams.domain.todo.usecase.UpdateTodoDetailUseCase;
 import com.hero.seoultechteams.domain.todo.usecase.UpdateTodoStateUseCase;
@@ -68,13 +76,35 @@ public class Injector {
     }
 
     @NonNull
+    private TeamLocalStore provideTeamLocalStore() {
+        return TeamLocalStore.getInstance(SeoultechTeamsApp.getInstance(), provideAppTeamDatabase().getTeamDao());
+    }
+
+    private AppTeamDatabase provideAppTeamDatabase() {
+        return AppTeamDatabase.getInstance(SeoultechTeamsApp.getInstance());
+    }
+
+    @NonNull
     public GetTeamListUseCase provideGetTeamListUseCase() {
         return new GetTeamListUseCase(new TeamRepositoryImpl(
                 new TeamRemoteDataSourceImpl(
-                        new TeamCloudStore(SeoultechTeamsApp.getInstance())
+                        new TeamCloudStore(SeoultechTeamsApp.getInstance(), provideTeamLocalStore(), TeamCacheStore.getInstance())
                 ),
                 new TeamLocalDataSourceImpl(
-                        new TeamLocalStore(SeoultechTeamsApp.getInstance(), TeamLocalStore.getInstance().getTeamDatabase()),
+                        provideTeamLocalStore(),
+                        TeamCacheStore.getInstance()
+                )
+        ));
+    }
+
+    @NonNull
+    public GetTeamUseCase provideGetTeamUseCase() {
+        return new GetTeamUseCase(new TeamRepositoryImpl(
+                new TeamRemoteDataSourceImpl(
+                        new TeamCloudStore(SeoultechTeamsApp.getInstance(), provideTeamLocalStore(), TeamCacheStore.getInstance())
+                ),
+                new TeamLocalDataSourceImpl(
+                        provideTeamLocalStore(),
                         TeamCacheStore.getInstance()
                 )
         ));
@@ -84,10 +114,10 @@ public class Injector {
     public AddTeamUseCase provideAddTeamUseCase() {
         return new AddTeamUseCase(new TeamRepositoryImpl(
                 new TeamRemoteDataSourceImpl(
-                        new TeamCloudStore(SeoultechTeamsApp.getInstance())
+                        new TeamCloudStore(SeoultechTeamsApp.getInstance(), provideTeamLocalStore(), TeamCacheStore.getInstance())
                 ),
                 new TeamLocalDataSourceImpl(
-                        new TeamLocalStore(SeoultechTeamsApp.getInstance(), TeamLocalStore.getInstance().getTeamDatabase()),
+                        provideTeamLocalStore(),
                         TeamCacheStore.getInstance()
                 )
         ));
@@ -97,10 +127,10 @@ public class Injector {
     public UpdateTeamDetailUseCase provideUpdateTeamDetailUseCase() {
         return new UpdateTeamDetailUseCase(new TeamRepositoryImpl(
                 new TeamRemoteDataSourceImpl(
-                        new TeamCloudStore(SeoultechTeamsApp.getInstance())
+                        new TeamCloudStore(SeoultechTeamsApp.getInstance(), provideTeamLocalStore(), TeamCacheStore.getInstance())
                 ),
                 new TeamLocalDataSourceImpl(
-                        new TeamLocalStore(SeoultechTeamsApp.getInstance(), TeamLocalStore.getInstance().getTeamDatabase()),
+                        provideTeamLocalStore(),
                         TeamCacheStore.getInstance()
                 )
         ));
@@ -110,23 +140,32 @@ public class Injector {
     private TeamRepository getTeamRepository() {
         return new TeamRepositoryImpl(
                 new TeamRemoteDataSourceImpl(
-                        new TeamCloudStore(SeoultechTeamsApp.getInstance())
+                        new TeamCloudStore(SeoultechTeamsApp.getInstance(), provideTeamLocalStore(), TeamCacheStore.getInstance())
                 ),
                 new TeamLocalDataSourceImpl(
-                        new TeamLocalStore(SeoultechTeamsApp.getInstance(), TeamLocalStore.getInstance().getTeamDatabase()),
+                        provideTeamLocalStore(),
                         TeamCacheStore.getInstance()
                 )
         );
     }
 
     @NonNull
-    public GetMyTodoListUseCase provideGetMyTodoListUseCase() {
-        return new GetMyTodoListUseCase(new TodoRepositoryImpl(
+    private TodoLocalStore provideTodoLocalStore() {
+        return TodoLocalStore.getInstance(SeoultechTeamsApp.getInstance(), provideAppTodoDatabase().getTodoDao());
+    }
+
+    private AppTodoDatabase provideAppTodoDatabase() {
+        return AppTodoDatabase.getInstance(SeoultechTeamsApp.getInstance());
+    }
+
+    @NonNull
+    public GetTodoUseCase provideGetTodoUseCase() {
+        return new GetTodoUseCase(new TodoRepositoryImpl(
                 new TodoRemoteDataSourceImpl(
                         provideTodoCloudStore()
                 ),
                 new TodoLocalDataSourceImpl(
-                        new TodoLocalStore(SeoultechTeamsApp.getInstance(), TodoLocalStore.getInstance().getTodoDatabase()),
+                        provideTodoLocalStore(),
                         TodoCacheStore.getInstance()
                 )
         ));
@@ -139,7 +178,21 @@ public class Injector {
                         provideTodoCloudStore()
                 ),
                 new TodoLocalDataSourceImpl(
-                        new TodoLocalStore(SeoultechTeamsApp.getInstance(), TodoLocalStore.getInstance().getTodoDatabase()),
+                        provideTodoLocalStore(),
+                        TodoCacheStore.getInstance()
+                )
+        ));
+    }
+
+
+    @NonNull
+    public GetMyTodoListUseCase provideGetMyTodoListUseCase() {
+        return new GetMyTodoListUseCase(new TodoRepositoryImpl(
+                new TodoRemoteDataSourceImpl(
+                        provideTodoCloudStore()
+                ),
+                new TodoLocalDataSourceImpl(
+                        provideTodoLocalStore(),
                         TodoCacheStore.getInstance()
                 )
         ));
@@ -168,7 +221,7 @@ public class Injector {
                         provideTodoCloudStore()
                 ),
                 new TodoLocalDataSourceImpl(
-                        new TodoLocalStore(SeoultechTeamsApp.getInstance(), TodoLocalStore.getInstance().getTodoDatabase()),
+                        provideTodoLocalStore(),
                         TodoCacheStore.getInstance()
                 )
         );
@@ -182,8 +235,7 @@ public class Injector {
                         FirebaseAuth.getInstance()
                 ),
                 new UserLocalDataSourceImpl(
-                        new UserLocalStore(SeoultechTeamsApp.getInstance(), UserLocalStore.getInstance().getUserDataBase()),
-                        UserCacheStore.getInstance()
+                        provideUserLocalStore()
                 )
         ));
     }
@@ -198,13 +250,11 @@ public class Injector {
 
     @NonNull
     private UserLocalStore getUserLocalStore() {
-        return new UserLocalStore(SeoultechTeamsApp.getInstance(),
-                UserLocalStore.getInstance().getUserDataBase()
-        );
+        return provideUserLocalStore();
     }
 
     private TodoCloudStore provideTodoCloudStore() {
-        return TodoCloudStore.getInstance(SeoultechTeamsApp.getInstance());
+        return TodoCloudStore.getInstance(SeoultechTeamsApp.getInstance(), provideTodoLocalStore(), TodoCacheStore.getInstance());
     }
 
     @NonNull
@@ -215,10 +265,18 @@ public class Injector {
                         FirebaseAuth.getInstance()
                 ),
                 new UserLocalDataSourceImpl(
-                        new UserLocalStore(SeoultechTeamsApp.getInstance(), UserLocalStore.getInstance().getUserDataBase()),
-                        UserCacheStore.getInstance()
+                        provideUserLocalStore()
                 )
         ));
+    }
+
+    @NonNull
+    private UserLocalStore provideUserLocalStore() {
+        return UserLocalStore.getInstance(SeoultechTeamsApp.getInstance(), provideAppUserDatabase().getUserDao());
+    }
+
+    private AppUserDatabase provideAppUserDatabase() {
+        return AppUserDatabase.getInstance(SeoultechTeamsApp.getInstance());
     }
 
     @NonNull
@@ -229,8 +287,7 @@ public class Injector {
                         FirebaseAuth.getInstance()
                 ),
                 new UserLocalDataSourceImpl(
-                        new UserLocalStore(SeoultechTeamsApp.getInstance(), UserLocalStore.getInstance().getUserDataBase()),
-                        UserCacheStore.getInstance()
+                        provideUserLocalStore()
                 )
         ));
     }
@@ -243,8 +300,7 @@ public class Injector {
                         FirebaseAuth.getInstance()
                 ),
                 new UserLocalDataSourceImpl(
-                        new UserLocalStore(SeoultechTeamsApp.getInstance(), UserLocalStore.getInstance().getUserDataBase()),
-                        UserCacheStore.getInstance()
+                        provideUserLocalStore()
                 )
         ));
     }
@@ -257,8 +313,7 @@ public class Injector {
                         FirebaseAuth.getInstance()
                 ),
                 new UserLocalDataSourceImpl(
-                        new UserLocalStore(SeoultechTeamsApp.getInstance(), UserLocalStore.getInstance().getUserDataBase()),
-                        UserCacheStore.getInstance()
+                        provideUserLocalStore()
                 )
         ));
     }
@@ -271,8 +326,7 @@ public class Injector {
                         FirebaseAuth.getInstance()
                 ),
                 new UserLocalDataSourceImpl(
-                        new UserLocalStore(SeoultechTeamsApp.getInstance(), UserLocalStore.getInstance().getUserDataBase()),
-                        UserCacheStore.getInstance()
+                        provideUserLocalStore()
                 )
         ));
     }
@@ -285,8 +339,7 @@ public class Injector {
                         FirebaseAuth.getInstance()
                 ),
                 new UserLocalDataSourceImpl(
-                        new UserLocalStore(SeoultechTeamsApp.getInstance(), UserLocalStore.getInstance().getUserDataBase()),
-                        UserCacheStore.getInstance()
+                        provideUserLocalStore()
                 )
         ));
     }
@@ -299,10 +352,13 @@ public class Injector {
                         FirebaseAuth.getInstance()
                 ),
                 new UserLocalDataSourceImpl(
-                        new UserLocalStore(SeoultechTeamsApp.getInstance(), UserLocalStore.getInstance().getUserDataBase()),
-                        UserCacheStore.getInstance()
+                        provideUserLocalStore()
                 )
         );
+    }
+
+    private AppMemberDatabase provideMemberLocalStore() {
+        return AppMemberDatabase.getInstance(SeoultechTeamsApp.getInstance());
     }
 
     public GetMemberListUseCase provideGetMemberListUseCase() {
@@ -311,7 +367,7 @@ public class Injector {
                         new MemberCloudStore(SeoultechTeamsApp.getInstance())
                 ),
                 new MemberLocalDataSourceImpl(
-                        new MemberLocalStore(SeoultechTeamsApp.getInstance(), MemberLocalStore.getInstance().getMemberDatabase()),
+                        new MemberLocalStore(SeoultechTeamsApp.getInstance(), provideMemberLocalStore().getMemberDao()),
                         MemberCacheStore.getInstance()
                 )
         ));
@@ -324,23 +380,9 @@ public class Injector {
                         FirebaseAuth.getInstance()
                 ),
                 new UserLocalDataSourceImpl(
-                        new UserLocalStore(SeoultechTeamsApp.getInstance(), UserLocalStore.getInstance().getUserDataBase()),
-                        UserCacheStore.getInstance()
+                        provideUserLocalStore()
                 )
         ));
-    }
-
-    @NonNull
-    private MemberRepository getMemberRepository() {
-        return new MemberRepositoryImpl(
-                new MemberRemoteDataSourceImpl(
-                        new MemberCloudStore(SeoultechTeamsApp.getInstance())
-                ),
-                new MemberLocalDataSourceImpl(
-                        new MemberLocalStore(SeoultechTeamsApp.getInstance(), MemberLocalStore.getInstance().getMemberDatabase()),
-                        MemberCacheStore.getInstance()
-                )
-        );
     }
 
     @NonNull
@@ -351,10 +393,30 @@ public class Injector {
         );
     }
 
+    @NonNull
+    private MemberRepository getMemberRepository() {
+        return new MemberRepositoryImpl(
+                new MemberRemoteDataSourceImpl(
+                        new MemberCloudStore(SeoultechTeamsApp.getInstance())
+                ),
+                new MemberLocalDataSourceImpl(
+                        new MemberLocalStore(SeoultechTeamsApp.getInstance(), provideMemberLocalStore().getMemberDao()),
+                        MemberCacheStore.getInstance()
+                )
+        );
+    }
+
+    private AppNoticeDatabase provideNoticeLocalStore() {
+        return AppNoticeDatabase.getInstance(SeoultechTeamsApp.getInstance());
+    }
+
     public GetNoticeListUseCase provideGetNoticeListUseCase() {
         return new GetNoticeListUseCase(new NoticeRepositoryImpl(
                 new NoticeRemoteDataSourceImpl(
                         new NoticeCloudStore(SeoultechTeamsApp.getInstance())
+                ),
+                new NoticeLocalDataSourceImpl(
+                        new NoticeLocalStore(SeoultechTeamsApp.getInstance(), provideNoticeLocalStore().getNoticeDao())
                 )
         ));
     }
@@ -364,6 +426,9 @@ public class Injector {
         return new NoticeRepositoryImpl(
                 new NoticeRemoteDataSourceImpl(
                         new NoticeCloudStore(SeoultechTeamsApp.getInstance())
+                ),
+                new NoticeLocalDataSourceImpl(
+                        new NoticeLocalStore(SeoultechTeamsApp.getInstance(), provideNoticeLocalStore().getNoticeDao())
                 )
         );
     }

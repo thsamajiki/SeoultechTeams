@@ -1,11 +1,8 @@
 package com.hero.seoultechteams.database.todo.entity;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.StringDef;
+import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -49,7 +46,7 @@ public class TodoData implements Comparable<TodoData> {
                 todoEntity.getTeamKey(),
                 todoEntity.getTodoCreatedTime(),
                 todoEntity.getTodoEndTime(),
-                todoEntity.getEventHistory(),
+                new ArrayList<>(todoEntity.getEventHistory()),
                 todoEntity.getTodoKey());
     }
 
@@ -66,9 +63,12 @@ public class TodoData implements Comparable<TodoData> {
     private String teamKey;
     private long todoCreatedTime;
     private long todoEndTime;
+
+    @Embedded
     private ArrayList<Event> eventHistory;  // 이벤트 발생마다의 로그
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
+    @NonNull
     private String todoKey;
 
     public TodoData() {
@@ -164,6 +164,10 @@ public class TodoData implements Comparable<TodoData> {
     }
 
     public ArrayList<Event> getEventHistory() {
+        if (eventHistory == null) {
+            eventHistory = new ArrayList<>();
+        }
+
         return eventHistory;
     }
 

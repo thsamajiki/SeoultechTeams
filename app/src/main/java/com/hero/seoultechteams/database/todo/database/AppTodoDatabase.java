@@ -19,7 +19,7 @@ public abstract class AppTodoDatabase extends RoomDatabase {
         synchronized (sLock) {
             if (INSTANCE == null) {
                 INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                                AppTodoDatabase.class, "tech_todos.db")
+                                AppTodoDatabase.class, "todo_table.db")
                         .build();
             }
             return INSTANCE;

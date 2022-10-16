@@ -11,6 +11,7 @@ import com.hero.seoultechteams.domain.user.usecase.GetUserUseCase;
 import com.hero.seoultechteams.view.login.contract.SplashContract;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SplashPresenter implements SplashContract.Presenter {
     private SplashContract.View view;
@@ -32,9 +33,9 @@ public class SplashPresenter implements SplashContract.Presenter {
 
     @Override
     public void getTeamListFromDatabase() {
-        getTeamListUseCase.invoke(new OnCompleteListener<ArrayList<TeamEntity>>() {
+        getTeamListUseCase.invoke(new OnCompleteListener<List<TeamEntity>>() {
             @Override
-            public void onComplete(boolean isSuccess, ArrayList<TeamEntity> data) {
+            public void onComplete(boolean isSuccess, List<TeamEntity> data) {
                 getUserFromDatabase();
             }
         }, getCurrentUser().getUid());

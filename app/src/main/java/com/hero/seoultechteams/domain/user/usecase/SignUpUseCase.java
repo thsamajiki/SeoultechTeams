@@ -6,7 +6,7 @@ import com.hero.seoultechteams.domain.user.entity.UserEntity;
 import com.hero.seoultechteams.domain.user.repository.UserRepository;
 
 public class SignUpUseCase {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public SignUpUseCase(UserRepository userRepository) {
         this.userRepository = userRepository;

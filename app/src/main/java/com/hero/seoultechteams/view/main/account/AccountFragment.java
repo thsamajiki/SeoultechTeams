@@ -1,11 +1,8 @@
 package com.hero.seoultechteams.view.main.account;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import static android.app.Activity.RESULT_OK;
+import static com.hero.seoultechteams.view.main.account.EditProfileActivity.EXTRA_UPDATE_USER_DATA;
+import static com.hero.seoultechteams.view.photoview.PhotoActivity.EXTRA_PROFILE_IMAGE_URL;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +14,13 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.button.MaterialButton;
@@ -30,19 +34,17 @@ import com.hero.seoultechteams.view.photoview.PhotoActivity;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static android.app.Activity.RESULT_OK;
-import static com.hero.seoultechteams.view.main.account.EditProfileActivity.EXTRA_UPDATE_USER_DATA;
-import static com.hero.seoultechteams.view.photoview.PhotoActivity.EXTRA_PROFILE_IMAGE_URL;
-
 public class AccountFragment extends BaseFragment implements View.OnClickListener, AccountContract.View {
 
     private CircleImageView ivMyUserProfile;
     private TextView tvMyUserName, tvMyUserEmail;
     private MaterialButton btnEditProfile;
 //    private ArrayList<MyNotificationData> myNotificationDataList = new ArrayList<>();
-    private static final int EDIT_PROFILE_REQ = 1010;
-    public static final String EXTRA_MY_USER_DATA = "userData";
     public static final String EXTRA_MY_NOTIFICATION_DATA = "myNotificationData";
+
+    private final AccountContract.Presenter presenter = new AccountPresenter(this,
+            Injector.getInstance().provideGetAccountProfileUseCase());
+
     private final ActivityResultLauncher<Intent> // 화면 간 이동에 대한 결과값을 받음
             editProfileResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -61,9 +63,24 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
                 }
             });
 
-    private ActivityResultLauncher<Intent> photoResultLauncher;
-    private final AccountContract.Presenter presenter = new AccountPresenter(this,
-            Injector.getInstance().provideGetAccountProfileUseCase());
+    private final ActivityResultLauncher<Intent> photoResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    int resultCode = result.getResultCode();
+                    Intent data = result.getData();
+
+                    if (resultCode == RESULT_OK && data != null) {
+                        UserEntity userData = data.getParcelableExtra(EXTRA_UPDATE_USER_DATA);
+                        if (userData != null) {
+                            setUserData(userData);
+                        }
+                    }
+                }
+            }
+    );
+
 
     @Nullable
     @Override

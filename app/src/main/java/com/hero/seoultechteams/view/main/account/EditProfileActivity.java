@@ -1,45 +1,38 @@
 package com.hero.seoultechteams.view.main.account;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
+import static android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
 
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.FirebaseUser;
 import com.hero.seoultechteams.BaseActivity;
 import com.hero.seoultechteams.Injector;
 import com.hero.seoultechteams.R;
 import com.hero.seoultechteams.domain.user.entity.UserEntity;
-import com.hero.seoultechteams.listener.OnFileUploadListener;
-import com.hero.seoultechteams.storage.FirebaseStorageAPI;
 import com.hero.seoultechteams.utils.LoadingProgress;
 import com.hero.seoultechteams.utils.RealPathUtil;
 import com.hero.seoultechteams.view.main.account.contract.EditProfileContract;
 import com.hero.seoultechteams.view.main.account.presenter.EditProfilePresenter;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
-import static android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
 
 public class EditProfileActivity extends BaseActivity implements View.OnClickListener, TextWatcher, EditProfileContract.View {
 
@@ -50,9 +43,13 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
     private FloatingActionButton fabProfileImageEdit;
     private String myCurrentUserName;
     private static final int PERMISSION_REQ_CODE = 1010;    // 권한 요청 코드
-    private static final int PHOTO_REQ_CODE = 2020;         // 사진 요청 코드
     public static final String EXTRA_UPDATE_USER_DATA = "updateUser";
-    private ActivityResultLauncher<Intent> intentGalleryLauncher
+
+    private final EditProfileContract.Presenter presenter = new EditProfilePresenter(this,
+            Injector.getInstance().provideUpdateUserUseCase(),
+            Injector.getInstance().provideGetAccountProfileUseCase());
+
+    private final ActivityResultLauncher<Intent> intentGalleryLauncher
             = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -70,9 +67,6 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
                 }
             });
 
-    private final EditProfileContract.Presenter presenter = new EditProfilePresenter(this,
-            Injector.getInstance().provideUpdateUserUseCase(),
-            Injector.getInstance().provideGetAccountProfileUseCase());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

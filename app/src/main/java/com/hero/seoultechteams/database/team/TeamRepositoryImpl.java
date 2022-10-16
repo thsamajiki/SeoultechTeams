@@ -25,17 +25,25 @@ public class TeamRepositoryImpl implements TeamRepository {
     public void addTeam(OnCompleteListener<TeamEntity> onCompleteListener, TeamEntity teamEntity) {
         TeamData teamData = TeamData.toData(teamEntity);
 
-        teamLocalDataSource.add(new OnCompleteListener<TeamData>() {
-            @Override
-            public void onComplete(boolean isSuccess, TeamData data) {
-                onCompleteListener.onComplete(isSuccess, data.toEntity());
-            }
-        }, teamData);
-
         teamRemoteDataSource.add(new OnCompleteListener<TeamData>() {
             @Override
-            public void onComplete(boolean isSuccess, TeamData data) {
-                onCompleteListener.onComplete(isSuccess, data.toEntity());
+            public void onComplete(boolean isSuccess, TeamData remoteData) {
+                if (isSuccess) {
+                    teamLocalDataSource.add(new OnCompleteListener<TeamData>() {
+                        @Override
+                        public void onComplete(boolean isSuccess, TeamData localData) {
+                            if (isSuccess) {
+                                onCompleteListener.onComplete(true, localData.toEntity());
+                            } else {
+                                // Remote는 add 성공함. isSuccess == false 로컬 실패
+                                // 그렇더라도, Remote는 성공했으니까 전체적으로 성공이라고 볼 수 있지 않을까
+                                onCompleteListener.onComplete(true, remoteData.toEntity());
+                            }
+                        }
+                    }, teamData);
+                } else {
+                    onCompleteListener.onComplete(false, null);
+                }
             }
         }, teamData);
     }
@@ -43,17 +51,23 @@ public class TeamRepositoryImpl implements TeamRepository {
     public void updateTeam(OnCompleteListener<TeamEntity> onCompleteListener, TeamEntity teamEntity) {
         TeamData teamData = TeamData.toData(teamEntity);
 
-        teamLocalDataSource.update(new OnCompleteListener<TeamData>() {
-            @Override
-            public void onComplete(boolean isSuccess, TeamData data) {
-                onCompleteListener.onComplete(isSuccess, data.toEntity());
-            }
-        }, teamData);
-
         teamRemoteDataSource.update(new OnCompleteListener<TeamData>() {
             @Override
-            public void onComplete(boolean isSuccess, TeamData data) {
-                onCompleteListener.onComplete(isSuccess, data.toEntity());
+            public void onComplete(boolean isSuccess, TeamData remoteData) {
+                if (isSuccess) {
+                    teamLocalDataSource.update(new OnCompleteListener<TeamData>() {
+                        @Override
+                        public void onComplete(boolean isSuccess, TeamData localData) {
+                            if (isSuccess) {
+                                onCompleteListener.onComplete(true, localData.toEntity());
+                            } else {
+                                onCompleteListener.onComplete(true, remoteData.toEntity());
+                            }
+                        }
+                    }, teamData);
+                } else {
+                    onCompleteListener.onComplete(false, null);
+                }
             }
         }, teamData);
     }
@@ -61,73 +75,68 @@ public class TeamRepositoryImpl implements TeamRepository {
     public void removeTeam(OnCompleteListener<TeamEntity> onCompleteListener, TeamEntity teamEntity) {
         TeamData teamData = TeamData.toData(teamEntity);
 
-        teamLocalDataSource.remove(new OnCompleteListener<TeamData>() {
-            @Override
-            public void onComplete(boolean isSuccess, TeamData data) {
-                onCompleteListener.onComplete(isSuccess, data.toEntity());
-            }
-        }, teamData);
-
         teamRemoteDataSource.remove(new OnCompleteListener<TeamData>() {
             @Override
-            public void onComplete(boolean isSuccess, TeamData data) {
-                onCompleteListener.onComplete(isSuccess, data.toEntity());
+            public void onComplete(boolean isSuccess, TeamData remoteData) {
+                if (isSuccess) {
+                    teamLocalDataSource.remove(new OnCompleteListener<TeamData>() {
+                        @Override
+                        public void onComplete(boolean isSuccess, TeamData localData) {
+                            if (isSuccess) {
+                                onCompleteListener.onComplete(true, localData.toEntity());
+                            } else {
+                                onCompleteListener.onComplete(true, remoteData.toEntity());
+                            }
+                        }
+                    }, teamData);
+                } else {
+                    onCompleteListener.onComplete(false, null);
+                }
             }
         }, teamData);
     }
 
     public void getTeam(final OnCompleteListener<TeamEntity> onCompleteListener, final String teamKey) {
-        getTeamFromCache(new OnCompleteListener<TeamData>() {
+        getTeamFromLocal(new OnCompleteListener<TeamData>() {
             @Override
-            public void onComplete(boolean isSuccess, TeamData data) {
-                if (isSuccess && data != null) {
-                    onCompleteListener.onComplete(true, getTeamEntity(data));
+            public void onComplete(boolean isSuccess, TeamData localData) {
+                if (isSuccess && localData != null) {
+                    onCompleteListener.onComplete(true, getTeamEntity(localData));
                 } else {
-//                    getTeamFromLocal(onCompleteListener, teamKey);
-                    getTeamFromCloud(onCompleteListener, teamKey);
+                    getTeamFromRemote(new OnCompleteListener<TeamData>() {
+                        @Override
+                        public void onComplete(boolean isSuccess, TeamData remoteData) {
+                            onCompleteListener.onComplete(isSuccess, remoteData.toEntity());
+                        }
+                    }, teamKey);
                 }
             }
         }, teamKey);
     }
 
     public void getTeamList(final OnCompleteListener<List<TeamEntity>> onCompleteListener, final String userKey) {
-        getTeamListFromCache(new OnCompleteListener<List<TeamData>>() {
+        getTeamListFromLocal(new OnCompleteListener<List<TeamData>>() {
             @Override
             public void onComplete(boolean isSuccess, List<TeamData> data) {
                 if (isSuccess && data != null) {
                     onCompleteListener.onComplete(true, getTeamEntities(data));
                 } else {
-//                    getTeamListFromLocal(onCompleteListener, userKey);
-                    getTeamListFromCloud(onCompleteListener, userKey);
+                    getTeamListFromRemote(onCompleteListener, userKey);
                 }
             }
         }, userKey);
     }
 
-    public void getTeamFromCache(final OnCompleteListener<TeamData> onCompleteListener, String teamKey) {
-        teamLocalDataSource.getData(new OnCompleteListener<TeamData>() {
-            @Override
-            public void onComplete(boolean isSuccess, TeamData data) {
-                onCompleteListener.onComplete(isSuccess, data);
-            }
-        }, teamKey);
+    private void getTeamFromLocal(final OnCompleteListener<TeamData> onCompleteListener, String teamKey) {
+        teamLocalDataSource.getData(onCompleteListener, teamKey);
     }
 
-    public void getTeamFromLocal(final OnCompleteListener<TeamData> onCompleteListener, String teamKey) {
-        teamLocalDataSource.getData(new OnCompleteListener<TeamData>() {
-            @Override
-            public void onComplete(boolean isSuccess, TeamData data) {
-                onCompleteListener.onComplete(isSuccess, data);
-            }
-        }, teamKey);
-    }
-
-    public void getTeamFromCloud(final OnCompleteListener<TeamEntity> onCompleteListener, String teamKey) {
+    private void getTeamFromRemote(final OnCompleteListener<TeamData> onCompleteListener, String teamKey) {
         teamRemoteDataSource.getData(new OnCompleteListener<TeamData>() {
             @Override
             public void onComplete(boolean isSuccess, TeamData data) {
                 if (isSuccess) {
-                    onCompleteListener.onComplete(true, getTeamEntity(data));
+                    onCompleteListener.onComplete(true, data);
                 } else {
                     onCompleteListener.onComplete(false, null);
                 }
@@ -135,29 +144,11 @@ public class TeamRepositoryImpl implements TeamRepository {
         }, teamKey);
     }
 
-    public void getTeamListFromCache(final OnCompleteListener<List<TeamData>> onCompleteListener, String userKey) {
-        teamLocalDataSource.getDataList(new OnCompleteListener<List<TeamData>>() {
-            @Override
-            public void onComplete(boolean isSuccess, List<TeamData> data) {
-                onCompleteListener.onComplete(isSuccess, data);
-            }
-        }, userKey);
+    private void getTeamListFromLocal(final OnCompleteListener<List<TeamData>> onCompleteListener, String userKey) {
+        teamLocalDataSource.getDataList(onCompleteListener, userKey);
     }
 
-    public void getTeamListFromLocal(final OnCompleteListener<List<TeamData>> onCompleteListener, String userKey) {
-        teamLocalDataSource.getDataList(new OnCompleteListener<List<TeamData>>() {
-            @Override
-            public void onComplete(boolean isSuccess, List<TeamData> data) {
-//                if (isSuccess && data != null) {
-//                    onCompleteListener.onComplete(true, data);
-//                } else {
-//                    getTeamListFromCloud(onCompleteListener, userKey);
-//                }
-            }
-        }, userKey);
-    }
-
-    public void getTeamListFromCloud(final OnCompleteListener<List<TeamEntity>> onCompleteListener, String userKey) {
+    private void getTeamListFromRemote(final OnCompleteListener<List<TeamEntity>> onCompleteListener, String userKey) {
         teamRemoteDataSource.getDataList(new OnCompleteListener<List<TeamData>>() {
             @Override
             public void onComplete(boolean isSuccess, List<TeamData> data) {

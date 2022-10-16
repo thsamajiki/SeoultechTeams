@@ -16,24 +16,66 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Transaction;
 import com.hero.seoultechteams.database.CloudStore;
-import com.hero.seoultechteams.domain.common.OnCompleteListener;
 import com.hero.seoultechteams.database.member.entity.MemberData;
 import com.hero.seoultechteams.database.team.entity.TeamData;
 import com.hero.seoultechteams.database.user.entity.UserData;
+import com.hero.seoultechteams.domain.common.OnCompleteListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
 public class TeamCloudStore extends CloudStore<TeamData> {
 
-    public TeamCloudStore(Context context) {
+    private final TeamLocalStore teamLocalStore;
+    private final TeamCacheStore teamCacheStore;
+    public TeamCloudStore(Context context, TeamLocalStore teamLocalStore, TeamCacheStore teamCacheStore) {
         super(context);
+        this.teamLocalStore = teamLocalStore;
+        this.teamCacheStore = teamCacheStore;
     }
 
     @Override
     public void getData(OnCompleteListener<TeamData> onCompleteListener, Object... params) {
+        String teamKey = params[0].toString();
 
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        getFirestore().collection("User")
+                .document(firebaseUser.getUid())
+                .collection("MyTeam")
+                .whereEqualTo(teamKey, "teamKey")
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        if (queryDocumentSnapshots.isEmpty()) {
+                            onCompleteListener.onComplete(true, null);
+                            return;
+                        } else {
+                            DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                            TeamData teamData = documentSnapshot.toObject(TeamData.class);
+
+//                            for (DocumentSnapshot documentSnapshot: queryDocumentSnapshots.getDocuments()) {
+//                                TeamData teamData = documentSnapshot.toObject(TeamData.class);
+//                                if (teamData.getTeamKey().equals(teamKey)) {
+//                                    teamLocalStore.add(onCompleteListener, teamData);
+//                                    onCompleteListener.onComplete(true, teamData);
+//                                }
+//                            }
+
+                            teamLocalStore.add(null, teamData);
+                            TeamCacheStore.getInstance().add(null, teamData);
+                            onCompleteListener.onComplete(true, teamData);
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        onCompleteListener.onComplete(false, null);
+                    }
+                });
     }
 
     @Override
@@ -48,7 +90,7 @@ public class TeamCloudStore extends CloudStore<TeamData> {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         if (queryDocumentSnapshots.isEmpty()) {
-                            onCompleteListener.onComplete(true, null);
+                            onCompleteListener.onComplete(true, Collections.emptyList());
                             return;
                         }
                         ArrayList<TeamData> teamDataList = new ArrayList<>();
@@ -57,7 +99,7 @@ public class TeamCloudStore extends CloudStore<TeamData> {
                             teamDataList.add(teamData);
                         }
                         // FIXME: 2021-03-19 팀데이터 불러와서 로컬스토어 및 캐시스토어에 저장하기 추가
-                        //TeamLocalStore.getInstance().addAll(teamDataList);
+//                        teamLocalStore.addAll(teamDataList);
                         TeamCacheStore.getInstance().addAll(teamDataList);
                         onCompleteListener.onComplete(true, teamDataList);
                     }
@@ -174,6 +216,14 @@ public class TeamCloudStore extends CloudStore<TeamData> {
         * 3. 투두 데이터 삭제
         * 4. 1, 2, 3번이 한 트랜잭션 안에서 무결성을 이뤄야 함
          */
+        getFirestore().runTransaction(new Transaction.Function<TeamData>() {
+            @Nullable
+            @Override
+            public TeamData apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
+                return null;
+            }
+        });
+
         getFirestore().collection("Team")
                 .document(teamData.getTeamKey())
                 .delete()

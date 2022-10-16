@@ -16,19 +16,18 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.google.android.material.card.MaterialCardView;
 import com.hero.seoultechteams.R;
-import com.hero.seoultechteams.database.team.entity.TeamData;
 import com.hero.seoultechteams.domain.team.entity.TeamEntity;
 import com.hero.seoultechteams.view.BaseAdapter;
 
-import java.util.ArrayList;
+import java.util.List;
 
 
 public class TeamListAdapter extends BaseAdapter<TeamListAdapter.TeamListViewHolder, TeamEntity> {
 
-    private Context context;
-    private ArrayList<TeamEntity> teamDataList;
-    private LayoutInflater inflater;
-    private RequestManager requestManager;
+    private final Context context;
+    private final List<TeamEntity> teamDataList;
+    private final LayoutInflater inflater;
+    private final RequestManager requestManager;
     private String myUserKey;
     public static final int UPDATE_TEAM_REQ_CODE = 222;
 
@@ -38,10 +37,13 @@ public class TeamListAdapter extends BaseAdapter<TeamListAdapter.TeamListViewHol
 
     private OnPopupClickListener onPopupClickListener;
 
-    public TeamListAdapter(Context context, ArrayList<TeamEntity> teamDataList, OnPopupClickListener onPopupClickListener) {
+    public void teamCallBack(OnPopupClickListener onPopupClickListener) {
+        this.onPopupClickListener = onPopupClickListener;
+    }
+
+    public TeamListAdapter(Context context, List<TeamEntity> teamDataList) {
         this.context = context;
         this.teamDataList = teamDataList;
-        this.onPopupClickListener = onPopupClickListener;
         inflater = LayoutInflater.from(context);
         requestManager = Glide.with(context);
     }
@@ -59,13 +61,6 @@ public class TeamListAdapter extends BaseAdapter<TeamListAdapter.TeamListViewHol
 
         holder.tvTeamName.setText(teamData.getTeamName());
         holder.tvTeamDesc.setText(teamData.getTeamDesc());
-
-        holder.ivTeamOptionMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openTeamOptionMenu(holder, teamData);
-            }
-        });
     }
 
     private void openTeamOptionMenu(@NonNull TeamListViewHolder holder, TeamEntity teamData) {
@@ -99,6 +94,7 @@ public class TeamListAdapter extends BaseAdapter<TeamListAdapter.TeamListViewHol
         public TeamListViewHolder(View itemView) {
             super(itemView);
             initView(itemView);
+            setOnClickListener();
         }
 
         private void initView(View itemView) {
@@ -106,7 +102,9 @@ public class TeamListAdapter extends BaseAdapter<TeamListAdapter.TeamListViewHol
             tvTeamDesc = itemView.findViewById(R.id.tv_team_desc);
             ivTeamOptionMenu = itemView.findViewById(R.id.iv_team_option_menu);
             mcvTeamList = itemView.findViewById(R.id.mcv_team_list);
+        }
 
+        private void setOnClickListener() {
             mcvTeamList.setOnClickListener(this);
             ivTeamOptionMenu.setOnClickListener(this);
         }

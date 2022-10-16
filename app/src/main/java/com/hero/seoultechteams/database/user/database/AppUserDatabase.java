@@ -19,7 +19,7 @@ public abstract class AppUserDatabase extends RoomDatabase {
         synchronized (sLock) {
             if (INSTANCE == null) {
                 INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                        AppUserDatabase.class, "tech_users.db")
+                                AppUserDatabase.class, "user_table.db")
                         .build();
             }
             return INSTANCE;

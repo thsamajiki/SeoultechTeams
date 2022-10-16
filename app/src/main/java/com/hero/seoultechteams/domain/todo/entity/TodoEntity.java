@@ -5,11 +5,12 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.StringDef;
+import androidx.room.Embedded;
 
 import com.hero.seoultechteams.database.todo.entity.Event;
-import com.hero.seoultechteams.database.todo.entity.TodoData;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TodoEntity implements Parcelable, Comparable<TodoEntity> {
     public static final String TODO_STATE_IN_PROGRESS = "inProgress";
@@ -22,7 +23,7 @@ public class TodoEntity implements Parcelable, Comparable<TodoEntity> {
 
     public TodoEntity(String todoTitle, String todoDesc, String userKey, String managerProfileImageUrl,
                       String managerName, String managerEmail, String todoState, String teamName, String teamKey,
-                      long todoCreatedTime, long todoEndTime, ArrayList<Event> eventHistory, String todoKey) {
+                      long todoCreatedTime, long todoEndTime, List<Event> eventHistory, String todoKey) {
         this.todoTitle = todoTitle;
         this.todoDesc = todoDesc;
         this.userKey = userKey;
@@ -52,7 +53,9 @@ public class TodoEntity implements Parcelable, Comparable<TodoEntity> {
     private String teamKey;
     private long todoCreatedTime;
     private long todoEndTime;
-    private ArrayList<Event> eventHistory;  // 이벤트 발생마다의 로그
+
+    @Embedded
+    private List<Event> eventHistory = new ArrayList<>();  // 이벤트 발생마다의 로그
 
     private String todoKey;
 
@@ -173,11 +176,11 @@ public class TodoEntity implements Parcelable, Comparable<TodoEntity> {
         this.todoEndTime = todoEndTime;
     }
 
-    public ArrayList<Event> getEventHistory() {
+    public List<Event> getEventHistory() {
         return eventHistory;
     }
 
-    public void setEventHistory(ArrayList<Event> eventHistory) {
+    public void setEventHistory(List<Event> eventHistory) {
         this.eventHistory = eventHistory;
     }
 

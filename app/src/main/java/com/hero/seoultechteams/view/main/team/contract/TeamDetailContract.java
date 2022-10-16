@@ -7,9 +7,15 @@ public abstract class TeamDetailContract {
         void updatedTeamDetail(TeamEntity data);
 
         void failedUpdateTeamDetail();
+
+        void onLoadTeam(TeamEntity data);
+
+        void failedLoadTeam();
     }
 
     public interface Presenter {
-        void updateTeamDetail(String teamName, String teamDesc, TeamEntity data);
+        void updateTeamDetail(String teamName, String teamDesc);
+
+        void requestTeamData(String teamKey);
     }
 }

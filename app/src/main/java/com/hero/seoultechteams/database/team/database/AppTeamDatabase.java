@@ -19,7 +19,7 @@ public abstract class AppTeamDatabase extends RoomDatabase {
         synchronized (sLock) {
             if (INSTANCE == null) {
                 INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
-                                AppTeamDatabase.class, "tech_teams.db")
+                                AppTeamDatabase.class, "team_table.db")
                         .build();
             }
             return INSTANCE;

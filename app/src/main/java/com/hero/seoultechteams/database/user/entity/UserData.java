@@ -11,7 +11,7 @@ import androidx.room.PrimaryKey;
 
 import com.hero.seoultechteams.domain.user.entity.UserEntity;
 
-@Entity
+@Entity(tableName = "user_table")
 public class UserData {
 
     private String name;
@@ -21,6 +21,9 @@ public class UserData {
     @PrimaryKey
     @NonNull
     private String key;
+
+    public UserData() {
+    };
 
     public UserData(String name, String email, String profileImageUrl, @NonNull String key) {
         this.name = name;

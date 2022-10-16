@@ -39,9 +39,9 @@ public class GetMemberParticipationUseCase {
         memberDataList = null;
         todoDataList = null;
 
-        getMemberListUseCase.invoke(new OnCompleteListener<ArrayList<MemberEntity>>() {
+        getMemberListUseCase.invoke(new OnCompleteListener<List<MemberEntity>>() {
             @Override
-            public void onComplete(boolean isSuccess, ArrayList<MemberEntity> teamMemberDataList) {
+            public void onComplete(boolean isSuccess, List<MemberEntity> teamMemberDataList) {
                 memberDataList = teamMemberDataList;
 
                 if (todoDataList != null) {
@@ -50,9 +50,9 @@ public class GetMemberParticipationUseCase {
             }
         }, teamKey);
 
-        getTeamTodoListUseCase.invoke(new OnCompleteListener<ArrayList<TodoEntity>>() {
+        getTeamTodoListUseCase.invoke(new OnCompleteListener<List<TodoEntity>>() {
             @Override
-            public void onComplete(boolean isSuccess, ArrayList<TodoEntity> teamTodoDataList) {
+            public void onComplete(boolean isSuccess, List<TodoEntity> teamTodoDataList) {
                 todoDataList = teamTodoDataList;
                 if (memberDataList != null) {
                     makeMemberParticipationList(teamTodoDataList, memberDataList, onCompleteListener);

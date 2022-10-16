@@ -37,9 +37,9 @@ public class InvitePresenter implements InviteContract.Presenter {
 
     @Override
     public void inviteUserList(TeamEntity teamData, ArrayList<UserEntity> inviteUserDataList, List<MemberEntity> teamMemberDataList) {
-        inviteNewMemberListUseCase.invoke(new OnCompleteListener<ArrayList<UserEntity>>() {
+        inviteNewMemberListUseCase.invoke(new OnCompleteListener<List<UserEntity>>() {
             @Override
-            public void onComplete(boolean isSuccess, ArrayList<UserEntity> data) {
+            public void onComplete(boolean isSuccess, List<UserEntity> data) {
                 if (isSuccess && data != null) {
                     view.onAddNewMemberList(teamData, inviteUserDataList, teamMemberDataList);
                 } else {

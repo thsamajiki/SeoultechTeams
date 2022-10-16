@@ -7,9 +7,15 @@ public abstract class TodoDetailContract {
         void updatedTodoDetail(TodoEntity data);
 
         void failedUpdateTodoDetail();
+
+        void onLoadTodo(TodoEntity data);
+
+        void failedLoadTodo();
     }
 
     public interface Presenter {
-        void updateTodoDetail(String todoTitle, String todoDesc, TodoEntity data);
+        void updateTodoDetail(String todoTitle, String todoDesc);
+
+        void requestTodoData(String todoKey);
     }
 }

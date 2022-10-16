@@ -1,8 +1,10 @@
 package com.hero.seoultechteams.database.user.datastore;
 
 import com.hero.seoultechteams.database.CacheStore;
-import com.hero.seoultechteams.domain.common.OnCompleteListener;
+import com.hero.seoultechteams.database.member.entity.MemberData;
+import com.hero.seoultechteams.database.team.entity.TeamData;
 import com.hero.seoultechteams.database.user.entity.UserData;
+import com.hero.seoultechteams.domain.common.OnCompleteListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,6 +75,10 @@ public class UserCacheStore extends CacheStore<UserData> {
     @Override
     public void add(OnCompleteListener<UserData> onCompleteListener, UserData data) {
         getDataList().add(data);
+    }
+
+    public void addUserListToTeam(final OnCompleteListener<List<UserData>> onCompleteListener, final TeamData teamData, List<UserData> userDataList, List<MemberData> memberDataList) {
+        onCompleteListener.onComplete(true, userDataList);
     }
 
     @Override

@@ -10,10 +10,11 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.hero.seoultechteams.database.CloudStore;
-import com.hero.seoultechteams.domain.common.OnCompleteListener;
 import com.hero.seoultechteams.database.notice.entity.NoticeData;
+import com.hero.seoultechteams.domain.common.OnCompleteListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class NoticeCloudStore extends CloudStore<NoticeData> {
 
@@ -23,11 +24,30 @@ public class NoticeCloudStore extends CloudStore<NoticeData> {
 
     @Override
     public void getData(OnCompleteListener<NoticeData> onCompleteListener, Object... params) {
-
+        String noticeKey = params[0].toString();
+        getFirestore().collection("Notice")
+                .document(noticeKey)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot == null) {
+                            onCompleteListener.onComplete(true, null);
+                        } else {
+//                            onCompleteListener.onComplete(true, noticeData);
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        onCompleteListener.onComplete(false, null);
+                    }
+                });
     }
 
     @Override
-    public void getDataList(final OnCompleteListener<ArrayList<NoticeData>> onCompleteListener, Object... params) {
+    public void getDataList(final OnCompleteListener<List<NoticeData>> onCompleteListener, Object... params) {
         getFirestore().collection("Notice")
                 .orderBy("postDate", Query.Direction.DESCENDING)
                 .get()

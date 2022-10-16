@@ -3,13 +3,11 @@ package com.hero.seoultechteams.view.main.account.presenter;
 import android.text.TextUtils;
 
 import com.hero.seoultechteams.domain.common.OnCompleteListener;
-
 import com.hero.seoultechteams.domain.user.entity.UserEntity;
 import com.hero.seoultechteams.domain.user.usecase.GetAccountProfileUseCase;
 import com.hero.seoultechteams.domain.user.usecase.UpdateUserUseCase;
 import com.hero.seoultechteams.listener.OnFileUploadListener;
 import com.hero.seoultechteams.storage.FirebaseStorageAPI;
-import com.hero.seoultechteams.utils.LoadingProgress;
 import com.hero.seoultechteams.view.main.account.contract.EditProfileContract;
 
 public class EditProfilePresenter implements EditProfileContract.Presenter {
@@ -82,7 +80,7 @@ public class EditProfilePresenter implements EditProfileContract.Presenter {
 
             @Override
             public void onFileUploadProgress(float percent) {
-                view.failedImageUpload();
+//                view.failedImageUpload();
             }
         });
         FirebaseStorageAPI.getInstance().uploadImage(FirebaseStorageAPI.DEFAULT_IMAGE_PATH, myNewProfileImageLocalUri);

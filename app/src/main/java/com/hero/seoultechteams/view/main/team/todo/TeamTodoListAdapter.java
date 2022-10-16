@@ -38,11 +38,11 @@ import java.util.List;
 
 public class TeamTodoListAdapter extends BaseAdapter<TeamTodoListAdapter.TeamTodoListViewHolder, TodoEntity> {
 
-    private Context context;
-    private List<TodoEntity> teamTodoEntityList;
-    private LayoutInflater inflater;
-    private RequestManager requestManager;
-    private String myKey;
+    private final Context context;
+    private final List<TodoEntity> teamTodoEntityList;
+    private final LayoutInflater inflater;
+    private final RequestManager requestManager;
+    private final String myKey;
     private boolean isLeader = true;
 
     public void removeItem(int position) {

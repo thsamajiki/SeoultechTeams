@@ -11,9 +11,12 @@ public class CreateTeamPresenter implements CreateTeamContract.Presenter {
     private AddTeamUseCase addTeamUseCase;
     private GetAccountProfileUseCase getAccountProfileUseCase;
 
-    public CreateTeamPresenter(CreateTeamContract.View view, AddTeamUseCase addTeamUseCase) {
+    public CreateTeamPresenter(CreateTeamContract.View view,
+                               AddTeamUseCase addTeamUseCase,
+                               GetAccountProfileUseCase getAccountProfileUseCase) {
         this.view = view;
         this.addTeamUseCase = addTeamUseCase;
+        this.getAccountProfileUseCase = getAccountProfileUseCase;
     }
 
     @Override

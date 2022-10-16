@@ -19,14 +19,14 @@ import com.hero.seoultechteams.domain.todo.entity.TodoEntity;
 import com.hero.seoultechteams.view.main.team.todo.contract.TodoDetailContract;
 import com.hero.seoultechteams.view.main.team.todo.presenter.TodoDetailPresenter;
 
-import static com.hero.seoultechteams.view.main.team.todo.TeamTodoListActivity.EXTRA_TODO_DATA;
-
 public class TodoDetailActivity extends BaseActivity implements View.OnClickListener, TodoDetailContract.View {
     private ImageView ivBack, ivOptionMenu;
     private EditText editTodoTitle, editTodoDesc;
     public static final String EXTRA_UPDATE_TODO = "updateTodo";
+    public static final String EXTRA_TODO_KEY = "todoKey";
     private final TodoDetailContract.Presenter presenter = new TodoDetailPresenter(this,
-            Injector.getInstance().provideUpdateTodoDetailUseCase());
+            Injector.getInstance().provideUpdateTodoDetailUseCase(),
+            Injector.getInstance().provideGetTodoUseCase());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,16 +37,15 @@ public class TodoDetailActivity extends BaseActivity implements View.OnClickList
         addTextWatcher();
     }
 
-    private TodoEntity initTodoEntity;
-
     private void initView() {
         ivBack = findViewById(R.id.iv_back);
         ivOptionMenu = findViewById(R.id.iv_option_menu);
         editTodoTitle = findViewById(R.id.edit_team_name);
         editTodoDesc = findViewById(R.id.edit_todo_desc);
 
-        initTodoEntity = getIntent().getParcelableExtra(EXTRA_TODO_DATA);
-        initializeTodoDetail(initTodoEntity);
+        String todoKey = getIntent().getStringExtra(EXTRA_TODO_KEY);
+
+        presenter.requestTodoData(todoKey);
     }
 
     private void initializeTodoDetail(TodoEntity todoEntity) {
@@ -141,7 +140,7 @@ public class TodoDetailActivity extends BaseActivity implements View.OnClickList
         final String todoTitle = editTodoTitle.getText().toString();
         final String todoDesc = editTodoDesc.getText().toString();
 
-        presenter.updateTodoDetail(todoTitle, todoDesc, initTodoEntity);
+        presenter.updateTodoDetail(todoTitle, todoDesc);
     }
 
     @Override
@@ -155,6 +154,16 @@ public class TodoDetailActivity extends BaseActivity implements View.OnClickList
     @Override
     public void failedUpdateTodoDetail() {
         Toast.makeText(TodoDetailActivity.this, "데이터가 수정되지 않았습니다.", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onLoadTodo(TodoEntity data) {
+        initializeTodoDetail(data);
+    }
+
+    @Override
+    public void failedLoadTodo() {
+        Toast.makeText(this, "데이터를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show();
     }
 
 //    private void showTodoDetailOptionMenu(){

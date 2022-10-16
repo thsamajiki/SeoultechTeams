@@ -1,6 +1,6 @@
 package com.hero.seoultechteams.view.main.team.option_menu;
 
-import androidx.appcompat.app.AppCompatActivity;
+import static com.hero.seoultechteams.view.main.team.TeamListFragment.EXTRA_TEAM_DATA;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -9,20 +9,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.bumptech.glide.Glide;
 import com.hero.seoultechteams.Injector;
 import com.hero.seoultechteams.R;
-import com.hero.seoultechteams.database.team.entity.TeamData;
 import com.hero.seoultechteams.databinding.ActivityTeamParticipationBinding;
 import com.hero.seoultechteams.domain.member.entity.MemberEntity;
-import com.hero.seoultechteams.domain.todo.entity.TodoEntity;
+import com.hero.seoultechteams.domain.team.entity.TeamEntity;
 import com.hero.seoultechteams.view.main.team.option_menu.contract.TeamParticipationContract;
 import com.hero.seoultechteams.view.main.team.option_menu.presenter.TeamParticipationPresenter;
 
 import java.util.List;
-
-import static com.hero.seoultechteams.view.main.team.TeamListFragment.EXTRA_TEAM_DATA;
-import static com.hero.seoultechteams.view.main.team.todo.TeamTodoListActivity.EXTRA_TEAM_MEMBER_LIST;
 
 
 public class TeamParticipationActivity extends AppCompatActivity implements View.OnClickListener, TeamParticipationContract.View {
@@ -49,6 +47,8 @@ public class TeamParticipationActivity extends AppCompatActivity implements View
     private int memberTodoPerformancePercent;
     private int memberTodoLatePercent;
 
+
+
     private ActivityTeamParticipationBinding binding;
 
     private final TeamParticipationContract.Presenter presenter = new TeamParticipationPresenter(this,
@@ -69,11 +69,12 @@ public class TeamParticipationActivity extends AppCompatActivity implements View
 //        presenter.getTodoDataListFromDatabase();
     }
 
+
     private void setOnClickListener() {
         binding.ivBack.setOnClickListener(this);
     }
 
-    private TeamData getTeamData() {
+    private TeamEntity getTeamData() {
         return getIntent().getParcelableExtra(EXTRA_TEAM_DATA);
     }
 

@@ -81,7 +81,7 @@ public class MyTodoListAdapter extends BaseAdapter<MyTodoListAdapter.MyTodoListV
         return new MyTodoListViewHolder(view);
     }
 
-    public void setMyTodoListOnTab(ArrayList<TodoEntity> myTodoDataList) {
+    public void setMyTodoListOnTab(List<TodoEntity> myTodoDataList) {
         this.myTodoDataList.clear();
         this.myTodoDataList.addAll(myTodoDataList);
         Collections.sort(myTodoDataList);

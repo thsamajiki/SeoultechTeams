@@ -1,11 +1,9 @@
 package com.hero.seoultechteams.view.main.team.option_menu;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
+import static com.hero.seoultechteams.view.main.team.TeamListFragment.EXTRA_TEAM_DATA;
+import static com.hero.seoultechteams.view.main.team.option_menu.InviteActivity.EXTRA_INVITE_USER;
+import static com.hero.seoultechteams.view.main.team.todo.TeamTodoListActivity.EXTRA_TEAM_MEMBER_LIST;
+import static com.hero.seoultechteams.view.photoview.PhotoActivity.EXTRA_PROFILE_IMAGE_URL;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +11,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 import com.hero.seoultechteams.BaseActivity;
@@ -30,11 +34,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
-import static com.hero.seoultechteams.view.main.team.TeamListFragment.EXTRA_TEAM_DATA;
-import static com.hero.seoultechteams.view.main.team.option_menu.InviteActivity.EXTRA_INVITE_USER;
-import static com.hero.seoultechteams.view.main.team.todo.TeamTodoListActivity.EXTRA_TEAM_MEMBER_LIST;
-import static com.hero.seoultechteams.view.photoview.PhotoActivity.EXTRA_PROFILE_IMAGE_URL;
 
 
 public class TeamMemberListActivity extends BaseActivity implements View.OnClickListener, OnRecyclerItemClickListener<MemberEntity>, TeamMemberListContract.View {
@@ -67,9 +66,6 @@ public class TeamMemberListActivity extends BaseActivity implements View.OnClick
                         }
                         teamMemberDataList.addAll(newMemberDataList);
                         teamMemberListAdapter.notifyDataSetChanged();
-                        Log.d("zxcv6", "onActivityResult: 초대 후 팀원들 목록의 크기 : (teamMemberDataList) " + teamMemberDataList.size());
-                        Log.d("zxcv7", "onActivityResult: 초대 후 팀원들 목록의 크기 : (getTeamMemberDataList()) " + getTeamMemberDataList().size());
-                        Log.d("zxcv8", "---------------------------------------------------------------------------------------------- ");
                     }
                 }
             });

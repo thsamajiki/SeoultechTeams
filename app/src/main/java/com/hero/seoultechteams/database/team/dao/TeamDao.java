@@ -13,6 +13,6 @@ public interface TeamDao extends BaseDao<TeamData> {
     @Query("SELECT * FROM team_table")
     List<TeamData> getAllTeams();
 
-    @Query("SELECT * FROM team_table WHERE userKey = :userKey limit 1")
-    TeamData getTeamFromKey(String userKey);
+    @Query("SELECT * FROM team_table WHERE teamKey = :teamKey limit 1")
+    TeamData getTeamFromKey(String teamKey);
 }

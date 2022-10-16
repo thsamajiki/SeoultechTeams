@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface TeamRepository {
+    void getTeam(final OnCompleteListener<TeamEntity> onCompleteListener, final String teamKey);
+
     void getTeamList(final OnCompleteListener<List<TeamEntity>> onCompleteListener, final String userKey);
 
     void addTeam(final OnCompleteListener<TeamEntity> onCompleteListener, TeamEntity teamEntity);

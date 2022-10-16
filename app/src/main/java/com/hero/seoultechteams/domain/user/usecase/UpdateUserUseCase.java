@@ -5,7 +5,7 @@ import com.hero.seoultechteams.domain.user.entity.UserEntity;
 import com.hero.seoultechteams.domain.user.repository.UserRepository;
 
 public class UpdateUserUseCase {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public UpdateUserUseCase(UserRepository userRepository) {
         this.userRepository = userRepository;

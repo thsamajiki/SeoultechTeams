@@ -3,13 +3,9 @@ package com.hero.seoultechteams.database.member.datastore;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -17,10 +13,10 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Transaction;
 import com.hero.seoultechteams.database.CloudStore;
-import com.hero.seoultechteams.domain.common.OnCompleteListener;
 import com.hero.seoultechteams.database.member.entity.MemberData;
 import com.hero.seoultechteams.database.team.entity.TeamData;
 import com.hero.seoultechteams.database.user.entity.UserData;
+import com.hero.seoultechteams.domain.common.OnCompleteListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,7 +43,8 @@ public class MemberCloudStore extends CloudStore<MemberData> {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         MemberData memberData = documentSnapshot.toObject(MemberData.class);
-                        MemberCacheStore.getInstance().add(memberData);
+//                        MemberLocalStore.getInstance().add(memberData);
+//                        MemberCacheStore.getInstance().add(memberData);
                         onCompleteListener.onComplete(true, memberData);
                     }
                 })
@@ -71,7 +68,7 @@ public class MemberCloudStore extends CloudStore<MemberData> {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         if (queryDocumentSnapshots.isEmpty()) {
-                            onCompleteListener.onComplete(true, null);
+                            onCompleteListener.onComplete(true, Collections.emptyList());
                             return;
                         }
                         ArrayList<MemberData> memberDataList = new ArrayList<>();
@@ -81,7 +78,8 @@ public class MemberCloudStore extends CloudStore<MemberData> {
                         }
                         Collections.sort(memberDataList);
 
-                        MemberCacheStore.getInstance().addAll(memberDataList);
+//                        MemberLocalStore.getInstance().addAll(memberDataList);
+//                        MemberCacheStore.getInstance().addAll(memberDataList);
                         onCompleteListener.onComplete(true, memberDataList);
                     }
                 })
@@ -126,6 +124,8 @@ public class MemberCloudStore extends CloudStore<MemberData> {
         }).addOnSuccessListener(new OnSuccessListener<MemberData>() {
             @Override
             public void onSuccess(MemberData memberData) {
+//                MemberLocalStore.getInstance().add(true, memberData);
+//                MemberCacheStore.getInstance().add(memberData);
                 onCompleteListener.onComplete(true, memberData);
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -200,6 +200,7 @@ public class MemberCloudStore extends CloudStore<MemberData> {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
+//                        MemberLocalStore.getInstance().update(null, memberData);
                         MemberCacheStore.getInstance().update(null, memberData);
                         onCompleteListener.onComplete(true, null);
                     }
@@ -222,7 +223,7 @@ public class MemberCloudStore extends CloudStore<MemberData> {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        MemberCacheStore.getInstance().remove(null, memberData);
+//                        MemberLocalStore.getInstance().remove(null, memberData);
                         onCompleteListener.onComplete(true, memberData);
                     }
                 })

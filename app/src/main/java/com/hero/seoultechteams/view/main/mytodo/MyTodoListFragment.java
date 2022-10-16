@@ -1,10 +1,9 @@
 package com.hero.seoultechteams.view.main.mytodo;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import static com.hero.seoultechteams.domain.todo.entity.TodoEntity.TODO_STATE_CONFIRMED;
+import static com.hero.seoultechteams.domain.todo.entity.TodoEntity.TODO_STATE_DISMISSED;
+import static com.hero.seoultechteams.domain.todo.entity.TodoEntity.TODO_STATE_IN_PROGRESS;
+import static com.hero.seoultechteams.domain.todo.entity.TodoEntity.TODO_STATE_SUBMITTED;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,15 +12,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 import com.hero.seoultechteams.Injector;
 import com.hero.seoultechteams.R;
-
 import com.hero.seoultechteams.database.todo.entity.Event;
 import com.hero.seoultechteams.domain.team.entity.TeamEntity;
 import com.hero.seoultechteams.domain.todo.entity.TodoEntity;
-
 import com.hero.seoultechteams.listener.OnRecyclerItemClickListener;
 import com.hero.seoultechteams.view.main.mytodo.contract.MyTodoListContract;
 import com.hero.seoultechteams.view.main.mytodo.presenter.MyTodoListPresenter;
@@ -30,20 +33,14 @@ import com.hero.seoultechteams.view.main.team.todo.TodoDetailActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.hero.seoultechteams.domain.todo.entity.TodoEntity.TODO_STATE_CONFIRMED;
-import static com.hero.seoultechteams.domain.todo.entity.TodoEntity.TODO_STATE_DISMISSED;
-import static com.hero.seoultechteams.domain.todo.entity.TodoEntity.TODO_STATE_IN_PROGRESS;
-import static com.hero.seoultechteams.domain.todo.entity.TodoEntity.TODO_STATE_SUBMITTED;
-import static com.hero.seoultechteams.view.main.team.todo.TeamTodoListActivity.EXTRA_TODO_DATA;
-
 
 public class MyTodoListFragment extends Fragment implements OnRecyclerItemClickListener<TodoEntity>, SwipeRefreshLayout.OnRefreshListener, MyTodoListContract.View {
 
     private TabLayout tlMyTodoList;
     private TabItem tabNowMyTodo, tabCompletedMyTodo;
     private RecyclerView rvMyTodoList;
-    private final ArrayList<TodoEntity> myTodoNowDataList = new ArrayList<>();
-    private final ArrayList<TodoEntity> myTodoCompletedDataList = new ArrayList<>();
+    private final List<TodoEntity> myTodoNowDataList = new ArrayList<>();
+    private final List<TodoEntity> myTodoCompletedDataList = new ArrayList<>();
     private MyTodoListAdapter myTodoListAdapter;
     private SwipeRefreshLayout srlMyTodoList;
 
@@ -241,7 +238,7 @@ public class MyTodoListFragment extends Fragment implements OnRecyclerItemClickL
                 break;
             default:
                 Intent intent = new Intent(requireActivity(), TodoDetailActivity.class);
-                intent.putExtra(EXTRA_TODO_DATA, data);
+                intent.putExtra(TodoDetailActivity.EXTRA_TODO_KEY, data);
                 startActivity(intent);
                 break;
         }

@@ -6,7 +6,6 @@ import com.hero.seoultechteams.database.todo.datastore.TodoCacheStore;
 import com.hero.seoultechteams.database.todo.datastore.TodoLocalStore;
 import com.hero.seoultechteams.database.todo.entity.TodoData;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TodoLocalDataSourceImpl implements TodoLocalDataSource {
@@ -19,9 +18,30 @@ public class TodoLocalDataSourceImpl implements TodoLocalDataSource {
     }
 
     @Override
-    public void getDataList(OnCompleteListener<List<TodoData>> onCompleteListener, DataType type, String teamKey) {
-        todoCacheStore.getDataList(onCompleteListener, type, teamKey);
+    public void getData(OnCompleteListener<TodoData> onCompleteListener, String todoKey) {
+        todoCacheStore.getData(new OnCompleteListener<TodoData>() {
+            @Override
+            public void onComplete(boolean isSuccess, TodoData data) {
+                if (isSuccess) {
+                    onCompleteListener.onComplete(true, data);
+                } else {
+                    todoLocalStore.getData(new OnCompleteListener<TodoData>() {
+                        @Override
+                        public void onComplete(boolean isSuccess, TodoData data) {
+                            if (isSuccess) {
+                                onCompleteListener.onComplete(true, data);
+                            } else {
+                                onCompleteListener.onComplete(false, null);
+                            }
+                        }
+                    }, todoKey);
+                }
+            }
+        }, todoKey);
+    }
 
+    @Override
+    public void getDataList(OnCompleteListener<List<TodoData>> onCompleteListener, DataType type, String teamKey) {
         todoCacheStore.getDataList(new OnCompleteListener<List<TodoData>>() {
             @Override
             public void onComplete(boolean isSuccess, List<TodoData> data) {
@@ -34,7 +54,7 @@ public class TodoLocalDataSourceImpl implements TodoLocalDataSource {
                             if (isSuccess) {
                                 onCompleteListener.onComplete(true, data);
                             } else {
-
+                                onCompleteListener.onComplete(false, null);
                             }
                         }
                     });
@@ -50,16 +70,71 @@ public class TodoLocalDataSourceImpl implements TodoLocalDataSource {
 
     @Override
     public void add(OnCompleteListener<TodoData> onCompleteListener, TodoData todoData) {
-        todoLocalStore.add(onCompleteListener, todoData);
+        todoLocalStore.add(new OnCompleteListener<TodoData>() {
+            @Override
+            public void onComplete(boolean isSuccess, TodoData localData) {
+                if (isSuccess) {
+                    todoCacheStore.add(new OnCompleteListener<TodoData>() {
+                        @Override
+                        public void onComplete(boolean isSuccess, TodoData cacheData) {
+                            if (isSuccess) {
+                                onCompleteListener.onComplete(true, cacheData);
+                            } else {
+                                onCompleteListener.onComplete(true, localData);
+                            }
+                        }
+                    }, todoData);
+
+                } else {
+                    onCompleteListener.onComplete(false, null);
+                }
+            }
+        }, todoData);
     }
 
     @Override
     public void update(OnCompleteListener<TodoData> onCompleteListener, TodoData todoData) {
-        todoLocalStore.update(onCompleteListener, todoData);
+        todoLocalStore.update(new OnCompleteListener<TodoData>() {
+            @Override
+            public void onComplete(boolean isSuccess, TodoData localData) {
+                if (isSuccess) {
+                    todoCacheStore.update(new OnCompleteListener<TodoData>() {
+                        @Override
+                        public void onComplete(boolean isSuccess, TodoData cacheData) {
+                            if (isSuccess) {
+                                onCompleteListener.onComplete(true, cacheData);
+                            } else {
+                                onCompleteListener.onComplete(true, localData);
+                            }
+                        }
+                    }, todoData);
+                } else {
+                    onCompleteListener.onComplete(false, null);
+                }
+            }
+        }, todoData);
     }
 
     @Override
     public void remove(OnCompleteListener<TodoData> onCompleteListener, TodoData todoData) {
-        todoLocalStore.remove(onCompleteListener, todoData);
+        todoLocalStore.remove(new OnCompleteListener<TodoData>() {
+            @Override
+            public void onComplete(boolean isSuccess, TodoData localData) {
+                if (isSuccess) {
+                    todoCacheStore.remove(new OnCompleteListener<TodoData>() {
+                        @Override
+                        public void onComplete(boolean isSuccess, TodoData cacheData) {
+                            if (isSuccess) {
+                                onCompleteListener.onComplete(true, cacheData);
+                            } else {
+                                onCompleteListener.onComplete(true, localData);
+                            }
+                        }
+                    }, todoData);
+                } else {
+                    onCompleteListener.onComplete(false, null);
+                }
+            }
+        }, todoData);
     }
 }

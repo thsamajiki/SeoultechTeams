@@ -5,7 +5,7 @@ import com.hero.seoultechteams.domain.team.entity.TeamEntity;
 import com.hero.seoultechteams.domain.team.repository.TeamRepository;
 
 public class UpdateTeamDetailUseCase {
-    private TeamRepository teamRepository;
+    private final TeamRepository teamRepository;
 
     public UpdateTeamDetailUseCase(TeamRepository teamRepository) {
         this.teamRepository = teamRepository;

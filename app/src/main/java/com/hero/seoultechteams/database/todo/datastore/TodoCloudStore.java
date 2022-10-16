@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -11,11 +12,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Transaction;
 import com.hero.seoultechteams.database.CloudStore;
 import com.hero.seoultechteams.database.DataType;
-import com.hero.seoultechteams.domain.common.OnCompleteListener;
 import com.hero.seoultechteams.database.todo.entity.TodoData;
+import com.hero.seoultechteams.domain.common.OnCompleteListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,14 +28,18 @@ import java.util.List;
 public class TodoCloudStore extends CloudStore<TodoData> {
 
     private static TodoCloudStore instance;
+    private final TodoLocalStore todoLocalStore;
+    private final TodoCacheStore todoCacheStore;
 
-    private TodoCloudStore(Context context) {
+    private TodoCloudStore(Context context, TodoLocalStore todoLocalStore, TodoCacheStore todoCacheStore) {
         super(context);
+        this.todoLocalStore = todoLocalStore;
+        this.todoCacheStore = todoCacheStore;
     }
 
-    public static TodoCloudStore getInstance(Context context) {
+    public static TodoCloudStore getInstance(Context context, TodoLocalStore todoLocalStore, TodoCacheStore todoCacheStore) {
         if (instance == null) {
-            instance = new TodoCloudStore(context);
+            instance = new TodoCloudStore(context, todoLocalStore, todoCacheStore);
         }
 
         return instance;
@@ -40,7 +47,9 @@ public class TodoCloudStore extends CloudStore<TodoData> {
 
     @Override
     public void getData(OnCompleteListener<TodoData> onCompleteListener, Object... params) {
+        String todoKey = params[0].toString();
 
+        loadTodoData(todoKey, onCompleteListener);
     }
 
     @Override
@@ -49,10 +58,10 @@ public class TodoCloudStore extends CloudStore<TodoData> {
         String key = params[1].toString();
         switch (type) {
             case MY:
-                loadMyTodoData(key, onCompleteListener);
+                loadMyTodoDataList(key, onCompleteListener);
                 break;
             case TEAM:
-                loadTeamTodoData(key, onCompleteListener);
+                loadTeamTodoDataList(key, onCompleteListener);
                 break;
             default:
                 throw new IllegalArgumentException("정의되지 않은 타입입니다.");
@@ -70,6 +79,7 @@ public class TodoCloudStore extends CloudStore<TodoData> {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
+                        todoLocalStore.add(null, todoData);
                         TodoCacheStore.getInstance().add(null, todoData);
                         onCompleteListener.onComplete(true, todoData);
                     }
@@ -99,6 +109,7 @@ public class TodoCloudStore extends CloudStore<TodoData> {
                     public void onSuccess(Void aVoid) {
                         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
                         if (todoData.getUserKey().equals(firebaseUser.getUid())) {
+                            todoLocalStore.update(null, todoData);
                             TodoCacheStore.getInstance().update(null, todoData);
                         }
                         onCompleteListener.onComplete(true, todoData);
@@ -114,6 +125,24 @@ public class TodoCloudStore extends CloudStore<TodoData> {
 
     @Override
     public void remove(final OnCompleteListener<TodoData> onCompleteListener, final TodoData todoData) {
+        String todoKey = todoData.getTodoKey();
+        getFirestore().runTransaction(new Transaction.Function<TodoData>() {
+            @Nullable
+            @Override
+            public TodoData apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
+                return null;
+            }
+        });
+
+        getFirestore().collectionGroup("Todo")
+                .whereEqualTo("todoKey", todoKey)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                    }
+                });
         getFirestore().collection("Team")
                 .document(todoData.getTeamKey())
                 .collection("Todo")
@@ -122,6 +151,7 @@ public class TodoCloudStore extends CloudStore<TodoData> {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
+                        todoLocalStore.remove(null, todoData);
                         TodoCacheStore.getInstance().remove(null, todoData);
                         onCompleteListener.onComplete(true, todoData);
                     }
@@ -134,7 +164,35 @@ public class TodoCloudStore extends CloudStore<TodoData> {
                 });
     }
 
-    private void loadTeamTodoData(String teamKey, final OnCompleteListener<List<TodoData>> onCompleteListener) {
+    private void loadTodoData(String todoKey, final OnCompleteListener<TodoData> onCompleteListener) {
+        getFirestore().collectionGroup("Todo")
+                .whereEqualTo("todoKey", todoKey)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        if (queryDocumentSnapshots.isEmpty()) {
+                            onCompleteListener.onComplete(true, null);
+                            return;
+                        }
+
+                        DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                        TodoData todoData = documentSnapshot.toObject(TodoData.class);
+
+                        todoLocalStore.add(null, todoData);
+                        TodoCacheStore.getInstance().add(todoData);
+                        onCompleteListener.onComplete(true, todoData);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        onCompleteListener.onComplete(false, null);
+                    }
+                });
+    }
+
+    private void loadTeamTodoDataList(String teamKey, final OnCompleteListener<List<TodoData>> onCompleteListener) {
         getFirestore().collection("Team")
                 .document(teamKey)
                 .collection("Todo")
@@ -143,7 +201,7 @@ public class TodoCloudStore extends CloudStore<TodoData> {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         if (queryDocumentSnapshots.isEmpty()) {
-                            onCompleteListener.onComplete(true, null);
+                            onCompleteListener.onComplete(true, Collections.emptyList());
                             return;
                         }
                         List<TodoData> teamTodoDataList = new ArrayList<>();
@@ -166,7 +224,7 @@ public class TodoCloudStore extends CloudStore<TodoData> {
                 });
     }
 
-    private void loadMyTodoData(String userKey, final OnCompleteListener<List<TodoData>> onCompleteListener) {
+    private void loadMyTodoDataList(String userKey, final OnCompleteListener<List<TodoData>> onCompleteListener) {
         getFirestore().collectionGroup("Todo")
                 .whereEqualTo("userKey", userKey)
                 .get()
@@ -174,6 +232,7 @@ public class TodoCloudStore extends CloudStore<TodoData> {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         if (queryDocumentSnapshots.isEmpty()) {
+                            onCompleteListener.onComplete(true, Collections.emptyList());
                             return;
                         }
                         List<TodoData> myTodoDataList = new ArrayList<>();

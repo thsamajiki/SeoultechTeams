@@ -1,8 +1,5 @@
 package com.hero.seoultechteams.database.notice.entity;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -36,6 +33,9 @@ public class NoticeData {
                 noticeEntity.getNoticeDesc(),
                 noticeEntity.getNoticeDate(),
                 noticeEntity.getNoticeKey());
+    }
+
+    public NoticeData() {
     }
 
     public String getNoticeTitle() {

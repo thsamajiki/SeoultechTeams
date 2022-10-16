@@ -1,11 +1,7 @@
 package com.hero.seoultechteams.view.main.team.todo.contract;
 
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import com.hero.seoultechteams.database.team.entity.TeamData;
 import com.hero.seoultechteams.domain.todo.entity.TodoEntity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class TeamTodoListContract {

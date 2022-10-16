@@ -1,7 +1,7 @@
 package com.hero.seoultechteams.view.main.team.option_menu;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
+import static com.hero.seoultechteams.view.main.team.TeamListFragment.EXTRA_TEAM_DATA;
+import static com.hero.seoultechteams.view.main.team.todo.TeamTodoListActivity.EXTRA_TEAM_MEMBER_LIST;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,6 +14,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.hero.seoultechteams.Injector;
@@ -28,9 +31,6 @@ import com.hero.seoultechteams.view.main.team.option_menu.presenter.InvitePresen
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.hero.seoultechteams.view.main.team.TeamListFragment.EXTRA_TEAM_DATA;
-import static com.hero.seoultechteams.view.main.team.todo.TeamTodoListActivity.EXTRA_TEAM_MEMBER_LIST;
-
 
 public class InviteActivity extends AppCompatActivity implements View.OnClickListener, OnRecyclerItemClickListener<UserEntity>, InviteContract.View {
 
@@ -41,16 +41,19 @@ public class InviteActivity extends AppCompatActivity implements View.OnClickLis
     private RecyclerView rvInviteUserList;
     private InviteAdapter inviteAdapter;
     public static final String EXTRA_INVITE_USER = "addInvitedUser";
-    private final InviteContract.Presenter presenter = new InvitePresenter(this,
-            Injector.getInstance().provideAddNewMemberListUseCase(),
-            Injector.getInstance().provideGetUserListByNameUseCase(),
-            Injector.getInstance().provideGetUserListByEmailUseCase(),
-            getTeamMemberDataList());
+    private InviteContract.Presenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_invite);
+
+        presenter = new InvitePresenter(this,
+                Injector.getInstance().provideAddNewMemberListUseCase(),
+                Injector.getInstance().provideGetUserListByNameUseCase(),
+                Injector.getInstance().provideGetUserListByEmailUseCase(),
+                getTeamMemberDataList());
+
         initView();
         initInviteUserListRecyclerViewAdapter();
         setEditorActionListener();

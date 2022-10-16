@@ -13,7 +13,6 @@ import com.hero.seoultechteams.domain.todo.repository.TodoRepository;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /*
 TodoListFragment -> Presenter -> UseCase -> Repository -> DataStore(Remote)
 */
@@ -41,17 +40,23 @@ public class TodoRepositoryImpl implements TodoRepository {
     public void addTodo(OnCompleteListener<TodoEntity> onCompleteListener, TodoEntity todoEntity) {
         TodoData todoData = TodoData.toData(todoEntity);
 
-        todoLocalDataSource.add(new OnCompleteListener<TodoData>() {
-            @Override
-            public void onComplete(boolean isSuccess, TodoData data) {
-                onCompleteListener.onComplete(isSuccess, data.toEntity());
-            }
-        }, todoData);
-
         todoRemoteDataSource.add(new OnCompleteListener<TodoData>() {
             @Override
-            public void onComplete(boolean isSuccess, TodoData data) {
-                onCompleteListener.onComplete(isSuccess, data.toEntity());
+            public void onComplete(boolean isSuccess, TodoData remoteData) {
+                if (isSuccess) {
+                    todoLocalDataSource.add(new OnCompleteListener<TodoData>() {
+                        @Override
+                        public void onComplete(boolean isSuccess, TodoData localData) {
+                            if (isSuccess) {
+                                onCompleteListener.onComplete(true, localData.toEntity());
+                            } else {
+                                onCompleteListener.onComplete(true, remoteData.toEntity());
+                            }
+                        }
+                    }, todoData);
+                } else {
+                    onCompleteListener.onComplete(false, null);
+                }
             }
         }, todoData);
     }
@@ -59,17 +64,23 @@ public class TodoRepositoryImpl implements TodoRepository {
     public void updateTodo(OnCompleteListener<TodoEntity> onCompleteListener, TodoEntity todoEntity) {
         TodoData todoData = TodoData.toData(todoEntity);
 
-        todoLocalDataSource.update(new OnCompleteListener<TodoData>() {
-            @Override
-            public void onComplete(boolean isSuccess, TodoData data) {
-                onCompleteListener.onComplete(isSuccess, data.toEntity());
-            }
-        }, todoData);
-
         todoRemoteDataSource.update(new OnCompleteListener<TodoData>() {
             @Override
-            public void onComplete(boolean isSuccess, TodoData data) {
-                onCompleteListener.onComplete(isSuccess, data.toEntity());
+            public void onComplete(boolean isSuccess, TodoData remoteData) {
+                if (isSuccess) {
+                    todoLocalDataSource.update(new OnCompleteListener<TodoData>() {
+                        @Override
+                        public void onComplete(boolean isSuccess, TodoData localData) {
+                            if (isSuccess) {
+                                onCompleteListener.onComplete(true, localData.toEntity());
+                            } else {
+                                onCompleteListener.onComplete(true, remoteData.toEntity());
+                            }
+                        }
+                    }, todoData);
+                } else {
+                    onCompleteListener.onComplete(false, null);
+                }
             }
         }, todoData);
     }
@@ -77,31 +88,54 @@ public class TodoRepositoryImpl implements TodoRepository {
     public void removeTodo(OnCompleteListener<TodoEntity> onCompleteListener, TodoEntity todoEntity) {
         TodoData todoData = TodoData.toData(todoEntity);
 
-        todoLocalDataSource.remove(new OnCompleteListener<TodoData>() {
-            @Override
-            public void onComplete(boolean isSuccess, TodoData data) {
-                onCompleteListener.onComplete(isSuccess, data.toEntity());
-            }
-        }, todoData);
-
         todoRemoteDataSource.remove(new OnCompleteListener<TodoData>() {
             @Override
-            public void onComplete(boolean isSuccess, TodoData data) {
-                onCompleteListener.onComplete(isSuccess, data.toEntity());
+            public void onComplete(boolean isSuccess, TodoData remoteData) {
+                if (isSuccess) {
+                    todoLocalDataSource.remove(new OnCompleteListener<TodoData>() {
+                        @Override
+                        public void onComplete(boolean isSuccess, TodoData localData) {
+                            if (isSuccess) {
+                                onCompleteListener.onComplete(true, localData.toEntity());
+                            } else {
+                                onCompleteListener.onComplete(true, remoteData.toEntity());
+                            }
+                        }
+                    }, todoData);
+                } else {
+                    onCompleteListener.onComplete(false, null);
+                }
             }
         }, todoData);
     }
 
+    @Override
+    public void getTodo(OnCompleteListener<TodoEntity> onCompleteListener, String todoKey) {
+        getTodoFromLocal(new OnCompleteListener<TodoData>() {
+            @Override
+            public void onComplete(boolean isSuccess, TodoData localData) {
+                if (isSuccess && localData != null) {
+                    onCompleteListener.onComplete(true, localData.toEntity());
+                } else {
+                    getTodoFromRemote(new OnCompleteListener<TodoData>() {
+                        @Override
+                        public void onComplete(boolean isSuccess, TodoData remoteData) {
+                            onCompleteListener.onComplete(isSuccess, remoteData.toEntity());
+                        }
+                    }, todoKey);
+                }
+            }
+        }, todoKey);
+    }
+
     public void getTeamTodoList(final OnCompleteListener<List<TodoEntity>> onCompleteListener, final String teamKey) {
-        getTeamTodoListFromCloud(onCompleteListener, teamKey);
-        getTeamTodoListFromCache(new OnCompleteListener<List<TodoData>>() {
+        getTeamTodoListFromLocal(new OnCompleteListener<List<TodoData>>() {
             @Override
             public void onComplete(boolean isSuccess, List<TodoData> data) {
-                if (isSuccess) {
-//                    onCompleteListener.onComplete(isSuccess, data);
+                if (isSuccess && data != null) {
+                    onCompleteListener.onComplete(true, getTodoEntities(data));
                 } else {
-//                    getTeamTodoListFromLocal(onCompleteListener, teamKey);
-                    getTeamTodoListFromCloud(onCompleteListener, teamKey);
+                    getTeamTodoListFromRemote(onCompleteListener, teamKey);
                 }
             }
         }, teamKey);
@@ -111,70 +145,45 @@ public class TodoRepositoryImpl implements TodoRepository {
     public void getMyTodoList(final OnCompleteListener<List<TodoEntity>> onCompleteListener, final String userKey) {
         if (isRefresh()) {
             todoLocalDataSource.clear();
-            getMyTodoListFromCloud(onCompleteListener, userKey);
+            getMyTodoListFromRemote(onCompleteListener, userKey);
             setRefresh(false);
             return;
         }
-        getMyTodoListFromCache(new OnCompleteListener<List<TodoData>>() {
+
+        getMyTodoListFromLocal(new OnCompleteListener<List<TodoData>>() {
             @Override
             public void onComplete(boolean isSuccess, List<TodoData> data) {
                 if (isSuccess && data != null) {
                     onCompleteListener.onComplete(true, getTodoEntities(data));
                 } else {
-                    getMyTodoListFromLocal(onCompleteListener, userKey);
-                    getMyTodoListFromCloud(onCompleteListener, userKey);
+                    getMyTodoListFromRemote(onCompleteListener, userKey);
                 }
             }
         }, userKey);
     }
 
-    private void getTeamTodoListFromCache(final OnCompleteListener<List<TodoData>> onCompleteListener,
-                                          final String teamKey) {
-        todoLocalDataSource.getDataList(new OnCompleteListener<List<TodoData>>() {
-            @Override
-            public void onComplete(boolean isSuccess, List<TodoData> data) {
-                onCompleteListener.onComplete(isSuccess, data);
-            }
-        }, DataType.TEAM, teamKey);
+    private void getTodoFromLocal(final OnCompleteListener<TodoData> onCompleteListener, final String todoKey) {
+        todoLocalDataSource.getData(onCompleteListener, todoKey);
     }
 
-    private void getMyTodoListFromCache(final OnCompleteListener<List<TodoData>> onCompleteListener,
-                                        final String userKey) {
-        todoLocalDataSource.getDataList(new OnCompleteListener<List<TodoData>>() {
+    private void getTodoFromRemote(final OnCompleteListener<TodoData> onCompleteListener, final String todoKey) {
+        todoRemoteDataSource.getData(new OnCompleteListener<TodoData>() {
             @Override
-            public void onComplete(boolean isSuccess, List<TodoData> data) {
-                onCompleteListener.onComplete(isSuccess, data);
+            public void onComplete(boolean isSuccess, TodoData data) {
+                if (isSuccess) {
+                    onCompleteListener.onComplete(true, data);
+                } else {
+                    onCompleteListener.onComplete(false, null);
+                }
             }
-        }, DataType.MY, userKey);
+        }, todoKey);
     }
 
     private void getTeamTodoListFromLocal(final OnCompleteListener<List<TodoData>> onCompleteListener, final String teamKey) {
-        todoLocalDataSource.getDataList(new OnCompleteListener<List<TodoData>>() {
-            @Override
-            public void onComplete(boolean isSuccess, List<TodoData> todoData) {
-                if (isSuccess && todoData != null) {
-                    onCompleteListener.onComplete(true, todoData);
-                } else {
-//                    getTeamTodoListFromCloud(onCompleteListener, teamKey);
-                }
-            }
-        }, DataType.TEAM, teamKey);
+        todoLocalDataSource.getDataList(onCompleteListener, DataType.TEAM, teamKey);
     }
 
-    private void getMyTodoListFromLocal(final OnCompleteListener<List<TodoEntity>> onCompleteListener, final String userKey) {
-        todoLocalDataSource.getDataList(new OnCompleteListener<List<TodoData>>() {
-            @Override
-            public void onComplete(boolean isSuccess, List<TodoData> data) {
-                if (isSuccess && data != null) {
-//                    onCompleteListener.onComplete(true, data);
-                } else {
-                    getMyTodoListFromCloud(onCompleteListener, userKey);
-                }
-            }
-        }, DataType.MY, userKey);
-    }
-
-    private void getTeamTodoListFromCloud(final OnCompleteListener<List<TodoEntity>> onCompleteListener, String teamKey) {
+    private void getTeamTodoListFromRemote(final OnCompleteListener<List<TodoEntity>> onCompleteListener, String teamKey) {
         todoRemoteDataSource.getDataList(new OnCompleteListener<List<TodoData>>() {
             @Override
             public void onComplete(boolean isSuccess, List<TodoData> data) {
@@ -188,7 +197,11 @@ public class TodoRepositoryImpl implements TodoRepository {
         }, DataType.TEAM, teamKey);
     }
 
-    private void getMyTodoListFromCloud(final OnCompleteListener<List<TodoEntity>> onCompleteListener, String userKey) {
+    private void getMyTodoListFromLocal(final OnCompleteListener<List<TodoData>> onCompleteListener, final String userKey) {
+        todoLocalDataSource.getDataList(onCompleteListener, DataType.MY, userKey);
+    }
+
+    private void getMyTodoListFromRemote(final OnCompleteListener<List<TodoEntity>> onCompleteListener, String userKey) {
         todoRemoteDataSource.getDataList(new OnCompleteListener<List<TodoData>>() {
             @Override
             public void onComplete(boolean isSuccess, List<TodoData> data) {
@@ -200,21 +213,6 @@ public class TodoRepositoryImpl implements TodoRepository {
             }
         }, DataType.MY, userKey);
     }
-
-//    private void getMyEmptyTeamTodoFromCloud(final OnCompleteListener<ArrayList<TodoEntity>> onCompleteListener,
-//                                             String userKey,
-//                                             ArrayList<String> teamKeyList) {
-//        todoRemoteDataSource.getDataList(new OnCompleteListener<ArrayList<TodoData>>() {
-//            @Override
-//            public void onComplete(boolean isSuccess, ArrayList<TodoData> data) {
-//                if (isSuccess) {
-//                    onCompleteListener.onComplete(true, getTodoEntities(data));
-//                } else {
-//                    onCompleteListener.onComplete(false, null);
-//                }
-//            }
-//        }, DataType.MY, userKey, teamKeyList);
-//    }
 
     @NonNull
     private List<TodoEntity> getTodoEntities(List<TodoData> data) {
