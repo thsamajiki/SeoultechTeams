@@ -34,19 +34,6 @@ public class TeamParticipationActivity extends AppCompatActivity implements View
 //            tvLatestKingTitle, tvLatestKingMemberName, tvLatestKingPercent, tvPerformanceKingTitle, tvPerformanceKingMemberName, tvPerformanceKingPercent;
 //    private ArrayList<MemberEntity> teamMemberDataList = new ArrayList<>();
 //    private ArrayList<TodoEntity> teamTodoDataList = new ArrayList<>();
-    private ParticipationData participationData = new ParticipationData();
-
-    private int countTodoRegularSubmitted;
-    private int countTodoLateSubmitted;
-    private int countTodoResubmitted;
-    private int countTotalSubmitted;
-    private int countTodoConfirmed;
-    private int countTodoDismissed;
-
-    private int memberTodoFaithfulPercent;
-    private int memberTodoPerformancePercent;
-    private int memberTodoLatePercent;
-
 
 
     private ActivityTeamParticipationBinding binding;
@@ -64,9 +51,6 @@ public class TeamParticipationActivity extends AppCompatActivity implements View
 //        initView();
         setOnClickListener();
         presenter.getMemberParticipationList(getTeamData().getTeamKey());
-
-//        presenter.getMemberDataListFromDatabase(getTeamData());
-//        presenter.getTodoDataListFromDatabase();
     }
 
 

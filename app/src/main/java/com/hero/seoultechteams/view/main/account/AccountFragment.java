@@ -45,42 +45,6 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
     private final AccountContract.Presenter presenter = new AccountPresenter(this,
             Injector.getInstance().provideGetAccountProfileUseCase());
 
-    private final ActivityResultLauncher<Intent> // 화면 간 이동에 대한 결과값을 받음
-            editProfileResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    int resultCode = result.getResultCode();
-                    Intent data = result.getData();
-
-                    if (resultCode == RESULT_OK && data != null) {
-                        UserEntity userData = data.getParcelableExtra(EXTRA_UPDATE_USER_DATA);
-                        if (userData != null) {
-                            setUserData(userData);
-                        }
-                    }
-                }
-            });
-
-    private final ActivityResultLauncher<Intent> photoResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    int resultCode = result.getResultCode();
-                    Intent data = result.getData();
-
-                    if (resultCode == RESULT_OK && data != null) {
-                        UserEntity userData = data.getParcelableExtra(EXTRA_UPDATE_USER_DATA);
-                        if (userData != null) {
-                            setUserData(userData);
-                        }
-                    }
-                }
-            }
-    );
-
 
     @Nullable
     @Override
@@ -140,7 +104,6 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
     }
 
     private void intentPhoto(String profileImageUrl) {
-        Log.d("photo", "intentPhoto: " + profileImageUrl);
         Intent intent = new Intent(requireActivity(), PhotoActivity.class);
         intent.putExtra(EXTRA_PROFILE_IMAGE_URL, profileImageUrl);
         photoResultLauncher.launch(intent);
@@ -150,6 +113,42 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
         Intent intent = new Intent(requireActivity(), EditProfileActivity.class);
         editProfileResultLauncher.launch(intent);
     }
+
+    private final ActivityResultLauncher<Intent> // 화면 간 이동에 대한 결과값을 받음
+            editProfileResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    int resultCode = result.getResultCode();
+                    Intent data = result.getData();
+
+                    if (resultCode == RESULT_OK && data != null) {
+                        UserEntity userData = data.getParcelableExtra(EXTRA_UPDATE_USER_DATA);
+                        if (userData != null) {
+                            setUserData(userData);
+                        }
+                    }
+                }
+            });
+
+    private final ActivityResultLauncher<Intent> photoResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    int resultCode = result.getResultCode();
+                    Intent data = result.getData();
+
+                    if (resultCode == RESULT_OK && data != null) {
+                        UserEntity userData = data.getParcelableExtra(EXTRA_UPDATE_USER_DATA);
+                        if (userData != null) {
+                            setUserData(userData);
+                        }
+                    }
+                }
+            }
+    );
 
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {

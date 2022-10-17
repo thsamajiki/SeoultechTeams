@@ -3,7 +3,6 @@ package com.hero.seoultechteams.database.user.datastore;
 import android.content.Context;
 import android.net.Uri;
 import android.text.TextUtils;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -225,7 +224,6 @@ public class UserCloudStore extends CloudStore<UserData> {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.d("qwerOnFailure", "onFailure: " + e.getMessage());
                 onCompleteListener.onComplete(false, null);
             }
         });
@@ -384,7 +382,7 @@ public class UserCloudStore extends CloudStore<UserData> {
                     editTodoData.put("managerProfileImageUrl", userData.getProfileImageUrl());
 
                 }
-                editTodoData.put("name", userData.getName());
+                editTodoData.put("managerName", userData.getName());
 
                 for (TodoData todoData : todoDataList) {
                     DocumentReference todoRef = getFirestore()
@@ -403,7 +401,7 @@ public class UserCloudStore extends CloudStore<UserData> {
                 if (!TextUtils.isEmpty(userData.getProfileImageUrl())) {
                     editMemberData.put("profileImageUrl", userData.getProfileImageUrl());
                 }
-                editMemberData.put("managerName", userData.getName());
+                editMemberData.put("name", userData.getName());
                 for (TeamData teamData : teamDataList) {
                     DocumentReference memberRef = getFirestore()
                             .collection("Team")

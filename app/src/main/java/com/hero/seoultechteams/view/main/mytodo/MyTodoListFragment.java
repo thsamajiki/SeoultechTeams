@@ -238,7 +238,7 @@ public class MyTodoListFragment extends Fragment implements OnRecyclerItemClickL
                 break;
             default:
                 Intent intent = new Intent(requireActivity(), TodoDetailActivity.class);
-                intent.putExtra(TodoDetailActivity.EXTRA_TODO_KEY, data);
+                intent.putExtra(TodoDetailActivity.EXTRA_TODO_KEY, data.getTodoKey());
                 startActivity(intent);
                 break;
         }

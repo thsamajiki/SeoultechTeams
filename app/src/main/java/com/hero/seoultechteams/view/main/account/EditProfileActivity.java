@@ -49,24 +49,6 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
             Injector.getInstance().provideUpdateUserUseCase(),
             Injector.getInstance().provideGetAccountProfileUseCase());
 
-    private final ActivityResultLauncher<Intent> intentGalleryLauncher
-            = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    int resultCode = result.getResultCode();
-                    Intent data = result.getData();
-
-                    if (resultCode == RESULT_OK && data != null) {
-                        String newImage = RealPathUtil.getRealPath(EditProfileActivity.this, data.getData());
-                        presenter.setNewProfileImage(newImage);
-                        Glide.with(EditProfileActivity.this).load(newImage).into(ivProfile);
-                        tvEditProfileComplete.setEnabled(true);
-                    }
-                }
-            });
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +88,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
 
         myCurrentUserName = user.getName();
         editUserName.setText(myCurrentUserName);
+        editUserName.setSelection(editUserName.getText().length());
     }
 
     @Override
@@ -129,36 +112,29 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         }
     }
 
-//    private void updateMyUserData(String profileImageUri) {
-//        UserRepositoryImpl userRepository = new UserRepositoryImpl(this);
-//        FirebaseUser firebaseUser = getCurrentUser();
-//        String myNewUserName = editUserName.getText().toString();
-//
-//        UserData userData = new UserData();
-//        userData.setName(myNewUserName);
-//        userData.setEmail(firebaseUser.getEmail());
-//        userData.setKey(firebaseUser.getUid());
-//        userData.setProfileImageUrl(profileImageUri);
-//
-//        userRepository.updateUser((isSuccess, data) -> {
-//            if (isSuccess) {
-//                Toast.makeText(EditProfileActivity.this, "사용자 정보가 변경되었습니다!", Toast.LENGTH_SHORT).show();
-//                Intent intent = new Intent();
-//                intent.putExtra(EXTRA_UPDATE_USER_DATA, userData);
-//                setResult(RESULT_OK, intent);
-//                finish();
-//            } else {
-//                Toast.makeText(EditProfileActivity.this, "사용자 정보 변경에 실패했습니다!", Toast.LENGTH_SHORT).show();
-//            }
-//        }, userData);
-//    }
-
-
     private void intentGallery() {  // 인텐트를 이용하여 사진 갤러리를 열기
         Intent pickIntent = new Intent(Intent.ACTION_PICK, EXTERNAL_CONTENT_URI);
         pickIntent.setType("image/*");
         intentGalleryLauncher.launch(pickIntent);
     }
+
+    private final ActivityResultLauncher<Intent> intentGalleryLauncher
+            = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    int resultCode = result.getResultCode();
+                    Intent data = result.getData();
+
+                    if (resultCode == RESULT_OK && data != null) {
+                        String newImage = RealPathUtil.getRealPath(EditProfileActivity.this, data.getData());
+                        presenter.setNewProfileImage(newImage);
+                        Glide.with(EditProfileActivity.this).load(newImage).into(ivProfile);
+                        tvEditProfileComplete.setEnabled(true);
+                    }
+                }
+            });
 
     private boolean checkStoragePermission() {  // 저장소의 읽기 & 쓰기 권한 허용 여부 체크
         String readPermission = Manifest.permission.READ_EXTERNAL_STORAGE;
@@ -184,18 +160,6 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
             intentGallery();
         }
     }
-
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        if (requestCode == PHOTO_REQ_CODE && resultCode == RESULT_OK && data != null) {
-//            String newImage = RealPathUtil.getRealPath(this, data.getData());
-//            presenter.setNewProfileImage(newImage);
-//            Glide.with(this).load(newImage).into(ivProfile);
-//            tvEditProfileComplete.setEnabled(true);
-//        }
-//    }
 
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {

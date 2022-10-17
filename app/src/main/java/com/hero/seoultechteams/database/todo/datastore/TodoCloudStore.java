@@ -1,7 +1,6 @@
 package com.hero.seoultechteams.database.todo.datastore;
 
 import android.content.Context;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -49,7 +48,31 @@ public class TodoCloudStore extends CloudStore<TodoData> {
     public void getData(OnCompleteListener<TodoData> onCompleteListener, Object... params) {
         String todoKey = params[0].toString();
 
-        loadTodoData(todoKey, onCompleteListener);
+        getFirestore().collectionGroup("Todo")
+                .whereEqualTo("todoKey", todoKey)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        if (queryDocumentSnapshots.isEmpty()) {
+                            onCompleteListener.onComplete(true, null);
+                            return;
+                        }
+
+                        DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                        TodoData todoData = documentSnapshot.toObject(TodoData.class);
+
+                        todoLocalStore.add(null, todoData);
+                        TodoCacheStore.getInstance().add(todoData);
+                        onCompleteListener.onComplete(true, todoData);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        onCompleteListener.onComplete(false, null);
+                    }
+                });
     }
 
     @Override
@@ -164,33 +187,33 @@ public class TodoCloudStore extends CloudStore<TodoData> {
                 });
     }
 
-    private void loadTodoData(String todoKey, final OnCompleteListener<TodoData> onCompleteListener) {
-        getFirestore().collectionGroup("Todo")
-                .whereEqualTo("todoKey", todoKey)
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        if (queryDocumentSnapshots.isEmpty()) {
-                            onCompleteListener.onComplete(true, null);
-                            return;
-                        }
-
-                        DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
-                        TodoData todoData = documentSnapshot.toObject(TodoData.class);
-
-                        todoLocalStore.add(null, todoData);
-                        TodoCacheStore.getInstance().add(todoData);
-                        onCompleteListener.onComplete(true, todoData);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        onCompleteListener.onComplete(false, null);
-                    }
-                });
-    }
+//    private void loadTodoData(String todoKey, final OnCompleteListener<TodoData> onCompleteListener) {
+//        getFirestore().collectionGroup("Todo")
+//                .whereEqualTo("todoKey", todoKey)
+//                .get()
+//                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+//                        if (queryDocumentSnapshots.isEmpty()) {
+//                            onCompleteListener.onComplete(true, null);
+//                            return;
+//                        }
+//
+//                        DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+//                        TodoData todoData = documentSnapshot.toObject(TodoData.class);
+//
+//                        todoLocalStore.add(null, todoData);
+//                        TodoCacheStore.getInstance().add(todoData);
+//                        onCompleteListener.onComplete(true, todoData);
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        onCompleteListener.onComplete(false, null);
+//                    }
+//                });
+//    }
 
     private void loadTeamTodoDataList(String teamKey, final OnCompleteListener<List<TodoData>> onCompleteListener) {
         getFirestore().collection("Team")
@@ -208,6 +231,7 @@ public class TodoCloudStore extends CloudStore<TodoData> {
                         for (DocumentSnapshot documentSnapshot: queryDocumentSnapshots.getDocuments()) {
                             TodoData todoData = documentSnapshot.toObject(TodoData.class);
                             teamTodoDataList.add(todoData);
+                            todoLocalStore.update(null, todoData);
                             TodoCacheStore.getInstance().update(null, todoData);
                         }
                         Collections.sort(teamTodoDataList);
@@ -218,7 +242,6 @@ public class TodoCloudStore extends CloudStore<TodoData> {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d("qwer-OnFailure", "onFailure: " + e.getMessage());
                         onCompleteListener.onComplete(false, null);
                     }
                 });
@@ -241,6 +264,7 @@ public class TodoCloudStore extends CloudStore<TodoData> {
                             myTodoDataList.add(todoData);
                         }
                         Collections.sort(myTodoDataList);
+                        todoLocalStore.addAll(myTodoDataList);
                         TodoCacheStore.getInstance().addAll(myTodoDataList);
                         onCompleteListener.onComplete(true, myTodoDataList);
                     }

@@ -30,15 +30,17 @@ public abstract class LocalStore<T> implements DataStore<T> {
         return context;
     }
 
-    public void addAll(ArrayList<T> dataList) {
+    public void addAll(List<T> dataList) {
         if (dataList == null) {
             return;
         }
         for (T element : dataList) {
             int index = this.dataList.indexOf(element);
-            if (index != -1) {
+            if (index == -1) {
+                // create
                 this.dataList.add(element);
             } else {
+                // update
                 this.dataList.set(index, element);
             }
         }

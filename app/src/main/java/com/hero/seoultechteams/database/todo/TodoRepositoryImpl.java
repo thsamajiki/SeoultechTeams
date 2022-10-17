@@ -120,7 +120,11 @@ public class TodoRepositoryImpl implements TodoRepository {
                     getTodoFromRemote(new OnCompleteListener<TodoData>() {
                         @Override
                         public void onComplete(boolean isSuccess, TodoData remoteData) {
-                            onCompleteListener.onComplete(isSuccess, remoteData.toEntity());
+                            TodoEntity data = null;
+                            if (remoteData != null) {
+                                data = remoteData.toEntity();
+                            }
+                            onCompleteListener.onComplete(isSuccess, data);
                         }
                     }, todoKey);
                 }

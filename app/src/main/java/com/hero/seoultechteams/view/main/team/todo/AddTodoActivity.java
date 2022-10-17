@@ -1,8 +1,6 @@
 package com.hero.seoultechteams.view.main.team.todo;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.recyclerview.widget.RecyclerView;
+import static com.hero.seoultechteams.view.main.team.TeamListFragment.EXTRA_TEAM_DATA;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -11,13 +9,16 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TimePicker;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.button.MaterialButton;
@@ -38,8 +39,6 @@ import java.util.Calendar;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
-import static com.hero.seoultechteams.view.main.team.TeamListFragment.EXTRA_TEAM_DATA;
 
 public class AddTodoActivity extends BaseActivity implements View.OnClickListener, TextWatcher, OnRecyclerItemClickListener<MemberEntity>, AddTodoContract.View {
 
@@ -95,7 +94,6 @@ public class AddTodoActivity extends BaseActivity implements View.OnClickListene
         teamMemberListAdapter.memberCallBack(new TeamMemberListAdapter.OnMemberProfileImageClickListener() {
             @Override
             public void profileImageOnClick(String profileImageUrl) {
-                Log.d("aaa", "profileImageOnClick: " + profileImageUrl);
             }
         });
         teamMemberListAdapter.setOnRecyclerItemClickListener(this);

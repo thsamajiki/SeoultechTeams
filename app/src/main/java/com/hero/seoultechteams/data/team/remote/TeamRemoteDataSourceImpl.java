@@ -1,13 +1,13 @@
 package com.hero.seoultechteams.data.team.remote;
 
-import com.hero.seoultechteams.domain.common.OnCompleteListener;
 import com.hero.seoultechteams.database.team.datastore.TeamCloudStore;
 import com.hero.seoultechteams.database.team.entity.TeamData;
+import com.hero.seoultechteams.domain.common.OnCompleteListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TeamRemoteDataSourceImpl implements TeamRemoteDataSource {
+
     private final TeamCloudStore teamCloudStore;
 
     public TeamRemoteDataSourceImpl(TeamCloudStore teamCloudStore) {

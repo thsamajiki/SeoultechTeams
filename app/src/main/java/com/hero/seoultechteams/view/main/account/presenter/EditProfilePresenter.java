@@ -80,7 +80,7 @@ public class EditProfilePresenter implements EditProfileContract.Presenter {
 
             @Override
             public void onFileUploadProgress(float percent) {
-//                view.failedImageUpload();
+                view.setProgressDialog((int) percent);
             }
         });
         FirebaseStorageAPI.getInstance().uploadImage(FirebaseStorageAPI.DEFAULT_IMAGE_PATH, myNewProfileImageLocalUri);

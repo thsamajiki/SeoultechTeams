@@ -4,8 +4,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.hero.seoultechteams.databinding.ActivitySplashBinding;
 import com.hero.seoultechteams.view.login.LoginActivity;
 import com.hero.seoultechteams.view.login.contract.SplashContract;
 import com.hero.seoultechteams.view.login.presenter.SplashPresenter;
@@ -13,8 +15,9 @@ import com.hero.seoultechteams.view.main.MainActivity;
 
 
 public class SplashActivity extends BaseActivity implements SplashContract.View {
+    private ActivitySplashBinding binding;
 
-    private SplashContract.Presenter presenter = new SplashPresenter(this,
+    private final SplashContract.Presenter presenter = new SplashPresenter(this,
             Injector.getInstance().provideGetTeamListUseCase(),
             Injector.getInstance().provideGetUserUseCase(),
             Injector.getInstance().provideGetAccountProfileUseCase());
@@ -22,7 +25,9 @@ public class SplashActivity extends BaseActivity implements SplashContract.View 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_splash);
+        binding = ActivitySplashBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -62,36 +67,4 @@ public class SplashActivity extends BaseActivity implements SplashContract.View 
                 .create()
                 .show();
     }
-
-//    private void getTeamListFromDatabase() {
-//        TeamRepositoryImpl teamRepositoryImpl = new TeamRepositoryImpl(this);
-//        teamRepositoryImpl.getTeamList(new OnCompleteListener<ArrayList<TeamData>>() {
-//            @Override
-//            public void onComplete(boolean isSuccess, ArrayList<TeamData> data) {
-//                getUserFromDatabase();
-//            }
-//        });
-//    }
-
-//    private void getUserFromDatabase() {
-//
-//        UserRepositoryImpl userRepositoryImpl = new UserRepositoryImpl(this);
-//        userRepositoryImpl.getUser(new OnCompleteListener<UserData>() {
-//            @Override
-//            public void onComplete(boolean isSuccess, UserData data) {
-//                if (isSuccess && data != null) {
-//                    Uri userLocalProfileUri = getCurrentUser().getPhotoUrl();
-//                    if (userLocalProfileUri != null && !TextUtils.isEmpty(data.getProfileImageUrl())) {
-//                        String userLocalName = getCurrentUser().getDisplayName();
-//                        if (!userLocalProfileUri.toString().equals(data.getProfileImageUrl()) ||
-//                                !userLocalName.equals(data.getName())) {
-//                            userRepositoryImpl.updateLocalUser(data);
-//                        }
-//                    }
-//                }
-//                startActivity(new Intent(SplashActivity.this, MainActivity.class));
-//                finish();
-//            }
-//        }, getCurrentUser().getUid());
-//    }
 }

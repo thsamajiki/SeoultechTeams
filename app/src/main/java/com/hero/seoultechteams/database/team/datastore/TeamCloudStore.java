@@ -30,6 +30,7 @@ public class TeamCloudStore extends CloudStore<TeamData> {
 
     private final TeamLocalStore teamLocalStore;
     private final TeamCacheStore teamCacheStore;
+
     public TeamCloudStore(Context context, TeamLocalStore teamLocalStore, TeamCacheStore teamCacheStore) {
         super(context);
         this.teamLocalStore = teamLocalStore;
@@ -93,13 +94,13 @@ public class TeamCloudStore extends CloudStore<TeamData> {
                             onCompleteListener.onComplete(true, Collections.emptyList());
                             return;
                         }
-                        ArrayList<TeamData> teamDataList = new ArrayList<>();
+                        List<TeamData> teamDataList = new ArrayList<>();
                         for (DocumentSnapshot documentSnapshot: queryDocumentSnapshots.getDocuments()) {
                             TeamData teamData = documentSnapshot.toObject(TeamData.class);
                             teamDataList.add(teamData);
                         }
                         // FIXME: 2021-03-19 팀데이터 불러와서 로컬스토어 및 캐시스토어에 저장하기 추가
-//                        teamLocalStore.addAll(teamDataList);
+                        teamLocalStore.addAll(teamDataList);
                         TeamCacheStore.getInstance().addAll(teamDataList);
                         onCompleteListener.onComplete(true, teamDataList);
                     }
@@ -145,6 +146,7 @@ public class TeamCloudStore extends CloudStore<TeamData> {
         }).addOnSuccessListener(new OnSuccessListener<TeamData>() {
             @Override
             public void onSuccess(TeamData teamData) {
+                teamLocalStore.add(onCompleteListener, teamData);
                 TeamCacheStore.getInstance().add(null, teamData);
                 onCompleteListener.onComplete(true, teamData);
             }

@@ -9,6 +9,8 @@ import androidx.room.PrimaryKey;
 import com.hero.seoultechteams.domain.todo.entity.TodoEntity;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Entity(tableName = "todo_table")
 public class TodoData implements Comparable<TodoData> {
@@ -35,6 +37,13 @@ public class TodoData implements Comparable<TodoData> {
     }
 
     public static TodoData toData(TodoEntity todoEntity) {
+        List<Event> eventHistory;
+        if (todoEntity.getEventHistory() != null) {
+            eventHistory = todoEntity.getEventHistory();
+        } else {
+            eventHistory = Collections.emptyList();
+        }
+
         return new TodoData(todoEntity.getTodoTitle(),
                 todoEntity.getTodoDesc(),
                 todoEntity.getUserKey(),
@@ -46,7 +55,7 @@ public class TodoData implements Comparable<TodoData> {
                 todoEntity.getTeamKey(),
                 todoEntity.getTodoCreatedTime(),
                 todoEntity.getTodoEndTime(),
-                new ArrayList<>(todoEntity.getEventHistory()),
+                new ArrayList<>(eventHistory),
                 todoEntity.getTodoKey());
     }
 

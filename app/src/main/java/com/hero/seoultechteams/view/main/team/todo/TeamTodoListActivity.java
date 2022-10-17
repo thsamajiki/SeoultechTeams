@@ -57,43 +57,6 @@ public class TeamTodoListActivity extends BaseActivity implements View.OnClickLi
             Injector.getInstance().provideSetRefreshUseCase());
 
 
-    private final ActivityResultLauncher<Intent> addTodoResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    int resultCode = result.getResultCode();
-                    Intent data = result.getData();
-
-                    if (resultCode == RESULT_OK && data != null) {
-                        TodoEntity todoEntity = data.getParcelableExtra(EXTRA_ADD_TODO);
-                        teamTodoDataList.add(0, todoEntity);
-                        teamTodoListAdapter.notifyDataSetChanged();
-                    }
-                }
-            }
-    );
-
-    private final ActivityResultLauncher<Intent> updateTodoResultLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    int resultCode = result.getResultCode();
-                    Intent data = result.getData();
-
-                    if (resultCode == RESULT_OK && data != null) {
-                        TodoEntity todoEntity = data.getParcelableExtra(EXTRA_UPDATE_TODO);
-                        int index = teamTodoDataList.indexOf(todoEntity);
-                        if (index != -1) {
-                            teamTodoDataList.set(index, todoEntity);
-                            teamTodoListAdapter.notifyItemChanged(index);
-                        }
-                    }
-                }
-            }
-    );
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -200,6 +163,43 @@ public class TeamTodoListActivity extends BaseActivity implements View.OnClickLi
                 break;
         }
     }
+
+    private final ActivityResultLauncher<Intent> addTodoResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    int resultCode = result.getResultCode();
+                    Intent data = result.getData();
+
+                    if (resultCode == RESULT_OK && data != null) {
+                        TodoEntity todoEntity = data.getParcelableExtra(EXTRA_ADD_TODO);
+                        teamTodoDataList.add(0, todoEntity);
+                        teamTodoListAdapter.notifyDataSetChanged();
+                    }
+                }
+            }
+    );
+
+    private final ActivityResultLauncher<Intent> updateTodoResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    int resultCode = result.getResultCode();
+                    Intent data = result.getData();
+
+                    if (resultCode == RESULT_OK && data != null) {
+                        TodoEntity todoEntity = data.getParcelableExtra(EXTRA_UPDATE_TODO);
+                        int index = teamTodoDataList.indexOf(todoEntity);
+                        if (index != -1) {
+                            teamTodoDataList.set(index, todoEntity);
+                            teamTodoListAdapter.notifyItemChanged(index);
+                        }
+                    }
+                }
+            }
+    );
 
     @Override
     public void onRefresh() {

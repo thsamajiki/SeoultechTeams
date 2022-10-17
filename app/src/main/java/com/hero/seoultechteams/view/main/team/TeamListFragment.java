@@ -48,45 +48,6 @@ public class TeamListFragment extends Fragment implements View.OnClickListener, 
     private final TeamListContract.Presenter presenter = new TeamListPresenter(this,
             Injector.getInstance().provideGetTeamListUseCase());
 
-    private final ActivityResultLauncher<Intent> addTeamLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    int resultCode = result.getResultCode();
-                    Intent data = result.getData();
-
-                    if (resultCode == RESULT_OK && data != null) {
-                        TeamEntity teamEntity = data.getParcelableExtra(EXTRA_CREATE_TEAM);
-                        if (teamEntity != null) {
-                            teamDataList.add(0, teamEntity);
-                            teamListAdapter.notifyDataSetChanged();
-                        }
-                    }
-                }
-            }
-    );
-
-    private final ActivityResultLauncher<Intent> updateTeamDetailLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    int resultCode = result.getResultCode();
-                    Intent data = result.getData();
-
-                    if (resultCode == RESULT_OK && data != null) {
-                        TeamEntity teamEntity = data.getParcelableExtra(EXTRA_UPDATE_TEAM);
-                        int index = teamDataList.indexOf(teamEntity);
-                        if (index != -1) {
-                            teamDataList.set(index, teamEntity);
-                            teamListAdapter.notifyItemChanged(index);
-                        }
-                    }
-                }
-            }
-    );
-
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -127,7 +88,7 @@ public class TeamListFragment extends Fragment implements View.OnClickListener, 
     public void onItemClick(int position, View view, TeamEntity data) {
         switch (view.getId()) {
             case R.id.iv_team_option_menu:
-                openTeamOptionMenu(data);
+                openTeamOptionMenu(data, view);
                 break;
             default:
                 intentTeamTodoList(data);
@@ -141,8 +102,8 @@ public class TeamListFragment extends Fragment implements View.OnClickListener, 
         startActivity(intent);
     }
 
-    private void openTeamOptionMenu(TeamEntity teamData) {
-        PopupMenu popupMenu = new PopupMenu(requireActivity(), requireView());
+    private void openTeamOptionMenu(TeamEntity teamData, View anchorView) {
+        PopupMenu popupMenu = new PopupMenu(requireActivity(), anchorView);
         popupMenu.getMenuInflater().inflate(R.menu.menu_team_option, popupMenu.getMenu());
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
@@ -177,6 +138,56 @@ public class TeamListFragment extends Fragment implements View.OnClickListener, 
         Intent intent = new Intent(requireActivity(), CreateTeamActivity.class);
         addTeamLauncher.launch(intent);
     }
+
+    private final ActivityResultLauncher<Intent>
+            addTeamLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    int resultCode = result.getResultCode();
+                    Intent data = result.getData();
+
+                    if (resultCode == RESULT_OK && data != null) {
+                        TeamEntity teamEntity = data.getParcelableExtra(EXTRA_CREATE_TEAM);
+                        if (teamEntity != null) {
+                            teamDataList.add(0, teamEntity);
+                            teamListAdapter.notifyDataSetChanged();
+                        }
+                    }
+                }
+            }
+    );
+
+    private final ActivityResultLauncher<Intent>
+            updateTeamDetailLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    int resultCode = result.getResultCode();
+                    Intent data = result.getData();
+
+                    if (resultCode == RESULT_OK && data != null) {
+                        TeamEntity teamEntity = data.getParcelableExtra(EXTRA_UPDATE_TEAM);
+                        int index = -1;
+
+                        for (int i = 0; i < teamDataList.size(); i++) {
+                            TeamEntity entity = teamDataList.get(i);
+                            if (entity.getTeamKey().equals(teamEntity.getTeamKey())) {
+                                index = i;
+                                break;
+                            }
+                        }
+
+                        if (index != -1) {
+                            teamDataList.set(index, teamEntity);
+                            teamListAdapter.notifyItemChanged(index);
+                        }
+                    }
+                }
+            }
+    );
 
 //    @Override
 //    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
