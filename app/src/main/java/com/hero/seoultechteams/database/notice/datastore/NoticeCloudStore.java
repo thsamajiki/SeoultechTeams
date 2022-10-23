@@ -41,7 +41,9 @@ public class NoticeCloudStore extends CloudStore<NoticeData> {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        onCompleteListener.onComplete(false, null);
+                        if (onCompleteListener != null) {
+                            onCompleteListener.onComplete(false, null);
+                        }
                     }
                 });
     }
@@ -62,13 +64,18 @@ public class NoticeCloudStore extends CloudStore<NoticeData> {
                             NoticeData noticeData = documentSnapshot.toObject(NoticeData.class);
                             noticeDataList.add(noticeData);
                         }
-                        onCompleteListener.onComplete(true, noticeDataList);
+
+                        if (onCompleteListener != null) {
+                            onCompleteListener.onComplete(true, noticeDataList);
+                        }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        onCompleteListener.onComplete(false, null);
+                        if (onCompleteListener != null) {
+                            onCompleteListener.onComplete(false, null);
+                        }
                     }
                 });
     }
@@ -81,13 +88,17 @@ public class NoticeCloudStore extends CloudStore<NoticeData> {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        onCompleteListener.onComplete(true, noticeData);
+                        if (onCompleteListener != null) {
+                            onCompleteListener.onComplete(true, noticeData);
+                        }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        onCompleteListener.onComplete(false, null);
+                        if (onCompleteListener != null) {
+                            onCompleteListener.onComplete(false, null);
+                        }
                     }
                 });
     }

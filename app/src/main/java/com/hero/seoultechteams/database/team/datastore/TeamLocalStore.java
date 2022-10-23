@@ -1,7 +1,6 @@
 package com.hero.seoultechteams.database.team.datastore;
 
 import android.content.Context;
-import android.os.AsyncTask;
 
 import com.hero.seoultechteams.database.team.dao.TeamDao;
 import com.hero.seoultechteams.database.team.database.AppTeamDatabase;
@@ -53,7 +52,9 @@ public class TeamLocalStore extends LocalStore<TeamData> {
                 appExecutors.mainThread().execute(new Runnable() {
                     @Override
                     public void run() {
-                        onCompleteListener.onComplete(true, teamData);
+                        if (onCompleteListener != null) {
+                            onCompleteListener.onComplete(true, teamData);
+                        }
                     }
                 });
             }
@@ -78,7 +79,9 @@ public class TeamLocalStore extends LocalStore<TeamData> {
                 appExecutors.mainThread().execute(new Runnable() {
                     @Override
                     public void run() {
-                        onCompleteListener.onComplete(true, teamDataList);
+                        if (onCompleteListener != null) {
+                            onCompleteListener.onComplete(true, teamDataList);
+                        }
                     }
                 });
             }
@@ -103,7 +106,9 @@ public class TeamLocalStore extends LocalStore<TeamData> {
                 appExecutors.mainThread().execute(new Runnable() {
                     @Override
                     public void run() {
-                        onCompleteListener.onComplete(true, data);
+                        if (onCompleteListener != null) {
+                            onCompleteListener.onComplete(true, data);
+                        }
                     }
                 });
             }
@@ -123,7 +128,9 @@ public class TeamLocalStore extends LocalStore<TeamData> {
                 appExecutors.mainThread().execute(new Runnable() {
                     @Override
                     public void run() {
-                        onCompleteListener.onComplete(true, data);
+                        if (onCompleteListener != null) {
+                            onCompleteListener.onComplete(true, data);
+                        }
                     }
                 });
             }
@@ -144,7 +151,9 @@ public class TeamLocalStore extends LocalStore<TeamData> {
                     appExecutors.mainThread().execute(new Runnable() {
                         @Override
                         public void run() {
-                            onCompleteListener.onComplete(true, data);
+                            if (onCompleteListener != null) {
+                                onCompleteListener.onComplete(true, data);
+                            }
                         }
                     });
                 }

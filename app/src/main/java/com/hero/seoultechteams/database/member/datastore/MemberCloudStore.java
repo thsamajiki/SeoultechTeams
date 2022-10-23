@@ -45,13 +45,17 @@ public class MemberCloudStore extends CloudStore<MemberData> {
                         MemberData memberData = documentSnapshot.toObject(MemberData.class);
 //                        MemberLocalStore.getInstance().add(memberData);
 //                        MemberCacheStore.getInstance().add(memberData);
-                        onCompleteListener.onComplete(true, memberData);
+                        if (onCompleteListener != null) {
+                            onCompleteListener.onComplete(true, memberData);
+                        }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        onCompleteListener.onComplete(false, null);
+                        if (onCompleteListener != null) {
+                            onCompleteListener.onComplete(false, null);
+                        }
                     }
                 });
     }
@@ -80,13 +84,17 @@ public class MemberCloudStore extends CloudStore<MemberData> {
 
 //                        MemberLocalStore.getInstance().addAll(memberDataList);
 //                        MemberCacheStore.getInstance().addAll(memberDataList);
-                        onCompleteListener.onComplete(true, memberDataList);
+                        if (onCompleteListener != null) {
+                            onCompleteListener.onComplete(true, memberDataList);
+                        }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        onCompleteListener.onComplete(false, null);
+                        if (onCompleteListener != null) {
+                            onCompleteListener.onComplete(false, null);
+                        }
                     }
                 });
     }
@@ -126,12 +134,16 @@ public class MemberCloudStore extends CloudStore<MemberData> {
             public void onSuccess(MemberData memberData) {
 //                MemberLocalStore.getInstance().add(true, memberData);
 //                MemberCacheStore.getInstance().add(memberData);
-                onCompleteListener.onComplete(true, memberData);
+                if (onCompleteListener != null) {
+                    onCompleteListener.onComplete(true, memberData);
+                }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                onCompleteListener.onComplete(false, null);
+                if (onCompleteListener != null) {
+                    onCompleteListener.onComplete(false, null);
+                }
             }
         });
     }
@@ -202,13 +214,17 @@ public class MemberCloudStore extends CloudStore<MemberData> {
                     public void onSuccess(Void aVoid) {
 //                        MemberLocalStore.getInstance().update(null, memberData);
                         MemberCacheStore.getInstance().update(null, memberData);
-                        onCompleteListener.onComplete(true, null);
+                        if (onCompleteListener != null) {
+                            onCompleteListener.onComplete(true, null);
+                        }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        onCompleteListener.onComplete(false, null);
+                        if (onCompleteListener != null) {
+                            onCompleteListener.onComplete(false, null);
+                        }
                     }
                 });
     }
@@ -224,13 +240,17 @@ public class MemberCloudStore extends CloudStore<MemberData> {
                     @Override
                     public void onSuccess(Void aVoid) {
 //                        MemberLocalStore.getInstance().remove(null, memberData);
-                        onCompleteListener.onComplete(true, memberData);
+                        if (onCompleteListener != null) {
+                            onCompleteListener.onComplete(true, memberData);
+                        }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        onCompleteListener.onComplete(false, null);
+                        if (onCompleteListener != null) {
+                            onCompleteListener.onComplete(false, null);
+                        }
                     }
                 });
     }

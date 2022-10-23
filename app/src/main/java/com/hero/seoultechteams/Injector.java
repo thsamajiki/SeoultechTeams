@@ -88,7 +88,7 @@ public class Injector {
     public GetTeamListUseCase provideGetTeamListUseCase() {
         return new GetTeamListUseCase(new TeamRepositoryImpl(
                 new TeamRemoteDataSourceImpl(
-                        new TeamCloudStore(SeoultechTeamsApp.getInstance(), provideTeamLocalStore(), TeamCacheStore.getInstance())
+                        new TeamCloudStore(SeoultechTeamsApp.getInstance(), provideTeamLocalStore(), TeamCacheStore.getInstance(), provideTodoCloudStore())
                 ),
                 new TeamLocalDataSourceImpl(
                         provideTeamLocalStore(),
@@ -101,7 +101,7 @@ public class Injector {
     public GetTeamUseCase provideGetTeamUseCase() {
         return new GetTeamUseCase(new TeamRepositoryImpl(
                 new TeamRemoteDataSourceImpl(
-                        new TeamCloudStore(SeoultechTeamsApp.getInstance(), provideTeamLocalStore(), TeamCacheStore.getInstance())
+                        new TeamCloudStore(SeoultechTeamsApp.getInstance(), provideTeamLocalStore(), TeamCacheStore.getInstance(), provideTodoCloudStore())
                 ),
                 new TeamLocalDataSourceImpl(
                         provideTeamLocalStore(),
@@ -114,7 +114,7 @@ public class Injector {
     public AddTeamUseCase provideAddTeamUseCase() {
         return new AddTeamUseCase(new TeamRepositoryImpl(
                 new TeamRemoteDataSourceImpl(
-                        new TeamCloudStore(SeoultechTeamsApp.getInstance(), provideTeamLocalStore(), TeamCacheStore.getInstance())
+                        new TeamCloudStore(SeoultechTeamsApp.getInstance(), provideTeamLocalStore(), TeamCacheStore.getInstance(), provideTodoCloudStore())
                 ),
                 new TeamLocalDataSourceImpl(
                         provideTeamLocalStore(),
@@ -127,7 +127,7 @@ public class Injector {
     public UpdateTeamDetailUseCase provideUpdateTeamDetailUseCase() {
         return new UpdateTeamDetailUseCase(new TeamRepositoryImpl(
                 new TeamRemoteDataSourceImpl(
-                        new TeamCloudStore(SeoultechTeamsApp.getInstance(), provideTeamLocalStore(), TeamCacheStore.getInstance())
+                        new TeamCloudStore(SeoultechTeamsApp.getInstance(), provideTeamLocalStore(), TeamCacheStore.getInstance(), provideTodoCloudStore())
                 ),
                 new TeamLocalDataSourceImpl(
                         provideTeamLocalStore(),
@@ -140,7 +140,7 @@ public class Injector {
     private TeamRepository getTeamRepository() {
         return new TeamRepositoryImpl(
                 new TeamRemoteDataSourceImpl(
-                        new TeamCloudStore(SeoultechTeamsApp.getInstance(), provideTeamLocalStore(), TeamCacheStore.getInstance())
+                        new TeamCloudStore(SeoultechTeamsApp.getInstance(), provideTeamLocalStore(), TeamCacheStore.getInstance(), provideTodoCloudStore())
                 ),
                 new TeamLocalDataSourceImpl(
                         provideTeamLocalStore(),

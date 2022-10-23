@@ -16,8 +16,11 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Transaction;
 import com.hero.seoultechteams.database.CloudStore;
+import com.hero.seoultechteams.database.DataType;
 import com.hero.seoultechteams.database.member.entity.MemberData;
 import com.hero.seoultechteams.database.team.entity.TeamData;
+import com.hero.seoultechteams.database.todo.datastore.TodoCloudStore;
+import com.hero.seoultechteams.database.todo.entity.TodoData;
 import com.hero.seoultechteams.database.user.entity.UserData;
 import com.hero.seoultechteams.domain.common.OnCompleteListener;
 
@@ -30,12 +33,16 @@ public class TeamCloudStore extends CloudStore<TeamData> {
 
     private final TeamLocalStore teamLocalStore;
     private final TeamCacheStore teamCacheStore;
+    private final TodoCloudStore todoCloudStore;
 
-    public TeamCloudStore(Context context, TeamLocalStore teamLocalStore, TeamCacheStore teamCacheStore) {
+    public TeamCloudStore(Context context, TeamLocalStore teamLocalStore, TeamCacheStore teamCacheStore, TodoCloudStore todoCloudStore) {
         super(context);
         this.teamLocalStore = teamLocalStore;
         this.teamCacheStore = teamCacheStore;
+        this.todoCloudStore = todoCloudStore;
     }
+
+
 
     @Override
     public void getData(OnCompleteListener<TeamData> onCompleteListener, Object... params) {
@@ -184,13 +191,25 @@ public class TeamCloudStore extends CloudStore<TeamData> {
                 DocumentReference myTeamRef = myRef.collection("MyTeam")
                         .document(teamRef.getId());
 
-//                DocumentReference todoRef = getFirestore().collection("Team")
-//                        .document(teamData.getTeamKey())
-//                        .collection("Todo")
-//                        .document(firebaseUser.getUid());
-
                 transaction.update(teamRef, editData);
                 transaction.update(myTeamRef, editData);
+
+                // MyTodoList의 teamName을 업데이트함
+                todoCloudStore.getDataList(new OnCompleteListener<List<TodoData>>() {
+                    @Override
+                    public void onComplete(boolean isSuccess, List<TodoData> data) {
+                        if (isSuccess && data != null) {
+                            for (TodoData todoData : data) {
+                                if (todoData.getTeamKey().equals(teamData.getTeamKey())) {
+                                    todoData.setTeamName(teamData.getTeamName());
+                                    todoCloudStore.update(null, todoData);
+                                }
+                            }
+                        }
+                    }
+                }, DataType.MY, firebaseUser.getUid());
+
+
 //                transaction.update(todoRef, editData);
 
                 return null;

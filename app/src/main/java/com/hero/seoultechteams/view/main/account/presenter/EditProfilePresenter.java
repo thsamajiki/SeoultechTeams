@@ -72,7 +72,7 @@ public class EditProfilePresenter implements EditProfileContract.Presenter {
             public void onFileUploadComplete(boolean isSuccess, String downloadUrl) {
                 view.dismissProgressDialog();
                 if (isSuccess) {
-                    updateUserProfile(editUserName, myNewProfileImageLocalUri);
+                    updateUserProfile(editUserName, downloadUrl);
                 } else {
                     view.failedImageUpload();
                 }

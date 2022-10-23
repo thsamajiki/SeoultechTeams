@@ -1,14 +1,12 @@
 package com.hero.seoultechteams.database.member.datastore;
 
 import android.content.Context;
-import android.os.AsyncTask;
 
 import com.hero.seoultechteams.database.LocalStore;
 import com.hero.seoultechteams.database.member.dao.MemberDao;
 import com.hero.seoultechteams.database.member.database.AppMemberDatabase;
-import com.hero.seoultechteams.database.user.entity.UserData;
-import com.hero.seoultechteams.domain.common.OnCompleteListener;
 import com.hero.seoultechteams.database.member.entity.MemberData;
+import com.hero.seoultechteams.domain.common.OnCompleteListener;
 import com.hero.seoultechteams.utils.AppExecutors;
 
 import java.util.List;
@@ -54,7 +52,9 @@ public class MemberLocalStore extends LocalStore<MemberData> {
                 appExecutors.mainThread().execute(new Runnable() {
                     @Override
                     public void run() {
-                        onCompleteListener.onComplete(true, memberData);
+                        if (onCompleteListener != null) {
+                            onCompleteListener.onComplete(true, memberData);
+                        }
                     }
                 });
             }
@@ -79,7 +79,9 @@ public class MemberLocalStore extends LocalStore<MemberData> {
                 appExecutors.mainThread().execute(new Runnable() {
                     @Override
                     public void run() {
-                        onCompleteListener.onComplete(true, memberDataList);
+                        if (onCompleteListener != null) {
+                            onCompleteListener.onComplete(true, memberDataList);
+                        }
                     }
                 });
             }
@@ -104,7 +106,9 @@ public class MemberLocalStore extends LocalStore<MemberData> {
                 appExecutors.mainThread().execute(new Runnable() {
                     @Override
                     public void run() {
-                        onCompleteListener.onComplete(true, data);
+                        if (onCompleteListener != null) {
+                            onCompleteListener.onComplete(true, data);
+                        }
                     }
                 });
             }
@@ -124,7 +128,9 @@ public class MemberLocalStore extends LocalStore<MemberData> {
                 appExecutors.mainThread().execute(new Runnable() {
                     @Override
                     public void run() {
-                        onCompleteListener.onComplete(true, data);
+                        if (onCompleteListener != null) {
+                            onCompleteListener.onComplete(true, data);
+                        }
                     }
                 });
             }
@@ -145,7 +151,9 @@ public class MemberLocalStore extends LocalStore<MemberData> {
                     appExecutors.mainThread().execute(new Runnable() {
                         @Override
                         public void run() {
-                            onCompleteListener.onComplete(true, data);
+                            if (onCompleteListener != null) {
+                                onCompleteListener.onComplete(true, data);
+                            }
                         }
                     });
                 }

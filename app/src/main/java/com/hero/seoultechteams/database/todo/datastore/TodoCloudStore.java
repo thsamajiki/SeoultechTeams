@@ -64,7 +64,9 @@ public class TodoCloudStore extends CloudStore<TodoData> {
 
                         todoLocalStore.add(null, todoData);
                         TodoCacheStore.getInstance().add(todoData);
-                        onCompleteListener.onComplete(true, todoData);
+                        if (onCompleteListener != null) {
+                            onCompleteListener.onComplete(true, todoData);
+                        }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -104,7 +106,9 @@ public class TodoCloudStore extends CloudStore<TodoData> {
                     public void onSuccess(Void aVoid) {
                         todoLocalStore.add(null, todoData);
                         TodoCacheStore.getInstance().add(null, todoData);
-                        onCompleteListener.onComplete(true, todoData);
+                        if (onCompleteListener != null) {
+                            onCompleteListener.onComplete(true, todoData);
+                        }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -122,6 +126,7 @@ public class TodoCloudStore extends CloudStore<TodoData> {
         editData.put("todoState", todoData.getTodoState());
         editData.put("todoTitle", todoData.getTodoTitle());
         editData.put("todoDesc", todoData.getTodoDesc());
+        editData.put("teamName", todoData.getTeamName());
         getFirestore().collection("Team")
                 .document(todoData.getTeamKey())
                 .collection("Todo")
@@ -135,13 +140,17 @@ public class TodoCloudStore extends CloudStore<TodoData> {
                             todoLocalStore.update(null, todoData);
                             TodoCacheStore.getInstance().update(null, todoData);
                         }
-                        onCompleteListener.onComplete(true, todoData);
+                        if (onCompleteListener != null) {
+                            onCompleteListener.onComplete(true, todoData);
+                        }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        onCompleteListener.onComplete(false, null);
+                        if (onCompleteListener != null) {
+                            onCompleteListener.onComplete(false, null);
+                        }
                     }
                 });
     }
@@ -176,13 +185,17 @@ public class TodoCloudStore extends CloudStore<TodoData> {
                     public void onSuccess(Void aVoid) {
                         todoLocalStore.remove(null, todoData);
                         TodoCacheStore.getInstance().remove(null, todoData);
-                        onCompleteListener.onComplete(true, todoData);
+                        if (onCompleteListener != null) {
+                            onCompleteListener.onComplete(true, todoData);
+                        }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        onCompleteListener.onComplete(false, null);
+                        if (onCompleteListener != null) {
+                            onCompleteListener.onComplete(false, null);
+                        }
                     }
                 });
     }
@@ -236,13 +249,17 @@ public class TodoCloudStore extends CloudStore<TodoData> {
                         }
                         Collections.sort(teamTodoDataList);
 
-                        onCompleteListener.onComplete(true, teamTodoDataList);
+                        if (onCompleteListener != null) {
+                            onCompleteListener.onComplete(true, teamTodoDataList);
+                        }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        onCompleteListener.onComplete(false, null);
+                        if (onCompleteListener != null) {
+                            onCompleteListener.onComplete(false, null);
+                        }
                     }
                 });
     }
@@ -266,13 +283,17 @@ public class TodoCloudStore extends CloudStore<TodoData> {
                         Collections.sort(myTodoDataList);
                         todoLocalStore.addAll(myTodoDataList);
                         TodoCacheStore.getInstance().addAll(myTodoDataList);
-                        onCompleteListener.onComplete(true, myTodoDataList);
+                        if (onCompleteListener != null) {
+                            onCompleteListener.onComplete(true, myTodoDataList);
+                        }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        onCompleteListener.onComplete(false, null);
+                        if (onCompleteListener != null) {
+                            onCompleteListener.onComplete(false, null);
+                        }
                     }
                 });
     }

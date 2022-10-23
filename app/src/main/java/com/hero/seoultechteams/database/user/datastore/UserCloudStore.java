@@ -59,13 +59,17 @@ public class UserCloudStore extends CloudStore<UserData> {
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         UserData userData = documentSnapshot.toObject(UserData.class);
 //                        UserCacheStore.getInstance().add(userData);
-                        onCompleteListener.onComplete(true, userData);
+                        if (onCompleteListener != null) {
+                            onCompleteListener.onComplete(true, userData);
+                        }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        onCompleteListener.onComplete(false, null);
+                        if (onCompleteListener != null) {
+                            onCompleteListener.onComplete(false, null);
+                        }
                     }
                 });
     }
@@ -90,13 +94,17 @@ public class UserCloudStore extends CloudStore<UserData> {
                             UserData userData = snapshot.toObject(UserData.class);
                             userDataList.add(userData);
                         }
-                        onCompleteListener.onComplete(true, userDataList);
+                        if (onCompleteListener != null) {
+                            onCompleteListener.onComplete(true, userDataList);
+                        }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        onCompleteListener.onComplete(false, null);
+                        if (onCompleteListener != null) {
+                            onCompleteListener.onComplete(false, null);
+                        }
                     }
                 });
     }
@@ -121,13 +129,17 @@ public class UserCloudStore extends CloudStore<UserData> {
                             UserData userData = snapshot.toObject(UserData.class);
                             userDataList.add(userData);
                         }
-                        onCompleteListener.onComplete(true, userDataList);
+                        if (onCompleteListener != null) {
+                            onCompleteListener.onComplete(true, userDataList);
+                        }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        onCompleteListener.onComplete(false, null);
+                        if (onCompleteListener != null) {
+                            onCompleteListener.onComplete(false, null);
+                        }
                     }
                 });
     }
@@ -165,13 +177,17 @@ public class UserCloudStore extends CloudStore<UserData> {
                     @Override
                     public void onSuccess(Void aVoid) {
 //                        UserCacheStore.getInstance().add(null, userData);
-                        onCompleteListener.onComplete(true, userData);
+                        if (onCompleteListener != null) {
+                            onCompleteListener.onComplete(true, userData);
+                        }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        onCompleteListener.onComplete(false, null);
+                        if (onCompleteListener != null) {
+                            onCompleteListener.onComplete(false, null);
+                        }
                     }
                 });
     }
@@ -219,12 +235,16 @@ public class UserCloudStore extends CloudStore<UserData> {
             @Override
             public void onSuccess(List<UserData> userDataList) {
 //                UserCacheStore.getInstance().add(null, userDataList);
-                onCompleteListener.onComplete(true, userDataList);
+                if (onCompleteListener != null) {
+                    onCompleteListener.onComplete(true, userDataList);
+                }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                onCompleteListener.onComplete(false, null);
+                if (onCompleteListener != null) {
+                    onCompleteListener.onComplete(false, null);
+                }
             }
         });
     }
@@ -419,12 +439,16 @@ public class UserCloudStore extends CloudStore<UserData> {
             @Override
             public void onSuccess(Object o) {
                 updateLocalUser(userData);
-                onCompleteListener.onComplete(true, userData);
+                if (onCompleteListener != null) {
+                    onCompleteListener.onComplete(true, userData);
+                }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                onCompleteListener.onComplete(false, null);
+                if (onCompleteListener != null) {
+                    onCompleteListener.onComplete(false, null);
+                }
             }
         });
     }
@@ -444,13 +468,18 @@ public class UserCloudStore extends CloudStore<UserData> {
                             onCompleteListener.onComplete(true, memberDataList);
                             return;
                         }
-                        onCompleteListener.onComplete(true, null);
+
+                        if (onCompleteListener != null) {
+                            onCompleteListener.onComplete(true, null);
+                        }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        onCompleteListener.onComplete(false, null);
+                        if (onCompleteListener != null) {
+                            onCompleteListener.onComplete(false, null);
+                        }
                     }
                 });
     }
@@ -539,12 +568,16 @@ public class UserCloudStore extends CloudStore<UserData> {
         }).addOnSuccessListener(new OnSuccessListener<Object>() {
             @Override
             public void onSuccess(Object o) {
-                onCompleteListener.onComplete(true, userData);
+                if (onCompleteListener != null) {
+                    onCompleteListener.onComplete(true, userData);
+                }
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                onCompleteListener.onComplete(false, null);
+                if (onCompleteListener != null) {
+                    onCompleteListener.onComplete(false, null);
+                }
             }
         });
     }
