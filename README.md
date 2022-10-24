@@ -8,7 +8,8 @@
 
 
 ## 프로젝트 기간
-2020\. 09 ~ 2021\. 06
+- 2020\. 09 ~ 2021\. 06
+- 틈틈이 발견된 버그도 수정했습니다.
 
 
 ## 기여도
@@ -22,7 +23,7 @@
 
 ## 앱의 버전
 - minSdkVersion : 21
-- targetSdkVersion : 30
+- targetSdkVersion : 32
 
 
 ## 이용 대상
@@ -42,6 +43,7 @@
 - MVP 디자인 패턴
 - ROOM
 - RecyclerView
+- ViewBinding
 - Swipe Refresh Layout
 - Cache Manager
 - @StringDef
