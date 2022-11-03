@@ -8,7 +8,8 @@
 
 
 ## 프로젝트 기간
-2020\. 09 ~ 2021\. 06
+- 2020\. 09 ~ 2021\. 06
+- 틈틈이 발견된 버그도 수정했습니다.
 
 
 ## 기여도
@@ -17,12 +18,12 @@
 
 ## 사용 프로그램 및 언어
 - 사용 프로그램 : Android Studio, Google Firebase, GitHub
-- 사용 언어 : Android, Java, SQL
+- 사용 언어 : Java
 
 
 ## 앱의 버전
 - minSdkVersion : 21
-- targetSdkVersion : 30
+- targetSdkVersion : 32
 
 
 ## 이용 대상
@@ -42,6 +43,7 @@
 - MVP 디자인 패턴
 - ROOM
 - RecyclerView
+- ViewBinding
 - Swipe Refresh Layout
 - Cache Manager
 - @StringDef
