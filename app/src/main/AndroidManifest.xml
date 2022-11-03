@@ -11,28 +11,45 @@
         android:supportsRtl="true"
         android:name=".SeoultechTeamsApp"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.main.team.TeamDetailActivity" />
-        <activity android:name=".view.main.account.setting.notice.NoticeListActivity" />
-        <activity android:name=".view.main.account.setting.SettingActivity" />
+        <activity android:name=".view.main.team.TeamDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".view.main.account.setting.notice.NoticeListActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".view.main.account.setting.SettingActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".view.main.team.todo.AddTodoActivity"
             android:theme="@style/TranslucentActivity"
-            android:windowSoftInputMode="adjustResize|stateVisible" />
-        <activity android:name=".view.main.team.todo.TeamTodoListActivity" />
+            android:windowSoftInputMode="adjustResize|stateVisible"
+            android:screenOrientation="portrait" />
+        <activity android:name=".view.main.team.todo.TeamTodoListActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".view.main.team.CreateTeamActivity" />
-        <activity android:name=".view.main.team.option_menu.TeamParticipationActivity" />
-        <activity android:name=".view.main.team.option_menu.InviteActivity" />
-        <activity android:name=".view.main.team.todo.TodoDetailActivity" />
-        <activity android:name=".view.main.account.EditProfileActivity" />
+        <activity android:name=".view.main.team.CreateTeamActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".view.main.team.option_menu.TeamParticipationActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".view.main.team.option_menu.InviteActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".view.main.team.todo.TodoDetailActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".view.main.account.EditProfileActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".view.photoview.PhotoActivity" />
-        <activity android:name=".view.login.SignUp02Activity" />
-        <activity android:name=".view.login.SignUp01Activity" />
-        <activity android:name=".view.login.LoginActivity" />
-        <activity android:name=".view.main.team.option_menu.TeamMemberListActivity" />
-        <activity android:name=".view.main.MainActivity" />
+        <activity android:name=".view.photoview.PhotoActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".view.login.SignUp02Activity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".view.login.SignUp01Activity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".view.login.LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".view.main.team.option_menu.TeamMemberListActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".view.main.MainActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".SplashActivity"
+            android:screenOrientation="portrait"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -40,7 +57,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
 
     </application>
 
