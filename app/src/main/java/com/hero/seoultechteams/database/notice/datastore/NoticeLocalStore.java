@@ -1,10 +1,8 @@
 package com.hero.seoultechteams.database.notice.datastore;
 
 import android.content.Context;
-import android.os.AsyncTask;
 
 import com.hero.seoultechteams.database.LocalStore;
-import com.hero.seoultechteams.database.member.entity.MemberData;
 import com.hero.seoultechteams.database.notice.dao.NoticeDao;
 import com.hero.seoultechteams.database.notice.database.AppNoticeDatabase;
 import com.hero.seoultechteams.database.notice.entity.NoticeData;
@@ -47,9 +45,7 @@ public class NoticeLocalStore extends LocalStore<NoticeData> {
             public void run() {
                 String noticeKey = params[0].toString();
                 NoticeData noticeData = noticeDao.getNoticeFromKey(noticeKey);
-                // 위에 까지는 서브 스레드에서
 
-                // onCompleteListener는 메인 스레드에서
                 appExecutors.mainThread().execute(new Runnable() {
                     @Override
                     public void run() {
@@ -70,11 +66,8 @@ public class NoticeLocalStore extends LocalStore<NoticeData> {
         appExecutors.networkIO().execute(new Runnable() {
             @Override
             public void run() {
-//                List<NoticeData> noticeDataList = getNoticeDatabase().getNoticeDao().getAllNotices();
                 List<NoticeData> noticeDataList = noticeDao.getAllNotices();
-                // 위에 까지는 서브 스레드에서
 
-                // onCompleteListener는 메인 스레드에서
                 appExecutors.mainThread().execute(new Runnable() {
                     @Override
                     public void run() {

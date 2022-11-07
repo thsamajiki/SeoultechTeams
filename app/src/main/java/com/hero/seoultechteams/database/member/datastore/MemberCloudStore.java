@@ -182,7 +182,6 @@ public class MemberCloudStore extends CloudStore<MemberData> {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-//                        MemberLocalStore.getInstance().remove(null, memberData);
                         if (onCompleteListener != null) {
                             onCompleteListener.onComplete(true, memberData);
                         }

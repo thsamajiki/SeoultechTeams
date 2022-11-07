@@ -38,7 +38,6 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
     private CircleImageView ivMyUserProfile;
     private TextView tvMyUserName, tvMyUserEmail;
     private MaterialButton btnEditProfile;
-    public static final String EXTRA_MY_NOTIFICATION_DATA = "myNotificationData";
 
     private final AccountContract.Presenter presenter = new AccountPresenter(this,
             Injector.getInstance().provideGetAccountProfileUseCase());
@@ -52,6 +51,7 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
         View view = inflater.inflate(R.layout.fragment_account, container, false);
         initView(view);
         setOnClickListener();
+
         return view;
     }
 
@@ -150,5 +150,4 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_account_actionbar_option, menu);
     }
-
 }

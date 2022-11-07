@@ -1,5 +1,7 @@
 package com.hero.seoultechteams.view.main.team.option_menu;
 
+import static com.hero.seoultechteams.view.photoview.PhotoActivity.EXTRA_PROFILE_IMAGE_URL;
+
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
@@ -24,8 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-
-import static com.hero.seoultechteams.view.photoview.PhotoActivity.EXTRA_PROFILE_IMAGE_URL;
 
 
 public class InviteAdapter extends BaseAdapter<InviteAdapter.InviteViewHolder, UserEntity> {
@@ -110,7 +110,6 @@ public class InviteAdapter extends BaseAdapter<InviteAdapter.InviteViewHolder, U
         private void intentPhoto(String profileImageUrl) {
             Intent intent = new Intent(context, PhotoActivity.class);
             intent.putExtra(EXTRA_PROFILE_IMAGE_URL, profileImageUrl);
-            //startActivity(intent);
         }
 
         public void bind(UserEntity userData) {
