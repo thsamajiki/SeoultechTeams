@@ -25,17 +25,6 @@ import java.util.List;
 
 public class TeamParticipationActivity extends AppCompatActivity implements View.OnClickListener, TeamParticipationContract.View {
 
-//    private ImageView ivBack, ivBestIcon, ivLatestIcon;
-//    private CircleImageView ivMemberFaithFulFirstRank, ivMemberFaithFulSecondRank, ivMemberFaithFulThirdRank, ivMemberFaithFulFourthRank,
-//            ivMemberLateKing, ivMemberBestPerformance;
-//    private TextView tvFaithfulRankingTitle, tvFaithfulFirstRank, tvFaithfulSecondRank, tvFaithfulThirdRank, tvFaithfulFourthRank,
-//            tvFaithfulFirstRankMemberName, tvFaithfulSecondRankMemberName, tvFaithfulThirdRankMemberName, tvFaithfulFourthRankMemberName,
-//            tvFaithfulFirstRankPercent, tvFaithfulSecondRankPercent, tvFaithfulThirdRankPercent, tvFaithfulFourthRankPercent,
-//            tvLatestKingTitle, tvLatestKingMemberName, tvLatestKingPercent, tvPerformanceKingTitle, tvPerformanceKingMemberName, tvPerformanceKingPercent;
-//    private ArrayList<MemberEntity> teamMemberDataList = new ArrayList<>();
-//    private ArrayList<TodoEntity> teamTodoDataList = new ArrayList<>();
-
-
     private ActivityTeamParticipationBinding binding;
 
     private final TeamParticipationContract.Presenter presenter = new TeamParticipationPresenter(this,
@@ -48,7 +37,6 @@ public class TeamParticipationActivity extends AppCompatActivity implements View
         View view = binding.getRoot();
         setContentView(view);
 
-//        initView();
         setOnClickListener();
         presenter.getMemberParticipationList(getTeamData().getTeamKey());
     }

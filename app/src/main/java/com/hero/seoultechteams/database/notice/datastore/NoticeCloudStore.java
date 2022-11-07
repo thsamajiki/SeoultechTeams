@@ -34,7 +34,6 @@ public class NoticeCloudStore extends CloudStore<NoticeData> {
                         if (documentSnapshot == null) {
                             onCompleteListener.onComplete(true, null);
                         } else {
-//                            onCompleteListener.onComplete(true, noticeData);
                         }
                     }
                 })

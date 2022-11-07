@@ -2,9 +2,6 @@ package com.hero.seoultechteams.view.login;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
-
-import android.util.Patterns;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,7 +11,6 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.hero.seoultechteams.BaseActivity;
 import com.hero.seoultechteams.Injector;
 import com.hero.seoultechteams.R;
-
 import com.hero.seoultechteams.domain.user.entity.UserEntity;
 import com.hero.seoultechteams.view.login.contract.LoginContract;
 import com.hero.seoultechteams.view.login.presenter.LoginPresenter;
@@ -87,38 +83,4 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     public void onInvalidLogin(InvalidLoginInfoType invalidLoginInfoType) {
         Toast.makeText(this, invalidLoginInfoType.getMessage(), Toast.LENGTH_SHORT).show();
     }
-
-//    private void firebaseLogin(final String email, String pwd) {
-//        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, pwd)
-//                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-//                    @Override
-//                    public void onSuccess(AuthResult authResult) {
-//                        getUserFromDatabase();
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Toast.makeText(LoginActivity.this, "로그인에 실패했습니다.", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//    }
-
-
-
-
-
-//    private void getUserFromDatabase() {
-//        UserRepositoryImpl userRepository = new UserRepositoryImpl(this);
-//        userRepository.getUser(new OnCompleteListener<UserData>() {
-//            @Override
-//            public void onComplete(boolean isSuccess, UserData data) {
-//                if (isSuccess && data != null) {
-//                    startActivity(new Intent(LoginActivity.this, MainActivity.class));
-//                    finishAffinity();
-//                }
-//
-//            }
-//        }, getCurrentUser().getUid());
-//    }
 }

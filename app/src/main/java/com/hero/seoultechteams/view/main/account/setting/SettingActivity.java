@@ -1,8 +1,5 @@
 package com.hero.seoultechteams.view.main.account.setting;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -11,6 +8,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.play.core.review.ReviewInfo;
@@ -32,14 +32,12 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     private ReviewManager reviewManager;
     private ReviewInfo reviewInfo;
     public static final String EXTRA_SETTING_DATA = "settingData";
-//    private final SettingContract.Presenter presenter = new SettingPresenter(this, getBaseContext());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         initView();
-//        presenter.getSettingFromDatabase();
         setOnClickListener();
         readyPlayStoreReview();
     }
@@ -97,7 +95,6 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void openFontPopUp() {
-        // TODO: 2021-01-12 선택 가능한 폰트들이 나오는 창이 아래에서 위로 나오게 하기
     }
 
     private void openDeleteCachePopUp() {
@@ -134,16 +131,12 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void readyPlayStoreReview() {
-        // TODO: 2021-01-12 플레이스토어에 있는 리뷰 작성 페이지로 바로 이동하도록 링크를 만들기
-
-        //reviewManager = ReviewManagerFactory.create(this);
         reviewManager = new FakeReviewManager(this);
         Task<ReviewInfo> request = reviewManager.requestReviewFlow();
         request.addOnCompleteListener(new OnCompleteListener<ReviewInfo>() {
             @Override
             public void onComplete(@NonNull Task<ReviewInfo> task) {
                 if (task.isSuccessful()) {
-                    // We can get the ReviewInfo object
                     reviewInfo = task.getResult();
                     reviewManager.launchReviewFlow(SettingActivity.this, reviewInfo)
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -153,7 +146,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                         }
                     });
                 } else {
-                    // There was some problem, continue regardless of the result.
+
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -188,7 +181,6 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onGetSetting() {
         Intent intent = new Intent();
-//            intent.putExtra(EXTRA_SETTING_DATA, data);
         setResult(RESULT_OK, intent);
         finish();
     }

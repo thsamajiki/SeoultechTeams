@@ -10,8 +10,6 @@ public interface TodoLocalDataSource {
     // CacheStore
     void getData(OnCompleteListener<TodoData> onCompleteListener, String todoKey);
 
-//    void getData(OnCompleteListener<TodoData> onCompleteListener, DataType type, String todoKey);
-
     void getDataList(OnCompleteListener<List<TodoData>> onCompleteListener, DataType type, String key);
 
     void clear();

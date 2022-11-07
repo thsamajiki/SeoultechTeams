@@ -58,7 +58,6 @@ public class UserCloudStore extends CloudStore<UserData> {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         UserData userData = documentSnapshot.toObject(UserData.class);
-//                        UserCacheStore.getInstance().add(userData);
                         if (onCompleteListener != null) {
                             onCompleteListener.onComplete(true, userData);
                         }
@@ -82,7 +81,7 @@ public class UserCloudStore extends CloudStore<UserData> {
         getFirestore().collection("User")
                 .whereEqualTo("name", userName)
                 .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {  // 쿼리를 날린 후의 결과를 스냅샷으로 찍어서 보내준다.
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         if (queryDocumentSnapshots.isEmpty()) {
@@ -117,7 +116,7 @@ public class UserCloudStore extends CloudStore<UserData> {
         getFirestore().collection("User")
                 .whereEqualTo("email", userEmail)
                 .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {  // 쿼리를 날린 후의 결과를 스냅샷으로 찍어서 보내준다.
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         if (queryDocumentSnapshots.isEmpty()) {
@@ -167,7 +166,6 @@ public class UserCloudStore extends CloudStore<UserData> {
                 });
     }
 
-    // 회원가입시 호출되는 메소드
     @Override
     public void add(final OnCompleteListener<UserData> onCompleteListener, final UserData userData) {
         getFirestore().collection("User")
@@ -176,7 +174,6 @@ public class UserCloudStore extends CloudStore<UserData> {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-//                        UserCacheStore.getInstance().add(null, userData);
                         if (onCompleteListener != null) {
                             onCompleteListener.onComplete(true, userData);
                         }
@@ -201,7 +198,6 @@ public class UserCloudStore extends CloudStore<UserData> {
 
                 for (UserData userData : userDataList) {
                     if (isNotMember(userData, memberDataList)) {
-                        // db에 저장할 객체 만듦
                         newMemberData.setProfileImageUrl(userData.getProfileImageUrl());
                         newMemberData.setName(userData.getName());
 
@@ -211,20 +207,15 @@ public class UserCloudStore extends CloudStore<UserData> {
 
                         newMemberData.setKey(userData.getKey());
 
-//                        memberDataList.add(newMemberData);
-
-                        // db에 저장함
                         DocumentReference teamRef = getFirestore().collection("Team").document(teamData.getTeamKey());
                         DocumentReference memberRef = teamRef.collection("Member").document(userData.getKey());
                         transaction.set(memberRef, newMemberData);
 
-                        //
                         DocumentReference userRef = getFirestore().collection("User")
                                 .document(userData.getKey());
                         DocumentReference myTeamRef = userRef.collection("MyTeam")
                                 .document(teamData.getTeamKey());
 
-                        // 내 팀 db에 신규 데이터 추가
                         transaction.set(myTeamRef, teamData);
                     }
                 }
@@ -262,28 +253,9 @@ public class UserCloudStore extends CloudStore<UserData> {
         return false;
     }
 
-    // FIXME: 2021-05-14 EditProfileActivity를 통해 나의 사용자 정보(나의 프로필 사진, 나의 사용자 이름)가 변경되었을 때
-    //  UserCloudStore의 update() 메소드에서 트랜잭션 처리할 때 필요한 데이터
-    //  1. UserData의 profileImageUrl, name
-    //  2. TodoData의 managerProfileImageUrl, managerName
-    //  3. MemberData의 profileImageUrl, name
     @Override
     public void update(final OnCompleteListener<UserData> onCompleteListener, final UserData userData) {
-        // 동작을 동일하게 하기 위해, 근데 Repository 호출은 여기서 안할거니까
-        // 기존 코드를 보고 똑같이 가져온거.
-        
-        /* 최상위에서 하위로
-        CloudStore / LocalStore / CacheStore
-        ------------------------------------
-        ~~RemoteDataSource
-        ------------------------------------
-        ~~Repository
-        ------------------------------------
-        ~~UseCase
-        ------------------------------------
-        ~~Presenter
-       */
-        
+
         teamCacheStore.getDataList(new OnCompleteListener<List<TeamData>>() {
             @Override
             public void onComplete(boolean isSuccess, List<TeamData> teamList) {
@@ -291,7 +263,6 @@ public class UserCloudStore extends CloudStore<UserData> {
                     @Override
                     public void onComplete(boolean isSuccess, List<TodoData> todoList) {
                         if (isSuccess) {
-                            // TODO: 2022-09-29 ||로 해야할 수도??
                             if (teamList == null && todoList == null) {
                                 // 그냥 업데이트
                                 updateUser(onCompleteListener, userData);
@@ -304,22 +275,6 @@ public class UserCloudStore extends CloudStore<UserData> {
                 }, DataType.MY, userData.getKey());
             }
         }, userData.getKey());
-
-//        TeamRepositoryImpl teamRepositoryImpl = new TeamRepositoryImpl(getContext());
-//        teamRepositoryImpl.getTeamList(new OnCompleteListener<List<TeamData>>() {
-//            @Override
-//            public void onComplete(boolean isSuccess, List<TeamData> data) {
-//                if (isSuccess) {
-//                    if (data == null) {
-//                        // 그냥 업데이트
-//                        updateUser(onCompleteListener, userData);
-//                    } else {
-//                        // 트랜잭션을 통한 업데이트
-//                        updateUserWithMemberAndTodo(onCompleteListener, data, userData);
-//                    }
-//                }
-//            }
-//        });
     }
 
     private void updateUser(final OnCompleteListener<UserData> onCompleteListener, final UserData userData) {
@@ -371,11 +326,6 @@ public class UserCloudStore extends CloudStore<UserData> {
                 });
     }
 
-    // FIXME: 2021-05-14 EditProfileActivity를 통해 나의 사용자 정보(나의 프로필 사진, 나의 사용자 이름)가 변경되었을 때
-    //  UserCloudStore의 update() 메소드에서 트랜잭션 처리할 때 필요한 데이터
-    //  1. UserData의 profileImageUrl, name
-    //  2. TodoData의 managerProfileImageUrl, managerName
-    //  3. MemberData의 profileImageUrl, name
     private void updateUserWithMemberAndTodo(final OnCompleteListener<UserData> onCompleteListener,
                                              final List<TeamData> teamDataList,
                                              final List<TodoData> todoDataList,
@@ -416,7 +366,6 @@ public class UserCloudStore extends CloudStore<UserData> {
 
 
                 // 3. MemberData의 profileImageUrl, name
-                // 파이어베이스 지침상 최대 500까지만 업데이트 가능 -> 팀을 500개 이상 가입하지 못한다는 뜻
                 HashMap<String, Object> editMemberData = new HashMap<>();
                 if (!TextUtils.isEmpty(userData.getProfileImageUrl())) {
                     editMemberData.put("profileImageUrl", userData.getProfileImageUrl());
@@ -488,48 +437,6 @@ public class UserCloudStore extends CloudStore<UserData> {
 
     @Override
     public void remove(final OnCompleteListener<UserData> onCompleteListener, final UserData userData) {
-        // TODO: 2021-03-12 탈퇴 기능 추가시 해야 할 것
-        // 1. 유저정보 삭제
-
-        // 2. 각각의 팀들의 멤버 정보 삭제
-        // 3. 각각의 팀들의 투두 정보 삭제
-        // 4. 1, 2, 3번이 한 트랜잭션 안에서 무결성을 이뤄야 함
-        //
-//        teamCacheStore.getDataList(new OnCompleteListener<List<TeamData>>() {
-//            @Override
-//            public void onComplete(boolean isSuccess, List<TeamData> teamList) {
-//                todoCloudStore.getDataList(new OnCompleteListener<List<TodoData>>() {
-//                    @Override
-//                    public void onComplete(boolean isSuccess, List<TodoData> todoList) {
-//                        if (isSuccess) {
-//                            removeUser(onCompleteListener, teamList, todoList, userData);
-//                        } else {
-//
-//                        }
-//                    }
-//                });
-//            }
-//        });
-//
-//        final FirebaseFirestore firestore = FirebaseFirestore.getInstance();
-//        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-//        firestore.collection("Team")
-//                .document(userData.getTeamKey())
-//                .collection("Member")
-//                .document(userData.getUserKey())
-//                .delete()
-//                .addOnSuccessListener(new OnSuccessListener<Void>() {
-//                    @Override
-//                    public void onSuccess(Void aVoid) {
-//                        onCompleteListener.onComplete(true, userData);
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        onCompleteListener.onComplete(false, null);
-//                    }
-//                });
     }
 
     private void removeUser(final OnCompleteListener<UserData> onCompleteListener, List<TeamData> teamDataList, UserData userData) {
@@ -540,18 +447,6 @@ public class UserCloudStore extends CloudStore<UserData> {
                 DocumentReference userRef = getFirestore().collection("User")
                         .document(userData.getKey());
                 transaction.delete(userRef);
-
-
-//                for (TodoData todoData : todoDataList) {
-//                    DocumentReference todoRef = getFirestore()
-//                            .collection("Team")
-//                            .document(todoData.getTeamKey())
-//                            .collection("Todo")
-//                            .document(todoData.getUserKey());
-//
-//                    transaction.delete(todoRef);
-//                }
-
 
                 for (TeamData teamData : teamDataList) {
                     DocumentReference memberRef = getFirestore()

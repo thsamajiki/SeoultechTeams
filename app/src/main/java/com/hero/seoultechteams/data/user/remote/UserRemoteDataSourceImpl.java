@@ -49,7 +49,6 @@ public class UserRemoteDataSourceImpl implements UserRemoteDataSource {
                         firebaseAuth.signInWithEmailAndPassword(email, pwd);
 
                         onFailedListener.onFailed(new FailedCreateUserException("failed addUser", e));
-//                        view.failedFirebaseSignUp();
                     }
                 });
     }
@@ -74,7 +73,6 @@ public class UserRemoteDataSourceImpl implements UserRemoteDataSource {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        // TODO: 2021-04-17 회원가입 성공 이후에 프로필 업데이트 실패시에 예외처리 로직 추가
                         onFailedListener.onFailed(new FailedUpdateUserException("failed updateProfile", e));
 
                         UserData userData = new UserData(

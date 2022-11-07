@@ -90,7 +90,6 @@ public class TeamMemberListActivity extends BaseActivity implements View.OnClick
                 finish();
                 break;
             case R.id.iv_member_profile:
-                //intentMemberProfilePhoto(getTeamData().getUserKey());
                 break;
             case R.id.btn_go_to_invite:
                 intentInviteActivity();
@@ -140,7 +139,6 @@ public class TeamMemberListActivity extends BaseActivity implements View.OnClick
                 }
             });
 
-    // TODO: 2022-09-27 멤버 프로필 이미지 클릭할 때 PhotoActivity로 이동하는 것을 어댑터에서 처리해야 하나요?
     private void intentMemberProfilePhoto(String profileImageUrl) {
         Intent intent = new Intent(this, PhotoActivity.class);
         intent.putExtra(EXTRA_PROFILE_IMAGE_URL, profileImageUrl);

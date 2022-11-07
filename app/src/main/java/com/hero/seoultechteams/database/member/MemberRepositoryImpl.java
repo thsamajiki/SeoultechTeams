@@ -63,7 +63,6 @@ public class MemberRepositoryImpl implements MemberRepository {
             @Override
             public void onComplete(boolean isSuccess, List<MemberData> data) {
                 if (isSuccess) {
-//                    onCompleteListener.onComplete(true, data);
                 } else {
                     getMemberListFromLocal(onCompleteListener, teamKey);
                 }

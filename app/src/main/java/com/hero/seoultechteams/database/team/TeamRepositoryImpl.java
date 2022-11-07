@@ -35,8 +35,6 @@ public class TeamRepositoryImpl implements TeamRepository {
                             if (isSuccess) {
                                 onCompleteListener.onComplete(true, localData.toEntity());
                             } else {
-                                // Remote는 add 성공함. isSuccess == false 로컬 실패
-                                // 그렇더라도, Remote는 성공했으니까 전체적으로 성공이라고 볼 수 있지 않을까
                                 onCompleteListener.onComplete(true, remoteData.toEntity());
                             }
                         }

@@ -42,7 +42,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
     private CircleImageView ivProfile;
     private FloatingActionButton fabProfileImageEdit;
     private String myCurrentUserName;
-    private static final int PERMISSION_REQ_CODE = 1010;    // 권한 요청 코드
+    private static final int PERMISSION_REQ_CODE = 1010;
     public static final String EXTRA_UPDATE_USER_DATA = "updateUser";
 
     private final EditProfileContract.Presenter presenter = new EditProfilePresenter(this,
@@ -98,8 +98,6 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
                 finish();
                 break;
             case R.id.tv_edit_profile_complete:
-                // 새로운 프로필 사진인지 검사가 완료되면, 활성화되고, 클릭하면 아래의 기능을 실행한다. -> 무엇이든 하나라도 변화가 있었다는 것을 뜻한다.
-                // 프로필 사진을 업로드하고 사용자 데이터를 업로드할 것인가? 또는 사용자 데이터만 업로드할 것인가?
                 String myNewUserName = editUserName.getText().toString();
                 presenter.updateMyUserData(myNewUserName);
 
@@ -112,7 +110,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         }
     }
 
-    private void intentGallery() {  // 인텐트를 이용하여 사진 갤러리를 열기
+    private void intentGallery() {
         Intent pickIntent = new Intent(Intent.ACTION_PICK, EXTERNAL_CONTENT_URI);
         pickIntent.setType("image/*");
         intentGalleryLauncher.launch(pickIntent);
@@ -136,7 +134,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
                 }
             });
 
-    private boolean checkStoragePermission() {  // 저장소의 읽기 & 쓰기 권한 허용 여부 체크
+    private boolean checkStoragePermission() {
         String readPermission = Manifest.permission.READ_EXTERNAL_STORAGE;
         String writePermission = Manifest.permission.WRITE_EXTERNAL_STORAGE;
 

@@ -4,7 +4,7 @@ import android.content.Context;
 
 import java.util.ArrayList;
 
-public abstract class Repository<T> {    // 리포지토리는 데이터스토어들의 객체를 가지고 있어야 한다.(Setting)
+public abstract class Repository<T> {
 
     private CloudStore<T> cloudStore;
     private LocalStore<T> localStore;

@@ -258,57 +258,5 @@ public class TeamTodoListAdapter extends BaseAdapter<TeamTodoListAdapter.TeamTod
             int position = getAdapterPosition();
             getOnRecyclerItemClickListener().onItemClick(position, view, teamTodoEntityList.get(position));
         }
-
-//        private void openTodoOptionMenu() {
-//            PopupMenu popupMenu = new PopupMenu(context, btnTodoOptionMenu);
-//            popupMenu.getMenuInflater().inflate(R.menu.menu_team_todo_option, popupMenu.getMenu());
-//            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-//                @Override
-//                public boolean onMenuItemClick(MenuItem item) {
-//                    switch(item.getItemId()) {
-//                        case R.id.menu_delete_team_todo :
-//                            openDeleteTeamTodoDialog();
-//                            break;
-//                    }
-//                    return true;
-//                }
-//            });
-//            popupMenu.show();
-//        }
-//
-//        private void openDeleteTeamTodoDialog() {
-//            String delete_todo_message = "할 일을 삭제하시겠습니까?";
-//            String positiveText = "예";
-//            String negativeText = "아니오";
-//            new MaterialAlertDialogBuilder(context).setMessage(delete_todo_message)
-//                    .setPositiveButton(positiveText, new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            //removeTeamTodo();
-//                        }
-//                    })
-//                    .setNegativeButton(negativeText, new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//
-//                        }
-//                    })
-//                    .create()
-//                    .show();
-//        }
-
-        private void removeTeamTodo() {
-//            TodoRepositoryImpl todoRepositoryImpl = new TodoRepositoryImpl(context);
-//            todoRepositoryImpl.removeTodo(new OnCompleteListener<TodoEntity>() {
-//                @Override
-//                public void onComplete(boolean isSuccess, TodoEntity data) {
-//                    if (isSuccess) {
-//                        Toast.makeText(context, "할 일을 삭제했습니다.", Toast.LENGTH_SHORT).show();
-//                    } else {
-//                        Toast.makeText(context, "할 일을 삭제하지 못했습니다.", Toast.LENGTH_SHORT).show();
-//                    }
-//                }
-//            }, teamTodoEntityList.get(getAdapterPosition()));
-        }
     }
 }

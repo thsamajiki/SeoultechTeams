@@ -200,34 +200,6 @@ public class TodoCloudStore extends CloudStore<TodoData> {
                 });
     }
 
-//    private void loadTodoData(String todoKey, final OnCompleteListener<TodoData> onCompleteListener) {
-//        getFirestore().collectionGroup("Todo")
-//                .whereEqualTo("todoKey", todoKey)
-//                .get()
-//                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-//                        if (queryDocumentSnapshots.isEmpty()) {
-//                            onCompleteListener.onComplete(true, null);
-//                            return;
-//                        }
-//
-//                        DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
-//                        TodoData todoData = documentSnapshot.toObject(TodoData.class);
-//
-//                        todoLocalStore.add(null, todoData);
-//                        TodoCacheStore.getInstance().add(todoData);
-//                        onCompleteListener.onComplete(true, todoData);
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        onCompleteListener.onComplete(false, null);
-//                    }
-//                });
-//    }
-
     private void loadTeamTodoDataList(String teamKey, final OnCompleteListener<List<TodoData>> onCompleteListener) {
         getFirestore().collection("Team")
                 .document(teamKey)

@@ -7,7 +7,6 @@ import static com.hero.seoultechteams.view.photoview.PhotoActivity.EXTRA_PROFILE
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -39,7 +38,6 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
     private CircleImageView ivMyUserProfile;
     private TextView tvMyUserName, tvMyUserEmail;
     private MaterialButton btnEditProfile;
-//    private ArrayList<MyNotificationData> myNotificationDataList = new ArrayList<>();
     public static final String EXTRA_MY_NOTIFICATION_DATA = "myNotificationData";
 
     private final AccountContract.Presenter presenter = new AccountPresenter(this,
@@ -51,12 +49,9 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        // inflater는 xml로 정의된 view (또는 menu 등)를 실제 view 객체로 만든다
         View view = inflater.inflate(R.layout.fragment_account, container, false);
         initView(view);
         setOnClickListener();
-
-        //getMyNotificationFromDatabase();
         return view;
     }
 
@@ -114,7 +109,7 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
         editProfileResultLauncher.launch(intent);
     }
 
-    private final ActivityResultLauncher<Intent> // 화면 간 이동에 대한 결과값을 받음
+    private final ActivityResultLauncher<Intent>
             editProfileResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -156,24 +151,4 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
         inflater.inflate(R.menu.menu_account_actionbar_option, menu);
     }
 
-
-//    private void getMyNotificationFromDatabase() {
-//        MyNotificationRepository myNotificationRepository = new MyNotificationRepository(requireActivity());
-//        MyNotificationData myNotificationData = new MyNotificationData();
-//        myNotificationRepository.getMyNotificationList(new OnCompleteListener<ArrayList<MyNotificationData>>() {
-//            @Override
-//            public void onComplete(boolean isSuccess, ArrayList<MyNotificationData> data) {
-//                if (isSuccess && data != null) {
-//                    myNotificationDataList.clear();
-//                    myNotificationDataList.addAll(data);
-//                } else {
-//                    Toast.makeText(requireActivity(), "데이터를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        }, myNotificationData.getNotificationKey());
-//    }
-//
-//    private MyNotificationData getMyNotificationData() {
-//        return getActivity().getIntent().getParcelableExtra(EXTRA_MY_NOTIFICATION_DATA);
-//    }
 }

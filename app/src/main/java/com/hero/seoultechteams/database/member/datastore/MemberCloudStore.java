@@ -43,8 +43,6 @@ public class MemberCloudStore extends CloudStore<MemberData> {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         MemberData memberData = documentSnapshot.toObject(MemberData.class);
-//                        MemberLocalStore.getInstance().add(memberData);
-//                        MemberCacheStore.getInstance().add(memberData);
                         if (onCompleteListener != null) {
                             onCompleteListener.onComplete(true, memberData);
                         }
@@ -82,8 +80,6 @@ public class MemberCloudStore extends CloudStore<MemberData> {
                         }
                         Collections.sort(memberDataList);
 
-//                        MemberLocalStore.getInstance().addAll(memberDataList);
-//                        MemberCacheStore.getInstance().addAll(memberDataList);
                         if (onCompleteListener != null) {
                             onCompleteListener.onComplete(true, memberDataList);
                         }
@@ -132,8 +128,6 @@ public class MemberCloudStore extends CloudStore<MemberData> {
         }).addOnSuccessListener(new OnSuccessListener<MemberData>() {
             @Override
             public void onSuccess(MemberData memberData) {
-//                MemberLocalStore.getInstance().add(true, memberData);
-//                MemberCacheStore.getInstance().add(memberData);
                 if (onCompleteListener != null) {
                     onCompleteListener.onComplete(true, memberData);
                 }
@@ -147,56 +141,6 @@ public class MemberCloudStore extends CloudStore<MemberData> {
             }
         });
     }
-
-//    public void addNewMemberList(final OnCompleteListener<ArrayList<MemberData>> onCompleteListener, final TeamData teamData, ArrayList<UserData> userDataList, ArrayList<MemberData> memberDataList) {
-//
-//        getFirestore().runTransaction(new Transaction.Function<ArrayList<MemberData>>() {
-//            @Nullable
-//            @Override
-//            public ArrayList<MemberData> apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
-//                DocumentReference teamRef = getFirestore().collection("Team").document();
-//                FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-//
-//                DocumentReference myRef = getFirestore().collection("User")
-//                        .document(firebaseUser.getUid());
-//                DocumentReference myTeamRef = myRef.collection("MyTeam")
-//                        .document(teamRef.getId());
-//
-//                MemberData newMemberData = new MemberData();
-//                UserData userData = transaction.get(myRef).toObject(UserData.class);
-//
-//                for (UserData data : userDataList) {
-//                    for (MemberData memberData : memberDataList) {
-//                        if (!data.getKey().equals(memberData.getKey())) {
-//                            newMemberData.setProfileImageUrl(userData.getProfileImageUrl());
-//                            newMemberData.setName(userData.getName());
-//                            newMemberData.setTeamKey(teamData.getTeamKey());
-//                            newMemberData.setEmail(userData.getEmail());
-//                            newMemberData.setKey(firebaseUser.getUid());
-//                            memberDataList.add(newMemberData);
-//                        }
-//                    }
-//                }
-//
-//                DocumentReference memberRef = teamRef.collection("Member").document(newMemberData.getKey());
-//                transaction.set(teamRef, teamData);
-//                transaction.set(memberRef, newMemberData);
-//                transaction.set(myTeamRef, teamData);
-//                return memberDataList;
-//            }
-//        }).addOnSuccessListener(new OnSuccessListener<ArrayList<MemberData>>() {
-//            @Override
-//            public void onSuccess(ArrayList<MemberData> memberDataList) {
-//                //MemberCacheStore.getInstance().add(null, memberDataList);
-//                onCompleteListener.onComplete(true, memberDataList);
-//            }
-//        }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//                onCompleteListener.onComplete(false, null);
-//            }
-//        });
-//    }
 
     @Override
     public void update(final OnCompleteListener<MemberData> onCompleteListener, final MemberData memberData) {
@@ -212,7 +156,6 @@ public class MemberCloudStore extends CloudStore<MemberData> {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-//                        MemberLocalStore.getInstance().update(null, memberData);
                         MemberCacheStore.getInstance().update(null, memberData);
                         if (onCompleteListener != null) {
                             onCompleteListener.onComplete(true, null);

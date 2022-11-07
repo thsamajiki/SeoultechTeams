@@ -26,13 +26,13 @@ public class LoadingProgress {
         mDialog.show();
     }
 
-    public static void dismissDialog() {    // 다이얼로그를 닫는다.
+    public static void dismissDialog() {
         if (mDialog != null && mDialog.isShowing()) {
             mDialog.dismiss();
         }
     }
 
-    public static void initProgressDialog(Context context) {    // 진행바를 나타내어 시작시킨다.
+    public static void initProgressDialog(Context context) {
         mProgressDialog = new ProgressDialog(context);
         mProgressDialog.setMessage(context.getString(R.string.loading));
         mProgressDialog.setCancelable(false);
@@ -41,14 +41,14 @@ public class LoadingProgress {
         mProgressDialog.show();
     }
 
-    public static void setProgress(int i) { // 진행바의 진행을 처리한다
+    public static void setProgress(int i) {
         ObjectAnimator animation = ObjectAnimator.ofInt(mProgressDialog, "progress",i);
         animation.setDuration(500); // 0.5 second
         animation.setInterpolator(new AccelerateDecelerateInterpolator());
         animation.start();
     }
 
-    public static void dismissProgressDialog() {    // 진행바를 닫는다.
+    public static void dismissProgressDialog() {
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
         }

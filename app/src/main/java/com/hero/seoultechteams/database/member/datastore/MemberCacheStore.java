@@ -21,8 +21,6 @@ public class MemberCacheStore extends CacheStore<MemberData> {
         return instance;
     }
 
-    // 팀의 멤버 1명의 정보를 불러오는 메소드
-    // 팀의 멤버 1명의 평가 데이터(승인률, 성실도 등등)에 관한 정보를 불러오는 메소드
     @Override
     public void getData(OnCompleteListener<MemberData> onCompleteListener, Object... params) {
         if (params.length == 0) {
@@ -41,7 +39,6 @@ public class MemberCacheStore extends CacheStore<MemberData> {
         onCompleteListener.onComplete(true, null);
     }
 
-    // 팀에서 멤버 목록을 불러오는 메소드
     @Override
     public void getDataList(OnCompleteListener<List<MemberData>> onCompleteListener, Object... params) {
         String key = params[0].toString();

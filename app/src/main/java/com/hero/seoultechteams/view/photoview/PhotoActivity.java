@@ -23,19 +23,12 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
         binding = ActivityPhotoBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-//        initView();
         loadImage();
     }
 
     public String getPhotoUrl() {
         return getIntent().getStringExtra(EXTRA_PROFILE_IMAGE_URL);
     }
-
-//    private void initView() {
-//        btnBack = findViewById(R.id.iv_back);
-//        photoView = findViewById(R.id.photo_view);
-//        btnBack.setOnClickListener(this);
-//    }
 
     private void loadImage() {
         Glide.with(this).load(getPhotoUrl()).into(binding.photoView);

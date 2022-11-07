@@ -38,7 +38,7 @@ public class TodoCacheStore extends CacheStore<TodoData> {
             }
         }
 
-        onCompleteListener.onComplete(false, null); // 데이터가 없을 때
+        onCompleteListener.onComplete(false, null);
     }
 
     @Override
@@ -46,20 +46,6 @@ public class TodoCacheStore extends CacheStore<TodoData> {
         if (onCompleteListener == null) {
             return;
         }
-
-//        DataType type = (DataType) params[0];
-//        String key = params[1].toString();
-//
-//        switch (type) {
-//            case MY:
-//                getMyTodoList(onCompleteListener, key);
-//                break;
-//            case TEAM:
-//                getTeamTodoList(onCompleteListener, key);
-//                break;
-//            default:
-//                throw new IllegalArgumentException("정의되지 않은 타입입니다.");
-//        }
 
         if (params.length > 0) {
             DataType type = (DataType) params[0];

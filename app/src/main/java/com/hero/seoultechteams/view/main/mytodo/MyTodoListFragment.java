@@ -126,40 +126,6 @@ public class MyTodoListFragment extends Fragment implements OnRecyclerItemClickL
         myTodoCompletedDataList.add(data);
     }
 
-//    private void getMyTodoListFromDatabase() {
-//        if (todoRepositoryImpl == null) {
-//            todoRepositoryImpl = new TodoRepositoryImpl(requireActivity());
-//        }
-//        String myUserKey = FirebaseAuth.getInstance().getCurrentUser().getUid();
-//
-//        myTodoNowDataList.clear();
-//        myTodoCompletedDataList.clear();
-//
-//        todoRepositoryImpl.getMyTodoList(new OnCompleteListener<ArrayList<TodoEntity>>() {
-//            @Override
-//            public void onComplete(boolean isSuccess, ArrayList<TodoEntity> data) {
-//                if (isSuccess && data != null) {
-//                    for (TodoEntity todoData: data) {
-//                        if (todoData.getTodoState().equals(TodoEntity.TODO_STATE_CONFIRMED)) {
-//                            myTodoCompletedDataList.add(todoData);
-//                        } else {
-//                            myTodoNowDataList.add(todoData);
-//                        }
-//                    }
-//                    if (tlMyTodoList.getSelectedTabPosition() == 0) {
-//                        myTodoListAdapter.setMyTodoListOnTab(myTodoNowDataList);
-//                    } else {
-//                        myTodoListAdapter.setMyTodoListOnTab(myTodoCompletedDataList);
-//                    }
-//                    getTeamListFromDatabase();
-//                } else {
-//                    Toast.makeText(requireActivity(), "데이터를 불러올 수 없습니다.", Toast.LENGTH_SHORT).show();
-//                }
-//                srlMyTodoList.setRefreshing(false);
-//            }
-//        }, myUserKey);
-//    }
-
     private void getTeamListFromDatabase() {
         presenter.getTeamList();
     }
@@ -187,49 +153,11 @@ public class MyTodoListFragment extends Fragment implements OnRecyclerItemClickL
         Toast.makeText(requireActivity(), "할 일을 갱신하는 데 실패했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
     }
 
-    //    @Override
-//    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-//        super.onCreateOptionsMenu(menu, inflater);
-//        inflater.inflate(R.menu.menu_mytodo_option, menu);
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch(item.getItemId()) {
-//            case R.id.menu_delete_my_todo:
-//                openDeleteMyTodoDialog();
-//                break;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
-//
-//    private void openDeleteMyTodoDialog() {
-//        String message = "할 일을 삭제하시겠습니까?";
-//        String positiveText = "예";
-//        String negativeText = "아니오";
-//        new MaterialAlertDialogBuilder(requireActivity()).setMessage(message)
-//                .setPositiveButton(positiveText, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//
-//                    }
-//                })
-//                .setNegativeButton(negativeText, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//
-//                    }
-//                })
-//                .create()
-//                .show();
-//    }
+
 
     @Override
     public void onItemClick(int position, View view, TodoEntity data) {
         switch (view.getId()) {
-//                case R.id.btn_mytodo_option_menu:
-//                    showMyTodoOptionMenu();
-//                    break;
             case R.id.btn_dismiss_mytodo:
                 updateMyTodo(true, position, data);
                 break;
