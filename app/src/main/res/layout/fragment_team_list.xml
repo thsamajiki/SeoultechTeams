@@ -7,12 +7,12 @@
     tools:context=".view.main.team.TeamListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_team_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/rv_team_list"
+        android:orientation="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_team_list"
-        android:orientation="vertical" />
+        tools:listitem="@layout/item_team_list" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="wrap_content"

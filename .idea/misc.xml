@@ -4,26 +4,38 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.21041666666666667" />
+        <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/drawable/d_day_progress.xml" value="0.1835" />
         <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/drawable/ic_launcher_background.xml" value="0.21041666666666667" />
         <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.3517948717948718" />
         <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/layout/activity_add_todo.xml" value="0.16590678824721378" />
         <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/layout/activity_create_team.xml" value="0.2740036231884058" />
         <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/layout/activity_edit_profile.xml" value="0.16590678824721378" />
         <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/layout/activity_invite.xml" value="0.32518115942028986" />
+        <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/layout/activity_login.xml" value="0.3411458333333333" />
         <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/layout/activity_main.xml" value="0.16590678824721378" />
         <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/layout/activity_notice_list.xml" value="0.4466666666666667" />
         <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/layout/activity_photo.xml" value="0.3029045643153527" />
         <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/layout/activity_setting.xml" value="0.16590678824721378" />
+        <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/layout/activity_sign_up01.xml" value="0.3411458333333333" />
+        <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/layout/activity_sign_up02.xml" value="0.3411458333333333" />
         <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/layout/activity_splash.xml" value="0.16590678824721378" />
         <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/layout/activity_team_detail.xml" value="0.16590678824721378" />
         <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/layout/activity_team_member_list.xml" value="0.32518115942028986" />
-        <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/layout/activity_team_todo_list.xml" value="0.16590678824721378" />
+        <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/layout/activity_team_participation.xml" value="0.3411458333333333" />
+        <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/layout/activity_team_todo_list.xml" value="0.4466666666666667" />
         <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/layout/activity_todo_detail.xml" value="0.16590678824721378" />
         <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/layout/dialog_about_us.xml" value="0.4466666666666667" />
+        <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/layout/dialog_member_list.xml" value="0.3411458333333333" />
         <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/layout/dialog_open_source_license.xml" value="0.4466666666666667" />
+        <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/layout/fragment_account.xml" value="0.22192028985507245" />
         <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/layout/fragment_mytodo_list.xml" value="0.32518115942028986" />
+        <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/layout/fragment_team_list.xml" value="0.4466666666666667" />
+        <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/layout/item_invite_list.xml" value="0.3411458333333333" />
+        <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/layout/item_mytodo_list.xml" value="0.3411458333333333" />
         <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/layout/item_notice_list.xml" value="0.3333333333333333" />
-        <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/layout/item_team_list.xml" value="0.4466666666666667" />
+        <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/layout/item_notification_list.xml" value="0.3411458333333333" />
+        <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/layout/item_team_list.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/layout/item_team_member_list.xml" value="0.3411458333333333" />
         <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/layout/item_team_todo_list.xml" value="0.16590678824721378" />
         <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/menu/menu_account_actionbar_option.xml" value="0.28888888888888886" />
         <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/menu/menu_team_todolist_actionbar_option.xml" value="0.3411458333333333" />

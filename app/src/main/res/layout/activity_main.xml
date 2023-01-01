@@ -28,7 +28,7 @@
                 android:layout_marginStart="15dp"
                 tools:text="팀 목록" />
 
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="?attr/actionBarSize"
                 android:layout_height="match_parent"
                 android:id="@+id/iv_account_option_menu"

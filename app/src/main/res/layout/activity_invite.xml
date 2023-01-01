@@ -30,14 +30,14 @@
                 android:layout_height="?attr/actionBarSize"
                 android:orientation="horizontal" >
 
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="?attr/actionBarSize"
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_back_arrow"
                     android:padding="17dp"
                     android:id="@+id/iv_back" />
 
-                <EditText
+                <androidx.appcompat.widget.AppCompatEditText
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:hint="이메일 또는 사용자명"

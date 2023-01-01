@@ -21,7 +21,7 @@
         android:background="@color/white"
         android:layout_alignParentBottom="true" >
 
-        <EditText
+        <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/edit_add_todo_title"
             android:layout_width="match_parent"
             android:layout_height="50dp"
