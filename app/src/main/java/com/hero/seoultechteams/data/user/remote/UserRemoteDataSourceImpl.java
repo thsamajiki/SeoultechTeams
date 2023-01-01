@@ -127,22 +127,22 @@ public class UserRemoteDataSourceImpl implements UserRemoteDataSource {
             profileImageUrl = null;
         }
 
-        UserData userEntity = new UserData(
+        UserData userData = new UserData(
                 firebaseUser.getDisplayName(),
                 firebaseUser.getEmail(),
                 profileImageUrl,
                 firebaseUser.getUid()
         );
-        userEntity.setKey(firebaseUser.getUid());
-        userEntity.setName(firebaseUser.getDisplayName());
-        userEntity.setEmail(firebaseUser.getEmail());
+        userData.setKey(firebaseUser.getUid());
+        userData.setName(firebaseUser.getDisplayName());
+        userData.setEmail(firebaseUser.getEmail());
         if (firebaseUser.getPhotoUrl() != null) {
-            userEntity.setProfileImageUrl(firebaseUser.getPhotoUrl().toString());
+            userData.setProfileImageUrl(firebaseUser.getPhotoUrl().toString());
         } else {
-            userEntity.setProfileImageUrl(null);
+            userData.setProfileImageUrl(null);
         }
 
-        return userEntity;
+        return userData;
     }
 
     @Override
