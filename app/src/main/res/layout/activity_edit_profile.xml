@@ -60,7 +60,7 @@
             android:layout_width="140dp"
             android:layout_height="140dp"
             android:src="@drawable/sample_profile_image"
-            android:id="@+id/iv_member_profile" />
+            android:id="@+id/iv_my_user_profile" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:layout_width="wrap_content"

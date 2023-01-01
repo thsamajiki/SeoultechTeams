@@ -52,7 +52,7 @@
     </androidx.appcompat.widget.Toolbar>
 
     <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/edit_team_name"
+        android:id="@+id/edit_todo_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@null"

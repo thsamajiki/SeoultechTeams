@@ -10,7 +10,7 @@
     <com.google.android.material.tabs.TabLayout
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:id="@+id/tl_mytodo_list"
+        android:id="@+id/tl_my_todo_list"
         app:tabIndicatorColor="@color/white"
         app:tabSelectedTextColor="@color/black"
         app:tabTextColor="@color/normal_gray"
@@ -48,7 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:id="@+id/rv_mytodo_list"
+            android:id="@+id/rv_my_todo_list"
             tools:listitem="@layout/item_mytodo_list"
             android:orientation="vertical" />
 
