@@ -9,8 +9,8 @@ import com.hero.seoultechteams.view.main.team.option_menu.contract.TeamMemberLis
 import java.util.List;
 
 public class TeamMemberListPresenter implements TeamMemberListContract.Presenter {
-    private TeamMemberListContract.View view;
-    private GetMemberListUseCase getMemberListUseCase;
+    private final TeamMemberListContract.View view;
+    private final GetMemberListUseCase getMemberListUseCase;
 
     public TeamMemberListPresenter(TeamMemberListContract.View view, GetMemberListUseCase getMemberListUseCase) {
         this.view = view;

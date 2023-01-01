@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AddTodoPresenter implements AddTodoContract.Presenter {
-    private AddTodoContract.View view;
-    private AddTodoUseCase addTodoUseCase;
-    private GetMemberListUseCase getMemberListUseCase;
+    private final AddTodoContract.View view;
+    private final AddTodoUseCase addTodoUseCase;
+    private final GetMemberListUseCase getMemberListUseCase;
 
     public AddTodoPresenter(AddTodoContract.View view, AddTodoUseCase addTodoUseCase, GetMemberListUseCase getMemberListUseCase) {
         this.view = view;
