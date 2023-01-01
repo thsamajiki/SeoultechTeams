@@ -9,8 +9,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
@@ -21,26 +19,19 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
 import com.bumptech.glide.Glide;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.textfield.TextInputEditText;
 import com.hero.seoultechteams.BaseActivity;
 import com.hero.seoultechteams.Injector;
 import com.hero.seoultechteams.R;
+import com.hero.seoultechteams.databinding.ActivityEditProfileBinding;
 import com.hero.seoultechteams.domain.user.entity.UserEntity;
 import com.hero.seoultechteams.utils.LoadingProgress;
 import com.hero.seoultechteams.utils.RealPathUtil;
 import com.hero.seoultechteams.view.main.account.contract.EditProfileContract;
 import com.hero.seoultechteams.view.main.account.presenter.EditProfilePresenter;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
 public class EditProfileActivity extends BaseActivity implements View.OnClickListener, TextWatcher, EditProfileContract.View {
 
-    private ImageView btnBack;
-    private TextView tvEditProfileComplete;
-    private TextInputEditText editUserName;
-    private CircleImageView ivProfile;
-    private FloatingActionButton fabProfileImageEdit;
+    private ActivityEditProfileBinding binding;
     private String myCurrentUserName;
     private static final int PERMISSION_REQ_CODE = 1010;
     public static final String EXTRA_UPDATE_USER_DATA = "updateUser";
@@ -53,26 +44,19 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_profile);
-        initView();
-        setOnClickListener();
+        binding = ActivityEditProfileBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
+
+        setupListeners();
         setMyCurrentUserData();
     }
 
-    private void initView() {
-        btnBack = findViewById(R.id.iv_back);
-        tvEditProfileComplete = findViewById(R.id.tv_edit_profile_complete);
-        editUserName = findViewById(R.id.edit_user_name);
-        ivProfile = findViewById(R.id.iv_member_profile);
-        fabProfileImageEdit = findViewById(R.id.fab_profile_image_edit);
-
-        editUserName.addTextChangedListener(this);
-    }
-
-    private void setOnClickListener() {
-        btnBack.setOnClickListener(this);
-        tvEditProfileComplete.setOnClickListener(this);
-        fabProfileImageEdit.setOnClickListener(this);
+    private void setupListeners() {
+        binding.editUserName.addTextChangedListener(this);
+        binding.ivBack.setOnClickListener(this);
+        binding.tvEditProfileComplete.setOnClickListener(this);
+        binding.fabProfileImageEdit.setOnClickListener(this);
     }
 
     private void setMyCurrentUserData() {
@@ -80,14 +64,14 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         String myCurrentProfileImageUri = user.getProfileImageUrl();
 
         if (myCurrentProfileImageUri == null) {
-            Glide.with(this).load(R.drawable.ic_user).into(ivProfile);
+            Glide.with(this).load(R.drawable.ic_user).into(binding.ivMyUserProfile);
         } else {
-            Glide.with(this).load(myCurrentProfileImageUri).into(ivProfile);
+            Glide.with(this).load(myCurrentProfileImageUri).into(binding.ivMyUserProfile);
         }
 
         myCurrentUserName = user.getName();
-        editUserName.setText(myCurrentUserName);
-        editUserName.setSelection(editUserName.getText().length());
+        binding.editUserName.setText(myCurrentUserName);
+        binding.editUserName.setSelection(binding.editUserName.getText().length());
     }
 
     @Override
@@ -97,7 +81,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
                 finish();
                 break;
             case R.id.tv_edit_profile_complete:
-                String myNewUserName = editUserName.getText().toString();
+                String myNewUserName = binding.editUserName.getText().toString();
                 presenter.updateMyUserData(myNewUserName);
 
                 break;
@@ -127,8 +111,8 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
                     if (resultCode == RESULT_OK && data != null) {
                         String newImage = RealPathUtil.getRealPath(EditProfileActivity.this, data.getData());
                         presenter.setNewProfileImage(newImage);
-                        Glide.with(EditProfileActivity.this).load(newImage).into(ivProfile);
-                        tvEditProfileComplete.setEnabled(true);
+                        Glide.with(EditProfileActivity.this).load(newImage).into(binding.ivMyUserProfile);
+                        binding.tvEditProfileComplete.setEnabled(true);
                     }
                 }
             });
@@ -171,13 +155,13 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
     @Override
     public void afterTextChanged(Editable s) {
         if (s.toString().equals(" ")) {
-            tvEditProfileComplete.setText(s.toString().trim());
+            binding.tvEditProfileComplete.setText(s.toString().trim());
             return;
         }
         if (s.length() == 0) {
-            tvEditProfileComplete.setEnabled(false);
+            binding.tvEditProfileComplete.setEnabled(false);
         } else {
-            tvEditProfileComplete.setEnabled(!s.toString().equals(myCurrentUserName));
+            binding.tvEditProfileComplete.setEnabled(!s.toString().equals(myCurrentUserName));
         }
     }
 

@@ -8,19 +8,17 @@ import static com.hero.seoultechteams.view.photoview.PhotoActivity.EXTRA_PROFILE
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.button.MaterialButton;
 import com.hero.seoultechteams.BaseActivity;
 import com.hero.seoultechteams.Injector;
 import com.hero.seoultechteams.R;
+import com.hero.seoultechteams.databinding.ActivityTeamMemberListBinding;
 import com.hero.seoultechteams.domain.member.entity.MemberEntity;
 import com.hero.seoultechteams.domain.team.entity.TeamEntity;
 import com.hero.seoultechteams.domain.user.entity.UserEntity;
@@ -32,15 +30,10 @@ import com.hero.seoultechteams.view.photoview.PhotoActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
 
 public class TeamMemberListActivity extends BaseActivity implements View.OnClickListener, OnRecyclerItemClickListener<MemberEntity>, TeamMemberListContract.View {
 
-    private ImageView btnBack;
-    private CircleImageView ivMemberProfile;
-    private MaterialButton btnGoToInvite;
-    private RecyclerView rvTeamMemberList;
+    private ActivityTeamMemberListBinding binding;
     private final ArrayList<MemberEntity> teamMemberDataList = new ArrayList<>();
     private TeamMemberListAdapter teamMemberListAdapter;
     private ActivityResultLauncher<Intent> photoResultLauncher;
@@ -52,19 +45,15 @@ public class TeamMemberListActivity extends BaseActivity implements View.OnClick
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_team_member_list);
-        initView();
+        binding = ActivityTeamMemberListBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
+
         initTeamMemberListRecyclerViewAdapter();
         presenter.getMemberDataListFromDatabase(getTeamData(), teamMemberDataList);
-        setOnClickListener();
+        setOnClickListeners();
     }
 
-    private void initView() {
-        btnBack = findViewById(R.id.iv_back);
-        btnGoToInvite = findViewById(R.id.btn_go_to_invite);
-        ivMemberProfile = findViewById(R.id.iv_member_profile);
-        rvTeamMemberList = findViewById(R.id.rv_team_member_list);
-    }
 
     private void initTeamMemberListRecyclerViewAdapter() {
         teamMemberListAdapter = new TeamMemberListAdapter(this, teamMemberDataList);
@@ -75,12 +64,12 @@ public class TeamMemberListActivity extends BaseActivity implements View.OnClick
         });
         teamMemberListAdapter.setLeaderKey(getTeamData().getLeaderKey());
         teamMemberListAdapter.setOnRecyclerItemClickListener(this);
-        rvTeamMemberList.setAdapter(teamMemberListAdapter);
+        binding.rvTeamMemberList.setAdapter(teamMemberListAdapter);
     }
 
-    private void setOnClickListener() {
-        btnBack.setOnClickListener(this);
-        btnGoToInvite.setOnClickListener(this);
+    private void setOnClickListeners() {
+        binding.ivBack.setOnClickListener(this);
+        binding.btnGoToInvite.setOnClickListener(this);
     }
 
     @Override

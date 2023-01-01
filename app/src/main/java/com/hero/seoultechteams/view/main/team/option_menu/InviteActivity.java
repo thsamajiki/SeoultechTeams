@@ -9,18 +9,15 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.hero.seoultechteams.Injector;
 import com.hero.seoultechteams.R;
+import com.hero.seoultechteams.databinding.ActivityInviteBinding;
 import com.hero.seoultechteams.domain.member.entity.MemberEntity;
 import com.hero.seoultechteams.domain.team.entity.TeamEntity;
 import com.hero.seoultechteams.domain.user.entity.UserEntity;
@@ -34,11 +31,7 @@ import java.util.List;
 
 public class InviteActivity extends AppCompatActivity implements View.OnClickListener, OnRecyclerItemClickListener<UserEntity>, InviteContract.View {
 
-    private ImageView ivBack;
-    private EditText inputEmailOrUser;
-    private CheckBox chkBoxInvite;
-    private TextView btnInvite;
-    private RecyclerView rvInviteUserList;
+    private ActivityInviteBinding binding;
     private InviteAdapter inviteAdapter;
     public static final String EXTRA_INVITE_USER = "addInvitedUser";
     private InviteContract.Presenter presenter;
@@ -46,7 +39,9 @@ public class InviteActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_invite);
+        binding = ActivityInviteBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
         presenter = new InvitePresenter(this,
                 Injector.getInstance().provideAddNewMemberListUseCase(),
@@ -54,29 +49,22 @@ public class InviteActivity extends AppCompatActivity implements View.OnClickLis
                 Injector.getInstance().provideGetUserListByEmailUseCase(),
                 getTeamMemberDataList());
 
-        initView();
         initInviteUserListRecyclerViewAdapter();
         setEditorActionListener();
-        setOnClickListener();
+        setOnClickListeners();
     }
 
-    private void initView() {
-        ivBack = findViewById(R.id.iv_back);
-        inputEmailOrUser = findViewById(R.id.input_email_or_user);
-        chkBoxInvite = findViewById(R.id.chkbox_invite);
-        btnInvite = findViewById(R.id.btn_invite);
-        rvInviteUserList = findViewById(R.id.rv_invite_user_list);
-    }
+
 
     private void initInviteUserListRecyclerViewAdapter() {
         inviteAdapter = new InviteAdapter(this);
         inviteAdapter.setOnRecyclerItemClickListener(this);
-        rvInviteUserList.setAdapter(inviteAdapter);
+        binding.rvInviteUserList.setAdapter(inviteAdapter);
     }
 
-    private void setOnClickListener() {
-        ivBack.setOnClickListener(this);
-        btnInvite.setOnClickListener(this);
+    private void setOnClickListeners() {
+        binding.ivBack.setOnClickListener(this);
+        binding.btnInvite.setOnClickListener(this);
     }
 
     @Override
@@ -92,7 +80,7 @@ public class InviteActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void setEditorActionListener() {
-        inputEmailOrUser.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        binding.inputEmailOrUser.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 switch (actionId) {

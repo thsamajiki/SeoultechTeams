@@ -9,19 +9,19 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.hero.seoultechteams.BaseActivity;
 import com.hero.seoultechteams.Injector;
 import com.hero.seoultechteams.R;
+import com.hero.seoultechteams.databinding.ActivityTodoDetailBinding;
 import com.hero.seoultechteams.domain.todo.entity.TodoEntity;
 import com.hero.seoultechteams.view.main.team.todo.contract.TodoDetailContract;
 import com.hero.seoultechteams.view.main.team.todo.presenter.TodoDetailPresenter;
 
 public class TodoDetailActivity extends BaseActivity implements View.OnClickListener, TodoDetailContract.View {
-    private ImageView ivBack, ivOptionMenu;
-    private EditText editTodoTitle, editTodoDesc;
+
+    private ActivityTodoDetailBinding binding;
     public static final String EXTRA_UPDATE_TODO = "updateTodo";
     public static final String EXTRA_TODO_KEY = "todoKey";
     private final TodoDetailContract.Presenter presenter = new TodoDetailPresenter(this,
@@ -31,18 +31,15 @@ public class TodoDetailActivity extends BaseActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_todo_detail);
+        binding = ActivityTodoDetailBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
         initView();
         setOnClickListener();
         addTextWatcher();
     }
 
     private void initView() {
-        ivBack = findViewById(R.id.iv_back);
-        ivOptionMenu = findViewById(R.id.iv_option_menu);
-        editTodoTitle = findViewById(R.id.edit_team_name);
-        editTodoDesc = findViewById(R.id.edit_todo_desc);
-
         String todoKey = getIntent().getStringExtra(EXTRA_TODO_KEY);
 
         presenter.requestTodoData(todoKey);
@@ -51,41 +48,41 @@ public class TodoDetailActivity extends BaseActivity implements View.OnClickList
     private void initializeTodoDetail(TodoEntity todoEntity) {
         String myUserKey = getCurrentUser().getUid();
         if (myUserKey.equals(todoEntity.getUserKey())) {
-            toggleEditText(editTodoTitle, true);
-            toggleEditText(editTodoDesc, true);
+            toggleEditText(binding.editTodoTitle, true);
+            toggleEditText(binding.editTodoDesc, true);
         } else {
-            toggleEditText(editTodoTitle, false);
-            toggleEditText(editTodoDesc, false);
+            toggleEditText(binding.editTodoTitle, false);
+            toggleEditText(binding.editTodoDesc, false);
         }
 
         String todoTitle = todoEntity.getTodoTitle();
         String todoDesc = todoEntity.getTodoDesc();
-        editTodoTitle.setText(todoTitle);
-        editTodoDesc.setText(todoDesc);
+        binding.editTodoTitle.setText(todoTitle);
+        binding.editTodoDesc.setText(todoDesc);
         if (TextUtils.isEmpty(todoDesc)) {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    editTodoDesc.requestFocus();
+                    binding.editTodoDesc.requestFocus();
                     InputMethodManager mgr = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                    mgr.showSoftInput(editTodoDesc, InputMethodManager.SHOW_IMPLICIT);
+                    mgr.showSoftInput(binding.editTodoDesc, InputMethodManager.SHOW_IMPLICIT);
                 }
             }, 100);
         } else {
-            editTodoTitle.clearFocus();
-            editTodoDesc.clearFocus();
+            binding.editTodoTitle.clearFocus();
+            binding.editTodoDesc.clearFocus();
         }
     }
 
     private void setOnClickListener() {
-        ivBack.setOnClickListener(new View.OnClickListener() {
+        binding.ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 updateTodoDetail();
             }
         });
 
-        ivOptionMenu.setOnClickListener(new View.OnClickListener() {
+        binding.ivOptionMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                showTodoDetailOptionMenu();
@@ -101,7 +98,7 @@ public class TodoDetailActivity extends BaseActivity implements View.OnClickList
     }
 
     private void addTextWatcher() {
-        editTodoTitle.addTextChangedListener(new TextWatcher() {
+        binding.editTodoTitle.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -115,10 +112,10 @@ public class TodoDetailActivity extends BaseActivity implements View.OnClickList
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.length() == 0) {
-                    ivBack.setClickable(false);
+                    binding.ivBack.setClickable(false);
                     Toast.makeText(TodoDetailActivity.this, "할 일 제목을 입력해야 합니다!", Toast.LENGTH_SHORT).show();
                 } else {
-                    ivBack.setClickable(true);
+                    binding.ivBack.setClickable(true);
                 }
             }
         });
@@ -137,8 +134,8 @@ public class TodoDetailActivity extends BaseActivity implements View.OnClickList
     }
 
     private void updateTodoDetail() {
-        final String todoTitle = editTodoTitle.getText().toString();
-        final String todoDesc = editTodoDesc.getText().toString();
+        final String todoTitle = binding.editTodoTitle.getText().toString();
+        final String todoDesc = binding.editTodoDesc.getText().toString();
 
         presenter.updateTodoDetail(todoTitle, todoDesc);
     }

@@ -2,18 +2,18 @@ package com.hero.seoultechteams.view.photoview;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.github.chrisbanes.photoview.PhotoView;
+import com.hero.seoultechteams.R;
 import com.hero.seoultechteams.databinding.ActivityPhotoBinding;
 
 
 public class PhotoActivity extends AppCompatActivity implements View.OnClickListener {
     private ActivityPhotoBinding binding;
-    private ImageView btnBack;
+
     private PhotoView photoView;
     public static final String EXTRA_PROFILE_IMAGE_URL = "profileImageUrl";
 
@@ -35,7 +35,9 @@ public class PhotoActivity extends AppCompatActivity implements View.OnClickList
     }
 
     @Override
-    public void onClick(View v) {
-        finish();
+    public void onClick(View view) {
+        if (view.getId() == R.id.iv_back) {
+            finish();
+        }
     }
 }

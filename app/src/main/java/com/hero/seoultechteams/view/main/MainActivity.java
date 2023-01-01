@@ -1,24 +1,22 @@
 package com.hero.seoultechteams.view.main;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.PopupMenu;
-import androidx.viewpager2.widget.ViewPager2;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.PopupMenu;
+import androidx.viewpager2.widget.ViewPager2;
+
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationBarView;
 import com.hero.seoultechteams.FragmentAdapter;
 import com.hero.seoultechteams.Injector;
 import com.hero.seoultechteams.R;
+import com.hero.seoultechteams.databinding.ActivityMainBinding;
 import com.hero.seoultechteams.view.login.LoginActivity;
 import com.hero.seoultechteams.view.main.account.AboutUsDialog;
 import com.hero.seoultechteams.view.main.account.AccountFragment;
@@ -29,40 +27,33 @@ import com.hero.seoultechteams.view.main.team.TeamListFragment;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, MainContract.View {
 
-    private ViewPager2 mainViewPager;
-    private BottomNavigationView mainBottomNav;
-    private TextView tvMainTitle;
-    private ImageView ivAccountOptionMenu;
+    private ActivityMainBinding binding;
     private final MainContract.Presenter presenter = new MainPresenter(this,
             Injector.getInstance().provideSignOutUseCase());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        initView();
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
+
         setFragmentAdapter();
         setBottomNavClickListener();
         setOnClickListener();
-        mainViewPager.setCurrentItem(1, false);
+        binding.mainViewPager.setCurrentItem(1, false);
     }
 
-    private void initView() {
-        mainViewPager = findViewById(R.id.main_view_pager);
-        mainBottomNav = findViewById(R.id.main_bottom_nav);
-        tvMainTitle = findViewById(R.id.tv_main_title);
-        ivAccountOptionMenu = findViewById(R.id.iv_account_option_menu);
-    }
 
     private void setFragmentAdapter() {
         FragmentAdapter fragmentAdapter = new FragmentAdapter(getSupportFragmentManager(), getLifecycle());
         fragmentAdapter.addFragment(new TeamListFragment());
         fragmentAdapter.addFragment(new MyTodoListFragment());
         fragmentAdapter.addFragment(new AccountFragment());
-        mainViewPager.setAdapter(fragmentAdapter);
+        binding.mainViewPager.setAdapter(fragmentAdapter);
 
         final String[] titleArr = getResources().getStringArray(R.array.title_array);
-        mainViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+        binding.mainViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels);
@@ -71,8 +62,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-                mainBottomNav.getMenu().getItem(position).setChecked(true);
-                tvMainTitle.setText(titleArr[position]);
+                binding.mainBottomNav.getMenu().getItem(position).setChecked(true);
+                binding.tvMainTitle.setText(titleArr[position]);
             }
 
             @Override
@@ -83,23 +74,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void setBottomNavClickListener() {
-        mainBottomNav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+        binding.mainBottomNav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.menu_team:
-                        mainViewPager.setCurrentItem(0, true);
-                        ivAccountOptionMenu.setVisibility(View.GONE);
-                        ivAccountOptionMenu.setClickable(false);
+                        binding.mainViewPager.setCurrentItem(0, true);
+                        binding.ivAccountOptionMenu.setVisibility(View.GONE);
+                        binding.ivAccountOptionMenu.setClickable(false);
                         break;
                     case R.id.menu_mytodo:
-                        mainViewPager.setCurrentItem(1, true);
-                        ivAccountOptionMenu.setVisibility(View.GONE);
+                        binding.mainViewPager.setCurrentItem(1, true);
+                        binding.ivAccountOptionMenu.setVisibility(View.GONE);
                         break;
                     case R.id.menu_account:
-                        mainViewPager.setCurrentItem(2, true);
-                        ivAccountOptionMenu.setVisibility(View.VISIBLE);
-                        ivAccountOptionMenu.setClickable(true);
+                        binding.mainViewPager.setCurrentItem(2, true);
+                        binding.ivAccountOptionMenu.setVisibility(View.VISIBLE);
+                        binding.ivAccountOptionMenu.setClickable(true);
                         break;
                 }
                 return false;
@@ -108,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void setOnClickListener() {
-        ivAccountOptionMenu.setOnClickListener(this);
+        binding.ivAccountOptionMenu.setOnClickListener(this);
     }
 
     @Override
@@ -121,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void showAccountOptionMenu() {
-        PopupMenu popupMenu = new PopupMenu(this, ivAccountOptionMenu);
+        PopupMenu popupMenu = new PopupMenu(this, binding.ivAccountOptionMenu);
         popupMenu.getMenuInflater().inflate(R.menu.menu_account_actionbar_option, popupMenu.getMenu());
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override

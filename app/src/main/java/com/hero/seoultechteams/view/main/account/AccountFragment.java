@@ -12,7 +12,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -22,22 +21,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
-import com.google.android.material.button.MaterialButton;
 import com.hero.seoultechteams.BaseFragment;
 import com.hero.seoultechteams.Injector;
 import com.hero.seoultechteams.R;
+import com.hero.seoultechteams.databinding.FragmentAccountBinding;
 import com.hero.seoultechteams.domain.user.entity.UserEntity;
 import com.hero.seoultechteams.view.main.account.contract.AccountContract;
 import com.hero.seoultechteams.view.main.account.presenter.AccountPresenter;
 import com.hero.seoultechteams.view.photoview.PhotoActivity;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
 public class AccountFragment extends BaseFragment implements View.OnClickListener, AccountContract.View {
 
-    private CircleImageView ivMyUserProfile;
-    private TextView tvMyUserName, tvMyUserEmail;
-    private MaterialButton btnEditProfile;
+    private FragmentAccountBinding binding;
 
     private final AccountContract.Presenter presenter = new AccountPresenter(this,
             Injector.getInstance().provideGetAccountProfileUseCase());
@@ -48,23 +43,17 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_account, container, false);
-        initView(view);
-        setOnClickListener();
+        binding = FragmentAccountBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+
+        setOnClickListeners();
 
         return view;
     }
 
-    private void initView(View view) {
-        ivMyUserProfile = view.findViewById(R.id.iv_my_user_profile);
-        tvMyUserName = view.findViewById(R.id.tv_my_user_name);
-        tvMyUserEmail = view.findViewById(R.id.tv_my_user_email);
-        btnEditProfile = view.findViewById(R.id.btn_edit_profile);
-    }
-
-    private void setOnClickListener() {
-        ivMyUserProfile.setOnClickListener(this);
-        btnEditProfile.setOnClickListener(this);
+    private void setOnClickListeners() {
+        binding.ivMyUserProfile.setOnClickListener(this);
+        binding.btnEditProfile.setOnClickListener(this);
     }
 
 
@@ -76,12 +65,13 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
 
     private void setUserData(UserEntity userData) {
         if (TextUtils.isEmpty(userData.getProfileImageUrl())) {
-            Glide.with(requireActivity()).load(R.drawable.ic_user).into(ivMyUserProfile);
+            Glide.with(requireActivity()).load(R.drawable.ic_user).into(binding.ivMyUserProfile);
         } else {
-            Glide.with(requireActivity()).load(userData.getProfileImageUrl()).into(ivMyUserProfile);
+            Glide.with(requireActivity()).load(userData.getProfileImageUrl()).into(binding.ivMyUserProfile);
         }
-        tvMyUserName.setText(userData.getName());
-        tvMyUserEmail.setText(userData.getEmail());
+
+        binding.tvMyUserName.setText(userData.getName());
+        binding.tvMyUserEmail.setText(userData.getEmail());
     }
 
 
@@ -149,5 +139,12 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_account_actionbar_option, menu);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        binding = null;
     }
 }

@@ -5,8 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,14 +19,14 @@ import com.google.android.play.core.tasks.OnFailureListener;
 import com.google.android.play.core.tasks.OnSuccessListener;
 import com.google.android.play.core.tasks.Task;
 import com.hero.seoultechteams.R;
+import com.hero.seoultechteams.databinding.ActivitySettingBinding;
 import com.hero.seoultechteams.view.main.account.OpenSourceLicenseDialog;
 import com.hero.seoultechteams.view.main.account.setting.contract.SettingContract;
 import com.hero.seoultechteams.view.main.account.setting.notice.NoticeListActivity;
 
 public class SettingActivity extends AppCompatActivity implements View.OnClickListener, SettingContract.View {
 
-    private ImageView btnBack;
-    private RelativeLayout rlItemNotice, rlItemFont, rlItemDeleteCache, rlItemInquiry, rlItemReview, rlItemOpenSource;
+    private ActivitySettingBinding binding;
     private ReviewManager reviewManager;
     private ReviewInfo reviewInfo;
     public static final String EXTRA_SETTING_DATA = "settingData";
@@ -36,30 +34,22 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_setting);
-        initView();
+        binding = ActivitySettingBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
+
         setOnClickListener();
         readyPlayStoreReview();
     }
 
-    private void initView() {
-        btnBack = findViewById(R.id.iv_back);
-        rlItemNotice = findViewById(R.id.rl_item_notice);
-        rlItemFont = findViewById(R.id.rl_item_font);
-        rlItemDeleteCache = findViewById(R.id.rl_item_delete_cache);
-        rlItemInquiry = findViewById(R.id.rl_item_inquiry);
-        rlItemReview = findViewById(R.id.rl_item_review);
-        rlItemOpenSource = findViewById(R.id.rl_item_open_source);
-    }
-
     private void setOnClickListener() {
-        btnBack.setOnClickListener(this);
-        rlItemNotice.setOnClickListener(this);
-        rlItemFont.setOnClickListener(this);
-        rlItemDeleteCache.setOnClickListener(this);
-        rlItemInquiry.setOnClickListener(this);
-        rlItemReview.setOnClickListener(this);
-        rlItemOpenSource.setOnClickListener(this);
+        binding.ivBack.setOnClickListener(this);
+        binding.rlItemNotice.setOnClickListener(this);
+        binding.rlItemFont.setOnClickListener(this);
+        binding.rlItemDeleteCache.setOnClickListener(this);
+        binding.rlItemInquiry.setOnClickListener(this);
+        binding.rlItemReview.setOnClickListener(this);
+        binding.rlItemOpenSource.setOnClickListener(this);
     }
 
     @Override

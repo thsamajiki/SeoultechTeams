@@ -22,12 +22,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.hero.seoultechteams.Injector;
 import com.hero.seoultechteams.R;
+import com.hero.seoultechteams.databinding.FragmentTeamListBinding;
 import com.hero.seoultechteams.domain.team.entity.TeamEntity;
 import com.hero.seoultechteams.listener.OnRecyclerItemClickListener;
 import com.hero.seoultechteams.view.main.team.contract.TeamListContract;
@@ -40,8 +39,7 @@ import java.util.List;
 
 public class TeamListFragment extends Fragment implements View.OnClickListener, OnRecyclerItemClickListener<TeamEntity>, TeamListContract.View {
 
-    private RecyclerView rvTeamList;
-    private FloatingActionButton btnCreateTeam;
+    private FragmentTeamListBinding binding;
     private TeamListAdapter teamListAdapter;
     private final List<TeamEntity> teamDataList = new ArrayList<>();
     public static final String EXTRA_TEAM_DATA = "teamData";
@@ -51,19 +49,14 @@ public class TeamListFragment extends Fragment implements View.OnClickListener, 
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_team_list, container, false);
-        initView(view);
+        binding = FragmentTeamListBinding.inflate(inflater);
+        View view = binding.getRoot();
+
         initTeamListAdapter();
         presenter.getTeamListFromDatabase();
-        setOnClickListener();
+        setOnClickListeners();
 
         return view;
-    }
-
-    private void initView(View view) {
-        rvTeamList = view.findViewById(R.id.rv_team_list);
-        btnCreateTeam = view.findViewById(R.id.btn_create_team);
-
     }
 
     private void initTeamListAdapter() {
@@ -77,11 +70,11 @@ public class TeamListFragment extends Fragment implements View.OnClickListener, 
 
         teamListAdapter.setOnRecyclerItemClickListener(this);
         teamListAdapter.notifyDataSetChanged();
-        rvTeamList.setAdapter(teamListAdapter);
+        binding.rvTeamList.setAdapter(teamListAdapter);
     }
 
-    private void setOnClickListener() {
-        btnCreateTeam.setOnClickListener(this);
+    private void setOnClickListeners() {
+        binding.btnCreateTeam.setOnClickListener(this);
     }
 
     @Override
@@ -244,5 +237,12 @@ public class TeamListFragment extends Fragment implements View.OnClickListener, 
     @Override
     public void failedGetTeamList() {
         Toast.makeText(requireActivity(), "데이터를 불러올 수 없습니다.", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        binding = null;
     }
 }

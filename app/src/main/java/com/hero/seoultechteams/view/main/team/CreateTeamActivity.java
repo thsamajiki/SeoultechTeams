@@ -5,24 +5,20 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.button.MaterialButton;
 import com.hero.seoultechteams.Injector;
 import com.hero.seoultechteams.R;
+import com.hero.seoultechteams.databinding.ActivityCreateTeamBinding;
 import com.hero.seoultechteams.domain.team.entity.TeamEntity;
 import com.hero.seoultechteams.view.main.team.contract.CreateTeamContract;
 import com.hero.seoultechteams.view.main.team.presenter.CreateTeamPresenter;
 
 public class CreateTeamActivity extends AppCompatActivity implements View.OnClickListener, CreateTeamContract.View {
 
-    private ImageView btnBack;
-    private MaterialButton btnFinishCreateTeam;
-    private EditText editCreateTeamName, editCreateTeamDesc;
+    private ActivityCreateTeamBinding binding;
     public static final String EXTRA_CREATE_TEAM = "createTeam";
     private final CreateTeamContract.Presenter presenter = new CreateTeamPresenter(this,
             Injector.getInstance().provideAddTeamUseCase(),
@@ -31,26 +27,22 @@ public class CreateTeamActivity extends AppCompatActivity implements View.OnClic
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_team);
-        initView();
+        binding = ActivityCreateTeamBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
+
         setOnClickListener();
         addTextWatcher();
     }
 
-    private void initView() {
-        btnBack = findViewById(R.id.iv_back);
-        btnFinishCreateTeam = findViewById(R.id.btn_finish_create_team);
-        editCreateTeamName = findViewById(R.id.edit_create_team_name);
-        editCreateTeamDesc = findViewById(R.id.edit_create_team_desc);
-    }
 
     private void setOnClickListener() {
-        btnBack.setOnClickListener(this);
-        btnFinishCreateTeam.setOnClickListener(this);
+        binding.ivBack.setOnClickListener(this);
+        binding.btnFinishCreateTeam.setOnClickListener(this);
     }
 
     private void addTextWatcher() {
-        editCreateTeamName.addTextChangedListener(new TextWatcher() {
+        binding.editCreateTeamName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -64,9 +56,9 @@ public class CreateTeamActivity extends AppCompatActivity implements View.OnClic
             @Override
             public void afterTextChanged(Editable s) {
                 if (s.length() > 1) {
-                    btnFinishCreateTeam.setEnabled(true);
+                    binding.btnFinishCreateTeam.setEnabled(true);
                 } else {
-                    btnFinishCreateTeam.setEnabled(false);
+                    binding.btnFinishCreateTeam.setEnabled(false);
                 }
             }
         });
@@ -85,8 +77,10 @@ public class CreateTeamActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void addTeamToDatabase() {
-        presenter.addTeamToDatabase(editCreateTeamName.getText().toString(),
-                editCreateTeamDesc.getText().toString());
+        presenter.addTeamToDatabase(
+                binding.editCreateTeamName.getText().toString(),
+                binding.editCreateTeamDesc.getText().toString()
+        );
     }
 
     @Override

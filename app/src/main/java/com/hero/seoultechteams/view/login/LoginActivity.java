@@ -3,14 +3,12 @@ package com.hero.seoultechteams.view.login;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputEditText;
 import com.hero.seoultechteams.BaseActivity;
 import com.hero.seoultechteams.Injector;
 import com.hero.seoultechteams.R;
+import com.hero.seoultechteams.databinding.ActivityLoginBinding;
 import com.hero.seoultechteams.domain.user.entity.UserEntity;
 import com.hero.seoultechteams.view.login.contract.LoginContract;
 import com.hero.seoultechteams.view.login.presenter.LoginPresenter;
@@ -18,9 +16,7 @@ import com.hero.seoultechteams.view.main.MainActivity;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener, LoginContract.View {
 
-    private MaterialButton btnLogin;
-    private TextView btnSignUp;
-    private TextInputEditText editEmail, editPwd;
+    private ActivityLoginBinding binding;
     private final LoginContract.Presenter presenter = new LoginPresenter(this,
             Injector.getInstance().provideGetUserUseCase());
 
@@ -28,21 +24,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
-        initView();
+        binding = ActivityLoginBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
+
         setOnClickListener();
     }
 
     private void setOnClickListener() {
-        btnSignUp.setOnClickListener(this);
-        btnLogin.setOnClickListener(this);
-    }
-
-    private void initView() {
-        btnSignUp = findViewById(R.id.btn_sign_up);
-        btnLogin = findViewById(R.id.btn_login);
-        editEmail = findViewById(R.id.edit_email);
-        editPwd = findViewById(R.id.edit_pwd);
+        binding.btnSignUp.setOnClickListener(this);
+        binding.btnLogin.setOnClickListener(this);
     }
 
     @Override
@@ -59,13 +50,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
     }
 
     private void login() {
-        final String email = editEmail.getText().toString();
-        final String pwd = editPwd.getText().toString();
-
-
+        final String email = binding.editEmail.getText().toString();
+        final String pwd = binding.editPwd.getText().toString();
 
         presenter.firebaseLogin(email, pwd);
-
     }
 
     @Override

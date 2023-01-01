@@ -3,15 +3,13 @@ package com.hero.seoultechteams.view.login;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputEditText;
 import com.hero.seoultechteams.Injector;
 import com.hero.seoultechteams.R;
+import com.hero.seoultechteams.databinding.ActivitySignUp02Binding;
 import com.hero.seoultechteams.domain.user.entity.UserEntity;
 import com.hero.seoultechteams.view.login.contract.SignUp02Contract;
 import com.hero.seoultechteams.view.login.presenter.SignUp02Presenter;
@@ -20,29 +18,24 @@ import com.hero.seoultechteams.view.main.MainActivity;
 
 public class SignUp02Activity extends AppCompatActivity implements View.OnClickListener, SignUp02Contract.View {
 
-    private ImageView ivBack;
-    private TextInputEditText editUserName;
-    private MaterialButton btnStart;
+    private ActivitySignUp02Binding binding;
     private final SignUp02Contract.Presenter presenter = new SignUp02Presenter(this,
             Injector.getInstance().provideSignUpUserUseCase());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up02);
-        initView();
+        binding = ActivitySignUp02Binding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
+
         setOnClickListener();
     }
 
-    private void initView() {
-        ivBack = findViewById(R.id.iv_back);
-        editUserName = findViewById(R.id.edit_user_name);
-        btnStart = findViewById(R.id.btn_start);
-    }
 
     private void setOnClickListener() {
-        ivBack.setOnClickListener(this);
-        btnStart.setOnClickListener(this);
+        binding.ivBack.setOnClickListener(this);
+        binding.btnStart.setOnClickListener(this);
     }
 
     private String getEmail() {
@@ -66,7 +59,7 @@ public class SignUp02Activity extends AppCompatActivity implements View.OnClickL
     }
 
     private void finishSignUp() {
-        final String userName = editUserName.getText().toString();
+        final String userName = binding.editUserName.getText().toString();
 
         presenter.signUp(getEmail(), getPwd(), userName);
     }

@@ -15,14 +15,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
 import com.hero.seoultechteams.Injector;
 import com.hero.seoultechteams.R;
 import com.hero.seoultechteams.database.todo.entity.Event;
+import com.hero.seoultechteams.databinding.FragmentMytodoListBinding;
 import com.hero.seoultechteams.domain.team.entity.TeamEntity;
 import com.hero.seoultechteams.domain.todo.entity.TodoEntity;
 import com.hero.seoultechteams.listener.OnRecyclerItemClickListener;
@@ -36,14 +35,10 @@ import java.util.List;
 
 public class MyTodoListFragment extends Fragment implements OnRecyclerItemClickListener<TodoEntity>, SwipeRefreshLayout.OnRefreshListener, MyTodoListContract.View {
 
-    private TabLayout tlMyTodoList;
-    private TabItem tabNowMyTodo, tabCompletedMyTodo;
-    private RecyclerView rvMyTodoList;
+    private FragmentMytodoListBinding binding;
     private final List<TodoEntity> myTodoNowDataList = new ArrayList<>();
     private final List<TodoEntity> myTodoCompletedDataList = new ArrayList<>();
     private MyTodoListAdapter myTodoListAdapter;
-    private SwipeRefreshLayout srlMyTodoList;
-
 
     private final MyTodoListContract.Presenter presenter =
             new MyTodoListPresenter(
@@ -56,8 +51,10 @@ public class MyTodoListFragment extends Fragment implements OnRecyclerItemClickL
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_mytodo_list, container, false);
-        initView(view);
+        binding = FragmentMytodoListBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+
+        setOnRefreshListener();
         initMyTodoListAdapter();
         showMyTodoListOnSeparatedTabs();
 
@@ -72,17 +69,12 @@ public class MyTodoListFragment extends Fragment implements OnRecyclerItemClickL
         presenter.getMyTodoListFromDatabase();
     }
 
-    private void initView(View view) {
-        tlMyTodoList = view.findViewById(R.id.tl_mytodo_list);
-        tabNowMyTodo = view.findViewById(R.id.tab_now_mytodo);
-        tabCompletedMyTodo = view.findViewById(R.id.tab_completed_mytodo);
-        rvMyTodoList = view.findViewById(R.id.rv_mytodo_list);
-        srlMyTodoList = view.findViewById(R.id.srl_my_todo_list);
-        srlMyTodoList.setOnRefreshListener(this);
+    private void setOnRefreshListener() {
+        binding.srlMyTodoList.setOnRefreshListener(this);
     }
 
     private void showMyTodoListOnSeparatedTabs() {
-        tlMyTodoList.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        binding.tlMyTodoList.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int position = tab.getPosition();
@@ -118,7 +110,7 @@ public class MyTodoListFragment extends Fragment implements OnRecyclerItemClickL
         });
         myTodoListAdapter.setOnRecyclerItemClickListener(this);
         myTodoListAdapter.notifyDataSetChanged();
-        rvMyTodoList.setAdapter(myTodoListAdapter);
+        binding.rvMyTodoList.setAdapter(myTodoListAdapter);
     }
 
     private void setTodoCompleted(TodoEntity data) {
@@ -215,14 +207,14 @@ public class MyTodoListFragment extends Fragment implements OnRecyclerItemClickL
                 myTodoNowDataList.add(todoEntity);
             }
         }
-        if (tlMyTodoList.getSelectedTabPosition() == 0) {
+        if (binding.tlMyTodoList.getSelectedTabPosition() == 0) {
             myTodoListAdapter.setMyTodoListOnTab(myTodoNowDataList);
         } else {
             myTodoListAdapter.setMyTodoListOnTab(myTodoCompletedDataList);
         }
         getTeamListFromDatabase();
 
-        srlMyTodoList.setRefreshing(false);
+        binding.srlMyTodoList.setRefreshing(false);
     }
 
     @Override
@@ -233,5 +225,12 @@ public class MyTodoListFragment extends Fragment implements OnRecyclerItemClickL
     @Override
     public void failedGetMyTodoList() {
         Toast.makeText(requireActivity(), "데이터를 불러올 수 없습니다.", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        binding = null;
     }
 }

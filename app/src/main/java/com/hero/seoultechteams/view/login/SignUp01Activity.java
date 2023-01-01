@@ -1,48 +1,36 @@
 package com.hero.seoultechteams.view.login;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Patterns;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.textfield.TextInputEditText;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.hero.seoultechteams.R;
+import com.hero.seoultechteams.databinding.ActivitySignUp01Binding;
 import com.hero.seoultechteams.view.login.contract.SignUp01Contract;
 import com.hero.seoultechteams.view.login.presenter.SignUp01Presenter;
 
 
 public class SignUp01Activity extends AppCompatActivity implements View.OnClickListener, SignUp01Contract.View {
 
-    private ImageView ivBack;
-    private MaterialButton btnNextStepSignUp;
-    private TextInputEditText editEmail, editPwd, editPwdConfirm;
-    private SignUp01Contract.Presenter presenter = new SignUp01Presenter(this);
+    private ActivitySignUp01Binding binding;
+    private final SignUp01Contract.Presenter presenter = new SignUp01Presenter(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up01);
-        initView();
+        binding = ActivitySignUp01Binding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
+
         setOnClickListener();
     }
 
-    private void initView() {
-        ivBack = findViewById(R.id.iv_back);
-        btnNextStepSignUp = findViewById(R.id.btn_next_step_sign_up);
-        editEmail = findViewById(R.id.edit_email);
-        editPwd = findViewById(R.id.edit_pwd);
-        editPwdConfirm = findViewById(R.id.edit_pwd_confirm);
-    }
-
     private void setOnClickListener() {
-        ivBack.setOnClickListener(this);
-        btnNextStepSignUp.setOnClickListener(this);
+        binding.ivBack.setOnClickListener(this);
+        binding.btnNextStepSignUp.setOnClickListener(this);
     }
 
     @Override
@@ -59,9 +47,9 @@ public class SignUp01Activity extends AppCompatActivity implements View.OnClickL
     }
 
     private void enterNextStepSignUp() {
-        String email = editEmail.getText().toString();
-        String pwd = editPwd.getText().toString();
-        String pwdConfirm = editPwdConfirm.getText().toString();
+        String email = binding.editEmail.getText().toString();
+        String pwd = binding.editPwd.getText().toString();
+        String pwdConfirm = binding.editPwdConfirm.getText().toString();
 
         if (presenter.checkLoginForm(email, pwd, pwdConfirm)) {
             Intent intent = new Intent(this, SignUp02Activity.class);

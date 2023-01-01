@@ -13,7 +13,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
@@ -21,14 +20,13 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.widget.PopupMenu;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.google.android.material.card.MaterialCardView;
 import com.hero.seoultechteams.BaseActivity;
 import com.hero.seoultechteams.Injector;
 import com.hero.seoultechteams.R;
 import com.hero.seoultechteams.database.todo.entity.Event;
+import com.hero.seoultechteams.databinding.ActivityTeamTodoListBinding;
 import com.hero.seoultechteams.domain.team.entity.TeamEntity;
 import com.hero.seoultechteams.domain.todo.entity.TodoEntity;
 import com.hero.seoultechteams.listener.OnRecyclerItemClickListener;
@@ -42,10 +40,7 @@ import java.util.List;
 
 public class TeamTodoListActivity extends BaseActivity implements View.OnClickListener, OnRecyclerItemClickListener<TodoEntity>, SwipeRefreshLayout.OnRefreshListener, TeamTodoListContract.View {
 
-    private ImageView btnBack, btnTeamOptionMenu, btnTodoOptionMenu;
-    private MaterialCardView mcvCreateTodo;
-    private RecyclerView rvTeamTodoList;
-    private SwipeRefreshLayout srlTeamTodoList;
+    private ActivityTeamTodoListBinding binding;
     private final List<TodoEntity> teamTodoDataList = new ArrayList<>();
     private TeamTodoListAdapter teamTodoListAdapter;
 
@@ -60,7 +55,9 @@ public class TeamTodoListActivity extends BaseActivity implements View.OnClickLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_team_todo_list);
+        binding = ActivityTeamTodoListBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
         initView();
         initTeamTodoListAdapter();
         presenter.getTeamTodoDataListFromDatabase(getTeamData().getTeamKey());
@@ -68,13 +65,7 @@ public class TeamTodoListActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void initView() {
-        btnBack = findViewById(R.id.iv_back);
-        btnTeamOptionMenu = findViewById(R.id.iv_team_option_menu);
-        mcvCreateTodo = findViewById(R.id.mcv_create_todo);
-        btnTodoOptionMenu = findViewById(R.id.btn_todo_option_menu);
-        rvTeamTodoList = findViewById(R.id.rv_team_todo_list);
-        srlTeamTodoList = findViewById(R.id.srl_team_todo_list);
-        srlTeamTodoList.setOnRefreshListener(this);
+        binding.srlTeamTodoList.setOnRefreshListener(this);
     }
 
     private void initTeamTodoListAdapter() {
@@ -88,7 +79,7 @@ public class TeamTodoListActivity extends BaseActivity implements View.OnClickLi
         });
         teamTodoListAdapter.setLeader(getTeamData().getLeaderKey().equals(myKey));
         teamTodoListAdapter.setOnRecyclerItemClickListener(this);
-        rvTeamTodoList.setAdapter(teamTodoListAdapter);
+        binding.rvTeamTodoList.setAdapter(teamTodoListAdapter);
     }
 
     private TeamEntity getTeamData() {
@@ -96,9 +87,9 @@ public class TeamTodoListActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void setOnClickListener() {
-        btnBack.setOnClickListener(this);
-        mcvCreateTodo.setOnClickListener(this);
-        btnTeamOptionMenu.setOnClickListener(this);
+        binding.ivBack.setOnClickListener(this);
+        binding.mcvCreateTodo.setOnClickListener(this);
+        binding.ivTeamOptionMenu.setOnClickListener(this);
     }
 
     @Override
@@ -117,7 +108,7 @@ public class TeamTodoListActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void showTeamTodoListOptionMenu(){
-        PopupMenu popupMenu = new PopupMenu(this, btnTeamOptionMenu);
+        PopupMenu popupMenu = new PopupMenu(this, binding.ivTeamOptionMenu);
         popupMenu.getMenuInflater().inflate(R.menu.menu_team_todolist_actionbar_option, popupMenu.getMenu());
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
@@ -259,8 +250,8 @@ public class TeamTodoListActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void resetRefresh() {
-        if (srlTeamTodoList.isRefreshing()) {
-            srlTeamTodoList.setRefreshing(false);
+        if (binding.srlTeamTodoList.isRefreshing()) {
+            binding.srlTeamTodoList.setRefreshing(false);
         }
     }
 

@@ -11,8 +11,6 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -21,11 +19,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.hero.seoultechteams.BaseActivity;
 import com.hero.seoultechteams.Injector;
 import com.hero.seoultechteams.R;
+import com.hero.seoultechteams.databinding.ActivityAddTodoBinding;
 import com.hero.seoultechteams.domain.member.entity.MemberEntity;
 import com.hero.seoultechteams.domain.team.entity.TeamEntity;
 import com.hero.seoultechteams.domain.todo.entity.TodoEntity;
@@ -38,16 +36,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
 public class AddTodoActivity extends BaseActivity implements View.OnClickListener, TextWatcher, OnRecyclerItemClickListener<MemberEntity>, AddTodoContract.View {
 
-    private MaterialButton btnFinishAddTodo;
-    private EditText editAddTodoTitle;
-    private CircleImageView ivManagerProfile;
-    private View viewAddTodoBackground;
-    private LinearLayout llSetManager;
-    private RecyclerView rvTeamMemberList;
+    private ActivityAddTodoBinding binding;
     private TeamMemberListAdapter teamMemberListAdapter;
     private ArrayList<MemberEntity> teamMemberDataList = new ArrayList<>();
     public static final String EXTRA_ADD_TODO = "addTodo";
@@ -60,33 +51,28 @@ public class AddTodoActivity extends BaseActivity implements View.OnClickListene
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_todo);
+        binding = ActivityAddTodoBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
         initView();
-        setOnClickListener();
+        setOnClickListeners();
         addTextWatcher();
         initTeamMemberListAdapter();
         getTeamMemberListFromDatabase();
     }
 
     private void initView() {
-        btnFinishAddTodo = findViewById(R.id.btn_finish_add_todo);
-        editAddTodoTitle = findViewById(R.id.edit_add_todo_title);
-        editAddTodoTitle.requestFocus();
-
-        llSetManager = findViewById(R.id.ll_set_manager);
-        rvTeamMemberList = findViewById(R.id.rv_team_member_list);
-        ivManagerProfile = findViewById(R.id.iv_manager_profile);
-        viewAddTodoBackground = findViewById(R.id.view_add_todo_background);
+        binding.editAddTodoTitle.requestFocus();
     }
 
-    private void setOnClickListener() {
-        viewAddTodoBackground.setOnClickListener(this);
-        llSetManager.setOnClickListener(this);
-        btnFinishAddTodo.setOnClickListener(this);
+    private void setOnClickListeners() {
+        binding.viewAddTodoBackground.setOnClickListener(this);
+        binding.llSetManager.setOnClickListener(this);
+        binding.btnFinishAddTodo.setOnClickListener(this);
     }
 
     private void addTextWatcher() {
-        editAddTodoTitle.addTextChangedListener(this);
+        binding.editAddTodoTitle.addTextChangedListener(this);
     }
 
     private void initTeamMemberListAdapter() {
@@ -143,9 +129,9 @@ public class AddTodoActivity extends BaseActivity implements View.OnClickListene
 
     private void setManagerProfile(MemberEntity memberData) {
         if (TextUtils.isEmpty(memberData.getProfileImageUrl())) {
-            Glide.with(this).load(R.drawable.sample_profile_image).into(ivManagerProfile);
+            Glide.with(this).load(R.drawable.sample_profile_image).into(binding.ivManagerProfile);
         } else {
-            Glide.with(AddTodoActivity.this).load(memberData.getProfileImageUrl()).into(ivManagerProfile);
+            Glide.with(AddTodoActivity.this).load(memberData.getProfileImageUrl()).into(binding.ivManagerProfile);
         }
     }
 
@@ -193,7 +179,7 @@ public class AddTodoActivity extends BaseActivity implements View.OnClickListene
                 calendar.set(Calendar.MINUTE, minute);
                 long todoEndDateTime = calendar.getTimeInMillis();
 
-                presenter.addTodoToDatabase(editAddTodoTitle.getText().toString(), todoEndDateTime, managerData, getTeamData());
+                presenter.addTodoToDatabase(binding.editAddTodoTitle.getText().toString(), todoEndDateTime, managerData, getTeamData());
             }
         }, now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE),false);
         timePickerDialog.show();
@@ -238,7 +224,7 @@ public class AddTodoActivity extends BaseActivity implements View.OnClickListene
 
     @Override
     public void afterTextChanged(Editable s) {
-        btnFinishAddTodo.setEnabled(s.length() > 0);
+        binding.btnFinishAddTodo.setEnabled(s.length() > 0);
     }
 
     @Override

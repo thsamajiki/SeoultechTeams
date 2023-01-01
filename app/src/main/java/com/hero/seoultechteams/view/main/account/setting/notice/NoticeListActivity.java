@@ -2,15 +2,13 @@ package com.hero.seoultechteams.view.main.account.setting.notice;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.hero.seoultechteams.Injector;
 import com.hero.seoultechteams.R;
+import com.hero.seoultechteams.databinding.ActivityNoticeListBinding;
 import com.hero.seoultechteams.domain.notice.entity.NoticeEntity;
 import com.hero.seoultechteams.listener.OnRecyclerItemClickListener;
 import com.hero.seoultechteams.view.main.account.setting.notice.contract.NoticeListContract;
@@ -22,10 +20,8 @@ import java.util.List;
 
 public class NoticeListActivity extends AppCompatActivity implements View.OnClickListener, OnRecyclerItemClickListener<NoticeEntity>, NoticeListContract.View {
 
-    private ImageView btnBack, ivToggleArrow;
-    private LinearLayout llContentNoticeItem;
+    private ActivityNoticeListBinding binding;
     private List<NoticeEntity> noticeDataList = new ArrayList<>();
-    private RecyclerView rvNoticeList;
     private NoticeListAdapter noticeListAdapter;
     private final NoticeListContract.Presenter presenter = new NoticeListPresenter(this,
             Injector.getInstance().provideGetNoticeListUseCase());
@@ -33,33 +29,29 @@ public class NoticeListActivity extends AppCompatActivity implements View.OnClic
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_notice_list);
-        initView();
+        binding = ActivityNoticeListBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
+
         initNoticeListRecyclerViewAdapter();
         presenter.getNoticeListFromDatabase(noticeDataList);
         setOnClickListener();
     }
 
-    private void initView() {
-        btnBack = findViewById(R.id.iv_back);
-        ivToggleArrow = findViewById(R.id.iv_toggle_arrow);
-        llContentNoticeItem = findViewById(R.id.ll_content_notice_item);
-        rvNoticeList = findViewById(R.id.rv_notice_list);
-    }
 
     private void initNoticeListRecyclerViewAdapter() {
         noticeListAdapter = new NoticeListAdapter(this, noticeDataList);
         noticeListAdapter.setOnRecyclerItemClickListener(this);
-        rvNoticeList.setAdapter(noticeListAdapter);
+        binding.rvNoticeList.setAdapter(noticeListAdapter);
     }
 
     private void setOnClickListener() {
-        btnBack.setOnClickListener(this);
+        binding.ivBack.setOnClickListener(this);
     }
 
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
+    public void onClick(View view) {
+        switch (view.getId()) {
             case R.id.iv_back:
                 finish();
                 break;
