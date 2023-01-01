@@ -10,7 +10,7 @@ public enum InvalidUserInfoType {
     EMPTY_NAME(R.string.empty_user_name),
     INVALID_EMAIL_FORM(R.string.invalid_email_form),
     INVALID_PWD_LENGTH(R.string.invalid_password_length),
-    INCORRECT_PASSWORD(R.string.incorrect_password),;
+    INCORRECT_PASSWORD(R.string.incorrect_password);
     
     @StringRes
     private int message;

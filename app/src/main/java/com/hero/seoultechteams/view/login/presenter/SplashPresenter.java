@@ -13,9 +13,9 @@ import com.hero.seoultechteams.view.login.contract.SplashContract;
 import java.util.List;
 
 public class SplashPresenter implements SplashContract.Presenter {
-    private SplashContract.View view;
-    private GetTeamListUseCase getTeamListUseCase;
-    private GetUserUseCase getUserUseCase;
+    private final SplashContract.View view;
+    private final GetTeamListUseCase getTeamListUseCase;
+    private final GetUserUseCase getUserUseCase;
     private GetAccountProfileUseCase getAccountProfileUseCase;
 
     public SplashPresenter(SplashContract.View view, GetTeamListUseCase getTeamListUseCase, GetUserUseCase getUserUseCase, GetAccountProfileUseCase getAccountProfileUseCase) {

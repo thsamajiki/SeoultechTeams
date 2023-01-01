@@ -2,7 +2,7 @@ package com.hero.seoultechteams.view.main;
 
 public class MainPresenter implements MainContract.Presenter {
     private MainContract.View view;
-    private SignOutUseCase signOutUseCase;
+    private final SignOutUseCase signOutUseCase;
 
     public MainPresenter(MainContract.View view, SignOutUseCase signOutUseCase) {
         this.view = view;

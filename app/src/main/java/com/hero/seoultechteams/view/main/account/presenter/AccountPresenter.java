@@ -6,7 +6,7 @@ import com.hero.seoultechteams.view.main.account.contract.AccountContract;
 
 public class AccountPresenter implements AccountContract.Presenter {
     private AccountContract.View view;
-    private GetAccountProfileUseCase getAccountProfileUseCase;
+    private final GetAccountProfileUseCase getAccountProfileUseCase;
 
     public AccountPresenter(AccountContract.View view, GetAccountProfileUseCase getAccountProfileUseCase) {
         this.view = view;

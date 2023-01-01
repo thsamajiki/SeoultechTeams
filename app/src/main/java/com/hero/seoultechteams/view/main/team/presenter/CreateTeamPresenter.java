@@ -7,9 +7,9 @@ import com.hero.seoultechteams.domain.user.usecase.GetAccountProfileUseCase;
 import com.hero.seoultechteams.view.main.team.contract.CreateTeamContract;
 
 public class CreateTeamPresenter implements CreateTeamContract.Presenter {
-    private CreateTeamContract.View view;
-    private AddTeamUseCase addTeamUseCase;
-    private GetAccountProfileUseCase getAccountProfileUseCase;
+    private final CreateTeamContract.View view;
+    private final AddTeamUseCase addTeamUseCase;
+    private final GetAccountProfileUseCase getAccountProfileUseCase;
 
     public CreateTeamPresenter(CreateTeamContract.View view,
                                AddTeamUseCase addTeamUseCase,

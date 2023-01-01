@@ -3,7 +3,7 @@ package com.hero.seoultechteams.view.main;
 import com.hero.seoultechteams.domain.user.repository.UserRepository;
 
 public class SignOutUseCase {
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public SignOutUseCase(UserRepository userRepository) {
         this.userRepository = userRepository;

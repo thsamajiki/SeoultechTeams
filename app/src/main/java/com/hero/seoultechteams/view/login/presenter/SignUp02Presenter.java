@@ -13,8 +13,8 @@ import com.hero.seoultechteams.view.login.InvalidUserInfoType;
 import com.hero.seoultechteams.view.login.contract.SignUp02Contract;
 
 public class SignUp02Presenter implements SignUp02Contract.Presenter {
-    private SignUp02Contract.View view;
-    private SignUpUseCase signUpUseCase;
+    private final SignUp02Contract.View view;
+    private final SignUpUseCase signUpUseCase;
 
     public SignUp02Presenter(SignUp02Contract.View view, SignUpUseCase signUpUseCase) {
         this.view = view;
