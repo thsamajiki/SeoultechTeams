@@ -7,8 +7,6 @@ import com.hero.seoultechteams.domain.common.OnCompleteListener;
 import java.util.List;
 
 public interface TodoRemoteDataSource {
-
-
     void add(OnCompleteListener<TodoData> onCompleteListener, TodoData todoData);
 
 
@@ -16,7 +14,6 @@ public interface TodoRemoteDataSource {
 
 
     void remove(OnCompleteListener<TodoData> onCompleteListener, TodoData todoData);
-
 
     void getData(OnCompleteListener<TodoData> onCompleteListener, String todoKey);
 

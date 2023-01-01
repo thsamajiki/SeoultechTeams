@@ -55,6 +55,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
         initView();
+        setOnClickListener();
         setMyCurrentUserData();
     }
 
@@ -64,8 +65,6 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         editUserName = findViewById(R.id.edit_user_name);
         ivProfile = findViewById(R.id.iv_member_profile);
         fabProfileImageEdit = findViewById(R.id.fab_profile_image_edit);
-
-        setOnClickListener();
 
         editUserName.addTextChangedListener(this);
     }
@@ -113,10 +112,10 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
     private void intentGallery() {
         Intent pickIntent = new Intent(Intent.ACTION_PICK, EXTERNAL_CONTENT_URI);
         pickIntent.setType("image/*");
-        intentGalleryLauncher.launch(pickIntent);
+        openGalleryLauncher.launch(pickIntent);
     }
 
-    private final ActivityResultLauncher<Intent> intentGalleryLauncher
+    private final ActivityResultLauncher<Intent> openGalleryLauncher
             = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
