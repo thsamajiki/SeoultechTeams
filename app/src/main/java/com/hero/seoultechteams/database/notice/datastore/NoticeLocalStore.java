@@ -45,7 +45,9 @@ public class NoticeLocalStore extends LocalStore<NoticeData> {
             public void run() {
                 String noticeKey = params[0].toString();
                 NoticeData noticeData = noticeDao.getNoticeFromKey(noticeKey);
+                // 위에 까지는 서브 스레드에서
 
+                // onCompleteListener는 메인 스레드에서
                 appExecutors.mainThread().execute(new Runnable() {
                     @Override
                     public void run() {
@@ -66,8 +68,11 @@ public class NoticeLocalStore extends LocalStore<NoticeData> {
         appExecutors.networkIO().execute(new Runnable() {
             @Override
             public void run() {
+//                List<NoticeData> noticeDataList = getNoticeDatabase().getNoticeDao().getAllNotices();
                 List<NoticeData> noticeDataList = noticeDao.getAllNotices();
+                // 위에 까지는 서브 스레드에서
 
+                // onCompleteListener는 메인 스레드에서
                 appExecutors.mainThread().execute(new Runnable() {
                     @Override
                     public void run() {

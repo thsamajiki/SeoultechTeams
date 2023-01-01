@@ -110,6 +110,7 @@ public class InviteAdapter extends BaseAdapter<InviteAdapter.InviteViewHolder, U
         private void intentPhoto(String profileImageUrl) {
             Intent intent = new Intent(context, PhotoActivity.class);
             intent.putExtra(EXTRA_PROFILE_IMAGE_URL, profileImageUrl);
+            //startActivity(intent);
         }
 
         public void bind(UserEntity userData) {

@@ -232,5 +232,46 @@ public class MyTodoListAdapter extends BaseAdapter<MyTodoListAdapter.MyTodoListV
             int position = getAdapterPosition();
             getOnRecyclerItemClickListener().onItemClick(position, view, myTodoDataList.get(position));
         }
+
+
+
+
+//        private void showMyTodoOptionMenu() {
+//            PopupMenu popupMenu = new PopupMenu(context, btnMyTodoOptionMenu);
+//            popupMenu.getMenuInflater().inflate(R.menu.menu_mytodo_option, popupMenu.getMenu());
+//            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//                @Override
+//                public boolean onMenuItemClick(MenuItem item) {
+//                    switch(item.getItemId()) {
+//                        case R.id.menu_delete_my_todo:
+//                            openDeleteMyTodoDialog();
+//                            break;
+//                    }
+//                    return true;
+//                }
+//            });
+//            popupMenu.show();
+//        }
+//
+//        private void openDeleteMyTodoDialog() {
+//            String delete_todo_message = "할 일을 삭제하시겠습니까?";
+//            String positiveText = "예";
+//            String negativeText = "아니오";
+//            new MaterialAlertDialogBuilder(context).setMessage(delete_todo_message)
+//                    .setPositiveButton(positiveText, new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            // TODO: 2021-04-17 삭제되면 TeamTodoList에서도 삭제되게 하기
+//                        }
+//                    })
+//                    .setNegativeButton(negativeText, new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//
+//                        }
+//                    })
+//                    .create()
+//                    .show();
+//        }
     }
 }

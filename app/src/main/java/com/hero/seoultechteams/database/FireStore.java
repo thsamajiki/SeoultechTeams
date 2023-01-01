@@ -26,6 +26,22 @@ import java.util.List;
 
 public class FireStore {
 
+//    1. 나의 팀 목록을 불러오는데, where 조건절로 기준 필드를 정해오기
+//    -> where userKey = ~~~ and teamKey = ~~~;
+//
+//    2. 팀별로 할 일 목록을 불러오는데, where 조건절로 기준 필드를 정해오기
+//    -> where teamKey = ~~~ and todoKey = ~~~;
+//
+//    3. 팀별로 멤버 목록을 불러오는데, where 조건절로 기준 필드를 정해오기
+//    -> where userKey = ~~~ and teamKey = ~~~;
+//
+//    4. 나의 할 일 목록을 불러오는데, where 조건절로 기준 필드를 정해오기
+//    -> where userKey = ~~~ and teamKey = ~~~  and todoKey = ~~~;
+//
+//    5. 공지사항을 불러오는데, where 조건절로 기준 필드를 정해오기
+//    -> where noticeKey = ~~~;
+
+
     // 데이터 쓰기
     public void addTeamData(final TeamData teamData, final OnCompleteListener<TeamData> onCompleteListener) {
         final FirebaseFirestore firestore = FirebaseFirestore.getInstance();
@@ -122,6 +138,30 @@ public class FireStore {
                     }
                 });
     }
+
+//    public void addMyNotificationData(final MyNotificationData myNotificationData, final OnCompleteListener<MyNotificationData> onCompleteListener) {
+//        final FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+//
+//        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+//        DocumentReference myNotificationRef = firestore.collection("User")
+//                .document(firebaseUser.getUid())
+//                .collection("MyNotification")
+//                .document();
+//        myNotificationData.setNotificationKey(myNotificationRef.getId());
+//        myNotificationRef.set(myNotificationData)
+//                .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                    @Override
+//                    public void onSuccess(Void aVoid) {
+//                        onCompleteListener.onComplete(true, myNotificationData);
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        onCompleteListener.onComplete(false, null);
+//                    }
+//                });
+//    }
 
     public void addNoticeData(final NoticeData noticeData, final OnCompleteListener<NoticeData> onCompleteListener) {
         final FirebaseFirestore firestore = FirebaseFirestore.getInstance();
@@ -260,6 +300,35 @@ public class FireStore {
                     }
                 });
     }
+
+//    public void loadMyNotificationData(final OnCompleteListener<List<MyNotificationData>> onCompleteListener) {
+//        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+//        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+//        firestore.collectionGroup("User")
+//                .whereEqualTo("key", currentUser.getUid())
+//                .orderBy("notificationDate", Query.Direction.DESCENDING)
+//                .get()
+//                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+//                        if (queryDocumentSnapshots.isEmpty()) {
+//                            return;
+//                        }
+//                        List<MyNotificationData> myNotificationDataList = new ArrayList<>();
+//                        for (DocumentSnapshot documentSnapshot: queryDocumentSnapshots.getDocuments()) {
+//                            MyNotificationData myNotificationData = documentSnapshot.toObject(MyNotificationData.class);
+//                            myNotificationDataList.add(myNotificationData);
+//                        }
+//                        onCompleteListener.onComplete(true, myNotificationDataList);
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        onCompleteListener.onComplete(false, null);
+//                    }
+//                });
+//    }
 
     public void loadNoticeData(final OnCompleteListener<List<NoticeData>> onCompleteListener) {
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
@@ -458,4 +527,27 @@ public class FireStore {
                     }
                 });
     }
+
+//    public void deleteMyNotificationData(final MyNotificationData myNotificationData, final OnCompleteListener<MyNotificationData> onCompleteListener) {
+//        final FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+//
+//        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+//        firestore.collection("User")
+//                .document(firebaseUser.getUid())
+//                .collection("MyNotification")
+//                .document()
+//                .delete()
+//                .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                    @Override
+//                    public void onSuccess(Void aVoid) {
+//                        onCompleteListener.onComplete(true, myNotificationData);
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        onCompleteListener.onComplete(false, null);
+//                    }
+//                });
+//    }
 }

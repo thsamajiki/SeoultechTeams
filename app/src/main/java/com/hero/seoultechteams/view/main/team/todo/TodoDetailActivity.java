@@ -88,7 +88,8 @@ public class TodoDetailActivity extends BaseActivity implements View.OnClickList
         ivOptionMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+//                showTodoDetailOptionMenu();
+//                break;
             }
         });
     }
@@ -129,6 +130,9 @@ public class TodoDetailActivity extends BaseActivity implements View.OnClickList
             case R.id.iv_back:
                 updateTodoDetail();
                 break;
+//            case R.id.iv_option_menu:
+//                showTodoDetailOptionMenu();
+//                break;
         }
     }
 
@@ -162,4 +166,48 @@ public class TodoDetailActivity extends BaseActivity implements View.OnClickList
         Toast.makeText(this, "데이터를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show();
     }
 
+//    private void showTodoDetailOptionMenu(){
+//        PopupMenu popupMenu = new PopupMenu(this, btnOptionMenu);
+//        popupMenu.getMenuInflater().inflate(R.menu.menu_todo_detail_option, popupMenu.getMenu());
+//        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//            @Override
+//            public boolean onMenuItemClick(MenuItem item) {
+//                switch (item.getItemId()) {
+//                    case R.id.menu_delete_todo_at_detail:
+//                        openDeleteTodoDialog();
+//                        break;
+//                }
+//                return true;
+//            }
+//        });
+//        popupMenu.show();
+//    }
+//
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.menu_todo_detail_option, menu);
+//        return true;
+//    }
+//
+//    private void openDeleteTodoDialog() {
+//        String delete_todo_message = "할 일을 삭제하시겠습니까?";
+//        String positiveText = "예";
+//        String negativeText = "아니오";
+//        new MaterialAlertDialogBuilder(this).setMessage(delete_todo_message)
+//                .setPositiveButton(positiveText, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//
+//                    }
+//                })
+//                .setNegativeButton(negativeText, new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//
+//                    }
+//                })
+//                .create()
+//                .show();
+//    }
 }

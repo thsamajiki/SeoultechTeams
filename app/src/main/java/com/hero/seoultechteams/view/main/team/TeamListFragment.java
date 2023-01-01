@@ -189,6 +189,25 @@ public class TeamListFragment extends Fragment implements View.OnClickListener, 
             }
     );
 
+//    @Override
+//    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+//        super.onCreateOptionsMenu(menu, inflater);
+//        inflater.inflate(R.menu.menu_team_option, menu);
+//    }
+
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch(item.getItemId()) {
+//            case R.id.menu_modify_team :
+//                intentTeamDetail();
+//                break;
+//            case R.id.menu_delete_team :
+//                deleteTeam();
+//                break;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
+
     private void deleteTeam() {
         String askIfDelete = "팀을 삭제하시겠습니까?";
         String yesDelete = "예";

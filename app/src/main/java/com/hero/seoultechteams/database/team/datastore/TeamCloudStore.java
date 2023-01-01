@@ -42,8 +42,6 @@ public class TeamCloudStore extends CloudStore<TeamData> {
         this.todoCloudStore = todoCloudStore;
     }
 
-
-
     @Override
     public void getData(OnCompleteListener<TeamData> onCompleteListener, Object... params) {
         String teamKey = params[0].toString();
@@ -63,6 +61,14 @@ public class TeamCloudStore extends CloudStore<TeamData> {
                         } else {
                             DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
                             TeamData teamData = documentSnapshot.toObject(TeamData.class);
+
+//                            for (DocumentSnapshot documentSnapshot: queryDocumentSnapshots.getDocuments()) {
+//                                TeamData teamData = documentSnapshot.toObject(TeamData.class);
+//                                if (teamData.getTeamKey().equals(teamKey)) {
+//                                    teamLocalStore.add(onCompleteListener, teamData);
+//                                    onCompleteListener.onComplete(true, teamData);
+//                                }
+//                            }
 
                             teamLocalStore.add(null, teamData);
                             TeamCacheStore.getInstance().add(null, teamData);
@@ -98,7 +104,7 @@ public class TeamCloudStore extends CloudStore<TeamData> {
                             TeamData teamData = documentSnapshot.toObject(TeamData.class);
                             teamDataList.add(teamData);
                         }
-
+                        // FIXME: 2021-03-19 팀데이터 불러와서 로컬스토어 및 캐시스토어에 저장하기 추가
                         teamLocalStore.addAll(teamDataList);
                         TeamCacheStore.getInstance().addAll(teamDataList);
                         onCompleteListener.onComplete(true, teamDataList);
@@ -157,6 +163,13 @@ public class TeamCloudStore extends CloudStore<TeamData> {
         });
     }
 
+    // FIXME: 2021-05-14 TeamDetailActivity를 통해 TeamData의 정보가 변경되었을 때,
+    //  TeamCloudStore의 update() 메소드에서 트랜잭션 처리할 때 필요한 데이터
+    //  1. TeamData
+    //     1) teamName
+    //     2) teamDesc
+    //  2. TodoEntity
+    //     1) teamName
     @Override
     public void update(final OnCompleteListener<TeamData> onCompleteListener, final TeamData teamData) {
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -179,6 +192,7 @@ public class TeamCloudStore extends CloudStore<TeamData> {
                 transaction.update(teamRef, editData);
                 transaction.update(myTeamRef, editData);
 
+                // MyTodoList의 teamName을 업데이트함
                 todoCloudStore.getDataList(new OnCompleteListener<List<TodoData>>() {
                     @Override
                     public void onComplete(boolean isSuccess, List<TodoData> data) {
@@ -192,6 +206,9 @@ public class TeamCloudStore extends CloudStore<TeamData> {
                         }
                     }
                 }, DataType.MY, firebaseUser.getUid());
+
+
+//                transaction.update(todoRef, editData);
 
                 return null;
             }
@@ -212,6 +229,12 @@ public class TeamCloudStore extends CloudStore<TeamData> {
 
     @Override
     public void remove(final OnCompleteListener<TeamData> onCompleteListener, final TeamData teamData) {
+        /* TODO: 2021-03-12 팀 삭제시에 해야 할 일
+        * 1. 팀 컬렉션 삭제
+        * 2. 멤버 데이터 삭제
+        * 3. 투두 데이터 삭제
+        * 4. 1, 2, 3번이 한 트랜잭션 안에서 무결성을 이뤄야 함
+         */
         getFirestore().runTransaction(new Transaction.Function<TeamData>() {
             @Nullable
             @Override

@@ -3,7 +3,7 @@ package com.hero.seoultechteams.utils;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class TimeUtils {
+public class TimeUtils {    // 시간 관련 함수들을 클래스로 모아둠
     private static TimeUtils instance;
 
     private TimeUtils() {}

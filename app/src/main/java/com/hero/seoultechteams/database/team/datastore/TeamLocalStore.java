@@ -44,8 +44,11 @@ public class TeamLocalStore extends LocalStore<TeamData> {
             @Override
             public void run() {
                 String teamKey = params[0].toString();
+//                TeamData teamData = getTeamDatabase().getTeamDao().getTeamFromKey(teamKey);
                 TeamData teamData = teamDao.getTeamFromKey(teamKey);
+                // 위에 까지는 서브 스레드에서
 
+                // onCompleteListener는 메인 스레드에서
                 appExecutors.mainThread().execute(new Runnable() {
                     @Override
                     public void run() {
@@ -68,8 +71,11 @@ public class TeamLocalStore extends LocalStore<TeamData> {
         appExecutors.networkIO().execute(new Runnable() {
             @Override
             public void run() {
+//                List<TeamData> teamDataList = getTeamDatabase().getTeamDao().getAllTeams();
                 List<TeamData> teamDataList = teamDao.getAllTeams();
+                // 위에 까지는 서브 스레드에서
 
+                // onCompleteListener는 메인 스레드에서
                 appExecutors.mainThread().execute(new Runnable() {
                     @Override
                     public void run() {
@@ -82,14 +88,21 @@ public class TeamLocalStore extends LocalStore<TeamData> {
         });
     }
 
+//    private AppTeamDatabase getTeamDatabase() {
+//        return appTeamDatabase;
+//    }
+
     @Override
     public void add(OnCompleteListener<TeamData> onCompleteListener, TeamData data) {
 
         appExecutors.networkIO().execute(new Runnable() {
             @Override
             public void run() {
+//                getTeamDatabase().getTeamDao().insertData(data);
                 teamDao.insertData(data);
+                // 위에 까지는 서브 스레드에서
 
+                // onCompleteListener는 메인 스레드에서
                 appExecutors.mainThread().execute(new Runnable() {
                     @Override
                     public void run() {
@@ -107,8 +120,11 @@ public class TeamLocalStore extends LocalStore<TeamData> {
         appExecutors.networkIO().execute(new Runnable() {
             @Override
             public void run() {
+//                getTeamDatabase().getTeamDao().updateData(data);
                 teamDao.updateData(data);
+                // 위에 까지는 서브 스레드에서
 
+                // onCompleteListener는 메인 스레드에서
                 appExecutors.mainThread().execute(new Runnable() {
                     @Override
                     public void run() {
@@ -127,8 +143,11 @@ public class TeamLocalStore extends LocalStore<TeamData> {
             appExecutors.networkIO().execute(new Runnable() {
                 @Override
                 public void run() {
+//                    getTeamDatabase().getTeamDao().deleteData(data);
                     teamDao.deleteData(data);
+                    // 위에 까지는 서브 스레드에서
 
+                    // onCompleteListener는 메인 스레드에서
                     appExecutors.mainThread().execute(new Runnable() {
                         @Override
                         public void run() {

@@ -23,6 +23,9 @@ public class TodoLocalStore extends LocalStore<TodoData> {
         this.todoDao = todoDao;
     }
 
+    private TodoLocalStore() {
+    }
+
     public static TodoLocalStore getInstance(Context context, TodoDao todoDao) {
         if (instance == null) {
             instance = new TodoLocalStore(context, todoDao);
@@ -41,8 +44,11 @@ public class TodoLocalStore extends LocalStore<TodoData> {
             @Override
             public void run() {
                 String todoKey = params[0].toString();
+//                TodoData todoData = getTodoDatabase().getTodoDao().getTodoFromKey(todoKey);
                 TodoData todoData = todoDao.getTodoFromKey(todoKey);
+                // 위에 까지는 서브 스레드에서
 
+                // onCompleteListener는 메인 스레드에서
                 appExecutors.mainThread().execute(new Runnable() {
                     @Override
                     public void run() {
@@ -65,8 +71,11 @@ public class TodoLocalStore extends LocalStore<TodoData> {
         appExecutors.networkIO().execute(new Runnable() {
             @Override
             public void run() {
+//                List<TodoData> todoDataList = getTodoDatabase().getTodoDao().getAllTodos();
                 List<TodoData> todoDataList = todoDao.getAllTodos();
+                // 위에 까지는 서브 스레드에서
 
+                // onCompleteListener는 메인 스레드에서
                 appExecutors.mainThread().execute(new Runnable() {
                     @Override
                     public void run() {
@@ -79,13 +88,20 @@ public class TodoLocalStore extends LocalStore<TodoData> {
         });
     }
 
+//    private AppTodoDatabase getTodoDatabase() {
+//        return appTodoDatabase;
+//    }
+
     @Override
     public void add(OnCompleteListener<TodoData> onCompleteListener, TodoData data) {
         appExecutors.networkIO().execute(new Runnable() {
             @Override
             public void run() {
+//                getTodoDatabase().getTodoDao().insertData(data);
                 todoDao.insertData(data);
+                // 위에 까지는 서브 스레드에서
 
+                // onCompleteListener는 메인 스레드에서
                 appExecutors.mainThread().execute(new Runnable() {
                     @Override
                     public void run() {
@@ -103,8 +119,11 @@ public class TodoLocalStore extends LocalStore<TodoData> {
         appExecutors.networkIO().execute(new Runnable() {
             @Override
             public void run() {
+//                getTodoDatabase().getTodoDao().updateData(data);
                 todoDao.updateData(data);
+                // 위에 까지는 서브 스레드에서
 
+                // onCompleteListener는 메인 스레드에서
                 appExecutors.mainThread().execute(new Runnable() {
                     @Override
                     public void run() {
@@ -123,8 +142,11 @@ public class TodoLocalStore extends LocalStore<TodoData> {
             appExecutors.networkIO().execute(new Runnable() {
                 @Override
                 public void run() {
+//                    getTodoDatabase().getTodoDao().deleteData(data);
                     todoDao.deleteData(data);
+                    // 위에 까지는 서브 스레드에서
 
+                    // onCompleteListener는 메인 스레드에서
                     appExecutors.mainThread().execute(new Runnable() {
                         @Override
                         public void run() {
