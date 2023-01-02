@@ -304,22 +304,6 @@ public class UserCloudStore extends CloudStore<UserData> {
                 }, DataType.MY, userData.getKey());
             }
         }, userData.getKey());
-
-//        TeamRepositoryImpl teamRepositoryImpl = new TeamRepositoryImpl(getContext());
-//        teamRepositoryImpl.getTeamList(new OnCompleteListener<List<TeamData>>() {
-//            @Override
-//            public void onComplete(boolean isSuccess, List<TeamData> data) {
-//                if (isSuccess) {
-//                    if (data == null) {
-//                        // 그냥 업데이트
-//                        updateUser(onCompleteListener, userData);
-//                    } else {
-//                        // 트랜잭션을 통한 업데이트
-//                        updateUserWithMemberAndTodo(onCompleteListener, data, userData);
-//                    }
-//                }
-//            }
-//        });
     }
 
     private void updateUser(final OnCompleteListener<UserData> onCompleteListener, final UserData userData) {
@@ -371,11 +355,11 @@ public class UserCloudStore extends CloudStore<UserData> {
                 });
     }
 
-    // FIXME: 2021-05-14 EditProfileActivity를 통해 나의 사용자 정보(나의 프로필 사진, 나의 사용자 이름)가 변경되었을 때
-    //  UserCloudStore의 update() 메소드에서 트랜잭션 처리할 때 필요한 데이터
-    //  1. UserData의 profileImageUrl, name
-    //  2. TodoData의 managerProfileImageUrl, managerName
-    //  3. MemberData의 profileImageUrl, name
+    // FIXME: 2021-05-14 EditProfileActivity 를 통해 나의 사용자 정보(나의 프로필 사진, 나의 사용자 이름)가 변경되었을 때
+    //  UserCloudStore 의 update() 메소드에서 트랜잭션 처리할 때 필요한 데이터
+    //  1. UserData 의 profileImageUrl, name
+    //  2. TodoData 의 managerProfileImageUrl, managerName
+    //  3. MemberData 의 profileImageUrl, name
     private void updateUserWithMemberAndTodo(final OnCompleteListener<UserData> onCompleteListener,
                                              final List<TeamData> teamDataList,
                                              final List<TodoData> todoDataList,
