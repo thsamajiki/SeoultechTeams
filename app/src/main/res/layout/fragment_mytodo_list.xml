@@ -23,7 +23,6 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/tab_now_mytodo"
             android:text="@string/title_tab_now_mytodo_list"
             android:textSize="@dimen/title_text_size"
             android:textColor="@color/black" />
@@ -31,7 +30,6 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/tab_completed_mytodo"
             android:text="@string/title_tab_completed_mytodo_list"
             android:textSize="@dimen/title_text_size"
             android:textColor="@color/black" />
