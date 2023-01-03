@@ -94,8 +94,8 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void intentGallery() {
-        Intent pickIntent = new Intent(Intent.ACTION_PICK, EXTERNAL_CONTENT_URI);
-        pickIntent.setType("image/*");
+        Intent pickIntent = new Intent(Intent.ACTION_PICK);
+        pickIntent.setDataAndType(EXTERNAL_CONTENT_URI, "image/*");
         openGalleryLauncher.launch(pickIntent);
     }
 
