@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.main.team.todo.TodoDetailActivity"
+    android:focusableInTouchMode="true"
     android:orientation="vertical"
-    android:focusableInTouchMode="true" >
+    tools:context=".view.main.team.todo.TodoDetailActivity">
 
     <androidx.appcompat.widget.Toolbar
+        android:id="@+id/detail_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:id="@+id/detail_toolbar"
-        app:contentInsetStart="0dp" >
+        app:contentInsetStart="0dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -26,13 +26,13 @@
                 android:src="@drawable/ic_back_arrow" />
 
             <TextView
+                android:id="@+id/tv_detail_todo_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/tv_detail_todo_title"
+                android:layout_centerInParent="true"
                 android:text="@string/detail_todo_title"
-                android:textSize="@dimen/title_text_size"
                 android:textColor="@color/black"
-                android:layout_centerInParent="true" />
+                android:textSize="@dimen/title_text_size" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_option_menu"
@@ -58,8 +58,8 @@
         android:background="@null"
         android:gravity="top|start"
         android:hint="@string/edit_todo_title"
-        android:textSize="@dimen/title_text_size"
-        android:padding="20dp" />
+        android:padding="20dp"
+        android:textSize="@dimen/title_text_size" />
 
     <View
         android:layout_width="match_parent"
@@ -73,9 +73,9 @@
         android:background="@null"
         android:gravity="top|start"
         android:hint="@string/edit_todo_desc"
-        android:textSize="@dimen/body_text_size"
         android:lineSpacingExtra="7dp"
-        android:padding="20dp" />
+        android:padding="20dp"
+        android:textSize="@dimen/body_text_size" />
 
-    
+
 </LinearLayout>

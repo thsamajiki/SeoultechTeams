@@ -4,18 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.main.team.todo.TeamTodoListActivity"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    tools:context=".view.main.team.todo.TeamTodoListActivity">
 
     <androidx.appcompat.widget.Toolbar
+        android:id="@+id/team_submission_todo_list_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:id="@+id/team_submission_todo_list_toolbar"
-        app:contentInsetStart="0dp" >
+        app:contentInsetStart="0dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_back"
@@ -27,78 +27,78 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/title_todo_list"
-                android:textSize="@dimen/title_text_size"
-                android:textColor="@color/black"
-                android:layout_toRightOf="@+id/iv_back"
                 android:layout_centerVertical="true"
-                android:paddingStart="10dp" />
+                android:layout_toEndOf="@+id/iv_back"
+                android:paddingStart="10dp"
+                android:text="@string/title_todo_list"
+                android:textColor="@color/black"
+                android:textSize="@dimen/title_text_size" />
 
             <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/iv_team_option_menu"
                 android:layout_width="?attr/actionBarSize"
                 android:layout_height="match_parent"
-                android:id="@+id/iv_team_option_menu"
-                android:src="@drawable/ic_member_list"
-                android:padding="17dp"
                 android:layout_alignParentEnd="true"
-                android:clickable="true" />
+                android:clickable="true"
+                android:padding="17dp"
+                android:src="@drawable/ic_member_list" />
 
         </RelativeLayout>
 
     </androidx.appcompat.widget.Toolbar>
 
     <com.google.android.material.card.MaterialCardView
+        android:id="@+id/mcv_create_todo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="10dp"
-        app:cardBackgroundColor="@color/white"
-        app:cardElevation="7dp"
-        app:cardUseCompatPadding="true"
-        app:rippleColor="@color/colorPrimary30"
-        app:contentPadding="10dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:id="@+id/mcv_create_todo" >
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="7dp"
+        app:cardUseCompatPadding="true"
+        app:contentPadding="10dp"
+        app:rippleColor="@color/colorPrimary30">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal" >
+            android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginTop="5dp"
                 android:layout_marginStart="7dp"
+                android:layout_marginTop="5dp"
                 android:padding="7dp"
                 android:src="@drawable/ic_pencil" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
-                android:layout_marginStart="15dp"
                 android:text="@string/create_todo"
-                android:textSize="@dimen/body_text_size"
-                android:textColor="@color/dark_gray" />
+                android:textColor="@color/dark_gray"
+                android:textSize="@dimen/body_text_size" />
 
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/srl_team_todo_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/srl_team_todo_list" >
+        android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_team_todo_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="vertical"
-            tools:listitem="@layout/item_team_todo_list"
-            android:id="@+id/rv_team_todo_list" />
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_team_todo_list" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

@@ -10,35 +10,34 @@
         android:id="@+id/iv_intro_logo"
         android:layout_width="300dp"
         android:layout_height="300dp"
-        android:src="@drawable/ic_intro_logo"
         android:layout_marginTop="80dp"
+        android:src="@drawable/ic_intro_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="Seoultech\nTeams"
         android:textColor="@color/black"
         android:textSize="@dimen/big_text_size"
         android:textStyle="bold"
-        android:gravity="center"
         app:layout_constraintBottom_toTopOf="@+id/ll_developer"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_intro_logo"
         app:layout_constraintVertical_bias="0.3" />
 
     <LinearLayout
+        android:id="@+id/ll_developer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:id="@+id/ll_developer"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" >
+        app:layout_constraintStart_toStartOf="parent">
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,18 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.main.team.option_menu.TeamParticipationActivity"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    tools:context=".view.main.team.option_menu.TeamParticipationActivity">
 
     <androidx.appcompat.widget.Toolbar
+        android:id="@+id/title_team_participation"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:id="@+id/title_team_participation"
-        app:contentInsetStart="0dp" >
+        app:contentInsetStart="0dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_back"
@@ -25,14 +25,14 @@
                 android:src="@drawable/ic_back_arrow" />
 
             <TextView
+                android:id="@+id/tv_edit_profile_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/tv_edit_profile_title"
-                android:textSize="@dimen/title_text_size"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/iv_back"
                 android:text="@string/title_participation"
                 android:textColor="@color/black"
-                android:layout_toRightOf="@+id/iv_back"
-                android:layout_centerVertical="true" />
+                android:textSize="@dimen/title_text_size" />
 
         </RelativeLayout>
 
@@ -41,12 +41,12 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/team_participation_title" >
+        android:layout_below="@+id/team_participation_title">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
@@ -56,61 +56,61 @@
                 android:layout_marginEnd="10dp"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="7dp"
-                app:cardUseCompatPadding="true" >
+                app:cardUseCompatPadding="true">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical" >
+                    android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/tv_faithful_ranking_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/tv_faithful_ranking_title"
-                        android:text="@string/todo_faithful_ranking_title"
-                        android:textSize="@dimen/title_text_size"
-                        android:layout_marginTop="13dp"
                         android:layout_marginStart="15dp"
-                        android:layout_marginBottom="13dp" />
+                        android:layout_marginTop="13dp"
+                        android:layout_marginBottom="13dp"
+                        android:text="@string/todo_faithful_ranking_title"
+                        android:textSize="@dimen/title_text_size" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="horizontal" >
+                        android:orientation="horizontal">
 
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            android:layout_weight="1" >
+                            android:layout_weight="1"
+                            android:orientation="vertical">
 
                             <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
                                 android:id="@+id/tv_faithful_first_rank"
-                                android:text="@string/first_rank"
-                                android:layout_gravity="center" />
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="@string/first_rank" />
 
                             <de.hdodenhof.circleimageview.CircleImageView
-                                android:layout_width="60dp"
-                                android:layout_height="60dp"
                                 android:id="@+id/iv_member_faithful_first_rank"
-                                tools:src="@drawable/sample_profile_image"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
                                 android:layout_gravity="center"
-                                android:layout_marginTop="10dp" />
+                                android:layout_marginTop="10dp"
+                                tools:src="@drawable/sample_profile_image" />
 
                             <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
                                 android:id="@+id/tv_faithful_first_rank_member_name"
-                                tools:text="@string/first_rank_member_name"
-                                android:layout_gravity="center"
-                                android:layout_marginTop="15dp"/>
-
-                            <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="15dp"
+                                tools:text="@string/first_rank_member_name" />
+
+                            <TextView
                                 android:id="@+id/tv_faithful_first_rank_percent"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:layout_marginTop="10dp"
                                 tools:text="@string/rank_percent" />
@@ -120,36 +120,36 @@
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            android:layout_weight="1" >
+                            android:layout_weight="1"
+                            android:orientation="vertical">
 
                             <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
                                 android:id="@+id/tv_faithful_second_rank"
-                                android:text="@string/second_rank"
-                                android:layout_gravity="center" />
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:text="@string/second_rank" />
 
                             <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/iv_member_faithful_second_rank"
                                 android:layout_width="60dp"
                                 android:layout_height="60dp"
-                                android:id="@+id/iv_member_faithful_second_rank"
-                                tools:src="@drawable/sample_profile_image"
                                 android:layout_gravity="center"
-                                android:layout_marginTop="10dp" />
+                                android:layout_marginTop="10dp"
+                                tools:src="@drawable/sample_profile_image" />
 
                             <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
                                 android:id="@+id/tv_faithful_second_rank_member_name"
-                                tools:text="@string/second_rank_member_name"
-                                android:layout_gravity="center"
-                                android:layout_marginTop="15dp"/>
-
-                            <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="15dp"
+                                tools:text="@string/second_rank_member_name" />
+
+                            <TextView
                                 android:id="@+id/tv_faithful_second_rank_percent"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:layout_marginTop="10dp"
                                 tools:text="@string/rank_percent" />
@@ -159,70 +159,70 @@
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            android:layout_weight="1" >
+                            android:layout_weight="1"
+                            android:orientation="vertical">
 
                             <TextView
+                                android:id="@+id/tv_faithful_third_rank"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:id="@+id/tv_faithful_third_rank"
-                                android:text="@string/third_rank"
-                                android:layout_gravity="center" />
+                                android:layout_gravity="center"
+                                android:text="@string/third_rank" />
 
                             <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/iv_member_faithful_third_rank"
                                 android:layout_width="60dp"
                                 android:layout_height="60dp"
-                                android:id="@+id/iv_member_faithful_third_rank"
-                                tools:src="@drawable/sample_profile_image"
                                 android:layout_gravity="center"
-                                android:layout_marginTop="10dp" />
+                                android:layout_marginTop="10dp"
+                                tools:src="@drawable/sample_profile_image" />
 
                             <TextView
+                                android:id="@+id/tv_faithful_third_rank_member_name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:id="@+id/tv_faithful_third_rank_member_name"
                                 android:layout_gravity="center"
                                 android:layout_marginTop="15dp"
                                 tools:text="@string/third_rank_member_name" />
 
                             <TextView
+                                android:id="@+id/tv_faithful_third_rank_percent"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:id="@+id/tv_faithful_third_rank_percent"
-                                tools:text="@string/rank_percent"
                                 android:layout_gravity="center"
-                                android:layout_marginTop="10dp"/>
+                                android:layout_marginTop="10dp"
+                                tools:text="@string/rank_percent" />
 
                         </LinearLayout>
 
                         <LinearLayout
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            android:layout_weight="1" >
+                            android:layout_weight="1"
+                            android:orientation="vertical">
 
                             <TextView
+                                android:id="@+id/tv_faithful_fourth_rank"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:id="@+id/tv_faithful_fourth_rank"
                                 android:layout_gravity="center"
                                 android:text="@string/fourth_rank" />
 
                             <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/iv_member_faithful_fourth_rank"
                                 android:layout_width="60dp"
                                 android:layout_height="60dp"
-                                android:id="@+id/iv_member_faithful_fourth_rank"
-                                tools:src="@drawable/sample_profile_image"
                                 android:layout_gravity="center"
-                                android:layout_marginTop="10dp" />
+                                android:layout_marginTop="10dp"
+                                tools:src="@drawable/sample_profile_image" />
 
                             <TextView
+                                android:id="@+id/tv_faithful_fourth_rank_member_name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:id="@+id/tv_faithful_fourth_rank_member_name"
-                                tools:text="@string/fourth_rank_member_name"
                                 android:layout_gravity="center"
-                                android:layout_marginTop="15dp"/>
+                                android:layout_marginTop="15dp"
+                                tools:text="@string/fourth_rank_member_name" />
 
                             <TextView
                                 android:id="@+id/tv_faithful_fourth_rank_percent"
@@ -244,9 +244,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal"
                 android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp" >
+                android:layout_marginEnd="10dp"
+                android:orientation="horizontal">
 
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="0dp"
@@ -254,35 +254,35 @@
                     android:layout_weight="1"
                     app:cardCornerRadius="8dp"
                     app:cardElevation="7dp"
-                    app:cardUseCompatPadding="true" >
+                    app:cardUseCompatPadding="true">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
-                        android:orientation="vertical" >
+                        android:orientation="vertical">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="42dp" >
+                            android:layout_height="42dp">
 
                             <TextView
+                                android:id="@+id/tv_performance_king_title"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:id="@+id/tv_performance_king_title"
-                                android:text="@string/our_hero"
-                                android:textSize="@dimen/title_text_size"
-                                android:layout_marginTop="13dp"
                                 android:layout_marginStart="15dp"
-                                android:layout_marginBottom="5dp" />
+                                android:layout_marginTop="13dp"
+                                android:layout_marginBottom="5dp"
+                                android:text="@string/our_hero"
+                                android:textSize="@dimen/title_text_size" />
 
                             <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/iv_best_icon"
                                 android:layout_width="25dp"
                                 android:layout_height="25dp"
-                                android:id="@+id/iv_best_icon"
-                                android:src="@drawable/ic_best_member"
                                 android:layout_alignParentEnd="true"
                                 android:layout_marginTop="12dp"
-                                android:layout_marginEnd="20dp" />
+                                android:layout_marginEnd="20dp"
+                                android:src="@drawable/ic_best_member" />
 
 
                         </RelativeLayout>
@@ -290,28 +290,28 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:orientation="vertical" >
+                            android:orientation="vertical">
 
                             <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/iv_member_best_performance"
                                 android:layout_width="60dp"
                                 android:layout_height="60dp"
-                                android:id="@+id/iv_member_best_performance"
-                                tools:src="@drawable/sample_profile_image"
                                 android:layout_gravity="center"
-                                android:layout_marginTop="20dp" />
+                                android:layout_marginTop="20dp"
+                                tools:src="@drawable/sample_profile_image" />
 
                             <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
                                 android:id="@+id/tv_performance_king_member_name"
-                                tools:text="@string/our_hero_name"
-                                android:layout_gravity="center"
-                                android:layout_marginTop="15dp"/>
-
-                            <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="15dp"
+                                tools:text="@string/our_hero_name" />
+
+                            <TextView
                                 android:id="@+id/tv_performance_king_percent"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:layout_marginTop="10dp"
                                 tools:text="@string/rank_percent" />
@@ -328,63 +328,63 @@
                     android:layout_weight="1"
                     app:cardCornerRadius="8dp"
                     app:cardElevation="7dp"
-                    app:cardUseCompatPadding="true" >
+                    app:cardUseCompatPadding="true">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
-                        android:orientation="vertical" >
+                        android:orientation="vertical">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="42dp" >
+                            android:layout_height="42dp">
 
                             <TextView
+                                android:id="@+id/tv_latest_king_title"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:id="@+id/tv_latest_king_title"
-                                android:text="@string/late_king"
-                                android:textSize="@dimen/title_text_size"
-                                android:layout_marginTop="13dp"
                                 android:layout_marginStart="15dp"
-                                android:layout_marginBottom="5dp" />
+                                android:layout_marginTop="13dp"
+                                android:layout_marginBottom="5dp"
+                                android:text="@string/late_king"
+                                android:textSize="@dimen/title_text_size" />
 
                             <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/iv_latest_icon"
                                 android:layout_width="25dp"
                                 android:layout_height="25dp"
-                                android:id="@+id/iv_latest_icon"
-                                android:src="@drawable/ic_late_member"
                                 android:layout_alignParentEnd="true"
                                 android:layout_marginTop="12dp"
-                                android:layout_marginEnd="20dp" />
+                                android:layout_marginEnd="20dp"
+                                android:src="@drawable/ic_late_member" />
 
                         </RelativeLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:orientation="vertical" >
+                            android:orientation="vertical">
 
                             <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/iv_member_latest_king"
                                 android:layout_width="60dp"
                                 android:layout_height="60dp"
-                                android:id="@+id/iv_member_latest_king"
-                                tools:src="@drawable/sample_profile_image"
                                 android:layout_gravity="center"
-                                android:layout_marginTop="20dp" />
+                                android:layout_marginTop="20dp"
+                                tools:src="@drawable/sample_profile_image" />
 
                             <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
                                 android:id="@+id/tv_latest_king_member_name"
-                                tools:text="@string/late_king_name"
-                                android:layout_gravity="center"
-                                android:layout_marginTop="15dp"/>
-
-                            <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginTop="15dp"
+                                tools:text="@string/late_king_name" />
+
+                            <TextView
                                 android:id="@+id/tv_latest_king_percent"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:layout_marginTop="10dp"
                                 tools:text="@string/rank_percent" />
@@ -397,137 +397,137 @@
 
             </LinearLayout>
 
-<!--            <LinearLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:orientation="horizontal"-->
-<!--                android:layout_marginStart="10dp"-->
-<!--                android:layout_marginEnd="10dp" >-->
+            <!--            <LinearLayout-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="match_parent"-->
+            <!--                android:orientation="horizontal"-->
+            <!--                android:layout_marginStart="10dp"-->
+            <!--                android:layout_marginEnd="10dp" >-->
 
-<!--                <com.google.android.material.card.MaterialCardView-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:layout_weight="1"-->
-<!--                    app:cardCornerRadius="8dp"-->
-<!--                    app:cardElevation="7dp"-->
-<!--                    app:cardUseCompatPadding="true" >-->
+            <!--                <com.google.android.material.card.MaterialCardView-->
+            <!--                    android:layout_width="0dp"-->
+            <!--                    android:layout_height="match_parent"-->
+            <!--                    android:layout_weight="1"-->
+            <!--                    app:cardCornerRadius="8dp"-->
+            <!--                    app:cardElevation="7dp"-->
+            <!--                    app:cardUseCompatPadding="true" >-->
 
-<!--                    <LinearLayout-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="200dp"-->
-<!--                        android:orientation="vertical" >-->
+            <!--                    <LinearLayout-->
+            <!--                        android:layout_width="match_parent"-->
+            <!--                        android:layout_height="200dp"-->
+            <!--                        android:orientation="vertical" >-->
 
-<!--                        <TextView-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:text="@string/forever_late"-->
-<!--                            android:textSize="@dimen/title_text_size"-->
-<!--                            android:layout_marginTop="13dp"-->
-<!--                            android:layout_marginStart="15dp"-->
-<!--                            android:layout_marginBottom="5dp" />-->
+            <!--                        <TextView-->
+            <!--                            android:layout_width="wrap_content"-->
+            <!--                            android:layout_height="wrap_content"-->
+            <!--                            android:text="@string/forever_late"-->
+            <!--                            android:textSize="@dimen/title_text_size"-->
+            <!--                            android:layout_marginTop="13dp"-->
+            <!--                            android:layout_marginStart="15dp"-->
+            <!--                            android:layout_marginBottom="5dp" />-->
 
-<!--                        <LinearLayout-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="match_parent"-->
-<!--                            android:orientation="vertical" >-->
+            <!--                        <LinearLayout-->
+            <!--                            android:layout_width="match_parent"-->
+            <!--                            android:layout_height="match_parent"-->
+            <!--                            android:orientation="vertical" >-->
 
-<!--                            <de.hdodenhof.circleimageview.CircleImageView-->
-<!--                                android:layout_width="60dp"-->
-<!--                                android:layout_height="60dp"-->
-<!--                                tools:src="@drawable/sample_profile_image"-->
-<!--                                android:layout_gravity="center"-->
-<!--                                android:layout_marginTop="20dp" />-->
+            <!--                            <de.hdodenhof.circleimageview.CircleImageView-->
+            <!--                                android:layout_width="60dp"-->
+            <!--                                android:layout_height="60dp"-->
+            <!--                                tools:src="@drawable/sample_profile_image"-->
+            <!--                                android:layout_gravity="center"-->
+            <!--                                android:layout_marginTop="20dp" />-->
 
-<!--                            <TextView-->
-<!--                                android:layout_width="wrap_content"-->
-<!--                                android:layout_height="wrap_content"-->
-<!--                                android:layout_gravity="center"-->
-<!--                                android:layout_marginTop="15dp"-->
-<!--                                android:text="@string/forever_late_name" />-->
+            <!--                            <TextView-->
+            <!--                                android:layout_width="wrap_content"-->
+            <!--                                android:layout_height="wrap_content"-->
+            <!--                                android:layout_gravity="center"-->
+            <!--                                android:layout_marginTop="15dp"-->
+            <!--                                android:text="@string/forever_late_name" />-->
 
-<!--                        </LinearLayout>-->
+            <!--                        </LinearLayout>-->
 
-<!--                    </LinearLayout>-->
+            <!--                    </LinearLayout>-->
 
-<!--                </com.google.android.material.card.MaterialCardView>-->
+            <!--                </com.google.android.material.card.MaterialCardView>-->
 
-<!--                <com.google.android.material.card.MaterialCardView-->
-<!--                    android:layout_width="0dp"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:layout_weight="1"-->
-<!--                    app:cardCornerRadius="8dp"-->
-<!--                    app:cardElevation="7dp"-->
-<!--                    app:cardUseCompatPadding="true" >-->
+            <!--                <com.google.android.material.card.MaterialCardView-->
+            <!--                    android:layout_width="0dp"-->
+            <!--                    android:layout_height="match_parent"-->
+            <!--                    android:layout_weight="1"-->
+            <!--                    app:cardCornerRadius="8dp"-->
+            <!--                    app:cardElevation="7dp"-->
+            <!--                    app:cardUseCompatPadding="true" >-->
 
-<!--                    <LinearLayout-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="200dp"-->
-<!--                        android:orientation="vertical" >-->
+            <!--                    <LinearLayout-->
+            <!--                        android:layout_width="match_parent"-->
+            <!--                        android:layout_height="200dp"-->
+            <!--                        android:orientation="vertical" >-->
 
-<!--                        <TextView-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:text="@string/future_lawyer"-->
-<!--                            android:textSize="@dimen/title_text_size"-->
-<!--                            android:layout_marginTop="13dp"-->
-<!--                            android:layout_marginStart="15dp"-->
-<!--                            android:layout_marginBottom="5dp" />-->
+            <!--                        <TextView-->
+            <!--                            android:layout_width="wrap_content"-->
+            <!--                            android:layout_height="wrap_content"-->
+            <!--                            android:text="@string/future_lawyer"-->
+            <!--                            android:textSize="@dimen/title_text_size"-->
+            <!--                            android:layout_marginTop="13dp"-->
+            <!--                            android:layout_marginStart="15dp"-->
+            <!--                            android:layout_marginBottom="5dp" />-->
 
-<!--                        <LinearLayout-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="match_parent"-->
-<!--                            android:orientation="vertical" >-->
+            <!--                        <LinearLayout-->
+            <!--                            android:layout_width="match_parent"-->
+            <!--                            android:layout_height="match_parent"-->
+            <!--                            android:orientation="vertical" >-->
 
-<!--                            <de.hdodenhof.circleimageview.CircleImageView-->
-<!--                                android:layout_width="60dp"-->
-<!--                                android:layout_height="60dp"-->
-<!--                                tools:src="@drawable/sample_profile_image"-->
-<!--                                android:layout_gravity="center"-->
-<!--                                android:layout_marginTop="20dp" />-->
+            <!--                            <de.hdodenhof.circleimageview.CircleImageView-->
+            <!--                                android:layout_width="60dp"-->
+            <!--                                android:layout_height="60dp"-->
+            <!--                                tools:src="@drawable/sample_profile_image"-->
+            <!--                                android:layout_gravity="center"-->
+            <!--                                android:layout_marginTop="20dp" />-->
 
-<!--                            <TextView-->
-<!--                                android:layout_width="wrap_content"-->
-<!--                                android:layout_height="wrap_content"-->
-<!--                                android:text="@string/future_lawyer_name"-->
-<!--                                android:layout_gravity="center"-->
-<!--                                android:layout_marginTop="15dp"/>-->
+            <!--                            <TextView-->
+            <!--                                android:layout_width="wrap_content"-->
+            <!--                                android:layout_height="wrap_content"-->
+            <!--                                android:text="@string/future_lawyer_name"-->
+            <!--                                android:layout_gravity="center"-->
+            <!--                                android:layout_marginTop="15dp"/>-->
 
-<!--                        </LinearLayout>-->
+            <!--                        </LinearLayout>-->
 
-<!--                    </LinearLayout>-->
+            <!--                    </LinearLayout>-->
 
-<!--                </com.google.android.material.card.MaterialCardView>-->
+            <!--                </com.google.android.material.card.MaterialCardView>-->
 
-<!--            </LinearLayout>-->
+            <!--            </LinearLayout>-->
 
-<!--            <com.google.android.material.card.MaterialCardView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                app:cardCornerRadius="8dp"-->
-<!--                app:cardElevation="7dp"-->
-<!--                app:cardUseCompatPadding="true">-->
+            <!--            <com.google.android.material.card.MaterialCardView-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="match_parent"-->
+            <!--                app:cardCornerRadius="8dp"-->
+            <!--                app:cardElevation="7dp"-->
+            <!--                app:cardUseCompatPadding="true">-->
 
-<!--                <LinearLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:orientation="vertical" >-->
+            <!--                <LinearLayout-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="match_parent"-->
+            <!--                    android:orientation="vertical" >-->
 
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:text="@string/about_leader"-->
-<!--                        android:textSize="@dimen/title_text_size"-->
-<!--                        android:layout_marginTop="15dp"-->
-<!--                        android:layout_marginStart="15dp"-->
-<!--                        android:layout_marginBottom="15dp" />-->
+            <!--                    <TextView-->
+            <!--                        android:layout_width="wrap_content"-->
+            <!--                        android:layout_height="wrap_content"-->
+            <!--                        android:text="@string/about_leader"-->
+            <!--                        android:textSize="@dimen/title_text_size"-->
+            <!--                        android:layout_marginTop="15dp"-->
+            <!--                        android:layout_marginStart="15dp"-->
+            <!--                        android:layout_marginBottom="15dp" />-->
 
-<!--                    <View-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="match_parent" />-->
+            <!--                    <View-->
+            <!--                        android:layout_width="match_parent"-->
+            <!--                        android:layout_height="match_parent" />-->
 
-<!--                </LinearLayout>-->
+            <!--                </LinearLayout>-->
 
-<!--            </com.google.android.material.card.MaterialCardView>-->
+            <!--            </com.google.android.material.card.MaterialCardView>-->
 
         </LinearLayout>
 

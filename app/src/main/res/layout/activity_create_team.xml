@@ -4,18 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.main.team.CreateTeamActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".view.main.team.CreateTeamActivity">
 
     <androidx.appcompat.widget.Toolbar
+        android:id="@+id/create_team_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:id="@+id/create_team_toolbar"
-        app:contentInsetStart="0dp" >
+        app:contentInsetStart="0dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_back"
@@ -27,25 +27,25 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/title_text_size"
-                android:text="@string/create_team_title"
-                android:layout_toEndOf="@+id/iv_back"
                 android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/iv_back"
                 android:paddingStart="10dp"
-                android:textColor="@color/black" />
+                android:text="@string/create_team_title"
+                android:textColor="@color/black"
+                android:textSize="@dimen/title_text_size" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_finish_create_team"
                 android:layout_width="70dp"
                 android:layout_height="40dp"
-                android:id="@+id/btn_finish_create_team"
                 android:layout_alignParentEnd="true"
-                android:layout_marginEnd="20dp"
                 android:layout_centerVertical="true"
-                android:text="@string/finish_create_team"
-                android:textSize="@dimen/title_text_size"
-                android:textColor="@color/selector_add_btn_text_color"
+                android:layout_marginEnd="20dp"
                 android:backgroundTint="@color/selector_add_btn_background"
-                android:enabled="false" />
+                android:enabled="false"
+                android:text="@string/finish_create_team"
+                android:textColor="@color/selector_add_btn_text_color"
+                android:textSize="@dimen/title_text_size" />
 
         </RelativeLayout>
 
@@ -54,20 +54,20 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edit_create_team_name"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:id="@+id/edit_create_team_name"
-            android:hint="@string/edit_team_name"
-            android:textColor="@color/gray_333"
-            android:textSize="@dimen/title_text_size"
+            android:layout_marginTop="20dp"
             android:background="@null"
+            android:hint="@string/edit_team_name"
+            android:maxLines="1"
             android:paddingStart="20dp"
             android:paddingEnd="20dp"
-            android:layout_marginTop="20dp"
-            android:maxLines="1" />
+            android:textColor="@color/gray_333"
+            android:textSize="@dimen/title_text_size" />
 
         <View
             android:layout_width="match_parent"
@@ -75,15 +75,15 @@
             android:background="@color/light_gray" />
 
         <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edit_create_team_desc"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/edit_create_team_desc"
-            android:hint="@string/edit_team_desc"
+            android:background="@null"
             android:gravity="top"
+            android:hint="@string/edit_team_desc"
             android:padding="20dp"
             android:textColor="@color/gray_333"
-            android:textSize="@dimen/body_text_size"
-            android:background="@null"/>
+            android:textSize="@dimen/body_text_size" />
 
     </LinearLayout>
 

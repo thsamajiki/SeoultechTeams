@@ -4,18 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.main.team.option_menu.TeamMemberListActivity"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    tools:context=".view.main.team.option_menu.TeamMemberListActivity">
 
     <androidx.appcompat.widget.Toolbar
+        android:id="@+id/member_list_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:id="@+id/member_list_toolbar"
-        app:contentInsetStart="0dp" >
+        app:contentInsetStart="0dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" >
+            android:layout_height="match_parent">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_back"
@@ -33,18 +33,18 @@
                 android:textSize="@dimen/title_text_size" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_go_to_invite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/btn_go_to_invite"
-                android:text="@string/btn_invite"
-                android:textColor="@color/colorPrimary"
-                app:backgroundTint="@color/colorPrimary30"
-                app:rippleColor="@color/white"
+                android:layout_alignParentEnd="true"
                 android:layout_marginTop="3dp"
                 android:layout_marginEnd="8dp"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
-                android:layout_alignParentEnd="true" />
+                android:text="@string/btn_invite"
+                android:textColor="@color/colorPrimary"
+                app:backgroundTint="@color/colorPrimary30"
+                app:rippleColor="@color/white" />
 
         </RelativeLayout>
 
@@ -52,12 +52,12 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_team_member_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintTop_toBottomOf="@+id/member_list_toolbar"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:orientation="vertical"
-        tools:listitem="@layout/item_team_member_list"
-        android:id="@+id/rv_team_member_list" />
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintTop_toBottomOf="@+id/member_list_toolbar"
+        tools:listitem="@layout/item_team_member_list" />
 
 </LinearLayout>
