@@ -57,12 +57,14 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/body_text_size" />
 
-                <de.hdodenhof.circleimageview.CircleImageView
+                <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/iv_manager_profile"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_marginStart="20dp"
-                    android:src="@drawable/ic_user" />
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_user"
+                    app:shapeAppearance="@style/Circle" />
 
             </LinearLayout>
 

@@ -56,11 +56,13 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="60dp">
 
-        <de.hdodenhof.circleimageview.CircleImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_my_user_profile"
             android:layout_width="140dp"
             android:layout_height="140dp"
-            android:src="@drawable/sample_profile_image" />
+            android:scaleType="centerCrop"
+            android:src="@drawable/sample_profile_image"
+            app:shapeAppearance="@style/Circle" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_profile_image_edit"

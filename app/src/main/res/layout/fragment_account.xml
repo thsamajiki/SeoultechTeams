@@ -11,12 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <de.hdodenhof.circleimageview.CircleImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_my_user_profile"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginStart="70dp"
             android:layout_marginTop="20dp"
+            android:scaleType="centerCrop"
+            app:shapeAppearance="@style/Circle"
             tools:src="@drawable/sample_profile_image" />
 
         <TextView
