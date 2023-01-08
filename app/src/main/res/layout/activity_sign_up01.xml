@@ -44,9 +44,8 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
+        android:layout_marginHorizontal="30dp"
         android:layout_marginTop="50dp"
-        android:layout_marginEnd="30dp"
         app:boxStrokeColor="@color/colorPrimary">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -63,9 +62,8 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
+        android:layout_marginHorizontal="30dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="30dp"
         app:boxStrokeColor="@color/colorPrimary"
         app:endIconMode="password_toggle">
 
@@ -82,9 +80,8 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
+        android:layout_marginHorizontal="30dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="30dp"
         app:boxStrokeColor="@color/colorPrimary"
         app:endIconMode="password_toggle">
 
@@ -101,9 +98,8 @@
         android:id="@+id/btn_next_step_sign_up"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginStart="30dp"
+        android:layout_marginHorizontal="30dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="30dp"
         android:text="@string/btn_next"
         android:textColor="@color/colorPrimary"
         app:backgroundTint="@color/colorPrimary30" />
