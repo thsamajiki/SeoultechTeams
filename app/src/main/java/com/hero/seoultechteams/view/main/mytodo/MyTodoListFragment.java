@@ -153,7 +153,7 @@ public class MyTodoListFragment extends Fragment implements OnRecyclerItemClickL
             case R.id.btn_dismiss_mytodo:
                 updateMyTodo(true, position, data);
                 break;
-            case R.id.btn_state_mytodo:
+            case R.id.btn_state_my_todo:
                 updateMyTodo(false, position, data);
                 break;
             default:

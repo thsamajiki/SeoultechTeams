@@ -33,13 +33,13 @@ import java.util.Collections;
 import java.util.List;
 
 
-public class MyTodoListAdapter extends BaseAdapter<MyTodoListAdapter.MyTodoListViewHolder, TodoEntity> implements View.OnClickListener {
+public class MyTodoListAdapter extends BaseAdapter<MyTodoListAdapter.MyTodoListViewHolder, TodoEntity> {
 
-    private Context context;
-    private LayoutInflater inflater;
-    private List<TodoEntity> myTodoDataList;
+    private final Context context;
+    private final LayoutInflater inflater;
+    private final List<TodoEntity> myTodoDataList;
     private String myKey;
-    private List<TeamEntity> myTeamDataList = new ArrayList<>();
+    private final List<TeamEntity> myTeamDataList = new ArrayList<>();
     public static final String EXTRA_SUBMIT_MY_TODO = "submitMyTodo";
     public static final String EXTRA_SUBMIT_LATE_MY_TODO = "submitLateMyTodo";
     public static final String EXTRA_RESUBMIT_MY_TODO = "resubmitMyTodo";
@@ -77,7 +77,7 @@ public class MyTodoListAdapter extends BaseAdapter<MyTodoListAdapter.MyTodoListV
     @NonNull
     @Override
     public MyTodoListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.item_mytodo_list, parent, false);
+        View view = inflater.inflate(R.layout.item_my_todo_list, parent, false);
         return new MyTodoListViewHolder(view);
     }
 
@@ -140,12 +140,12 @@ public class MyTodoListAdapter extends BaseAdapter<MyTodoListAdapter.MyTodoListV
         switch (todoState) {
             case TODO_STATE_IN_PROGRESS:
                 if (todoEntity.getTodoEndTime() < System.currentTimeMillis()) {
-                    holder.btnStateMyTodo.setText("지연제출");    // Todo의 버튼은 "지연 제출"로 바뀐다.
+                    holder.btnStateMyTodo.setText("지연제출");    // Todo 의 버튼은 "지연 제출"로 바뀐다.
                     holder.btnStateMyTodo.setTextColor(Color.parseColor(context.getString(Integer.parseInt(String.valueOf(R.color.colorPrimaryYellow)))));
                     holder.btnStateMyTodo.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.colorPrimaryYellow30));
                     holder.btnStateMyTodo.setClickable(true);
-                } else {    // Todo의 마감시간이 현재 시간보다 크면
-                    holder.btnStateMyTodo.setText("제출");  // Todo의 버튼은 "제출"로 바뀐다.
+                } else {    // Todo 의 마감시간이 현재 시간보다 크면
+                    holder.btnStateMyTodo.setText("제출");  // Todo 의 버튼은 "제출"로 바뀐다.
                     holder.btnStateMyTodo.setTextColor(Color.parseColor(context.getString(Integer.parseInt(String.valueOf(R.color.colorPrimary)))));
                     holder.btnStateMyTodo.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.colorPrimary30));
                     holder.btnStateMyTodo.setClickable(true);
@@ -187,11 +187,6 @@ public class MyTodoListAdapter extends BaseAdapter<MyTodoListAdapter.MyTodoListV
         return myTodoDataList.size();
     }
 
-    @Override
-    public void onClick(View v) {
-
-    }
-
     class MyTodoListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView tvMyTodoTitle, tvMyTodoDesc, tvMyTodoTeamName, tvMyTodoStartDate, tvMyTodoEndDate;
@@ -214,16 +209,16 @@ public class MyTodoListAdapter extends BaseAdapter<MyTodoListAdapter.MyTodoListV
         }
 
         private void initView(View itemView) {
-            tvMyTodoTitle = itemView.findViewById(R.id.tv_mytodo_title);
-            tvMyTodoDesc = itemView.findViewById(R.id.tv_mytodo_desc);
-            tvMyTodoStartDate = itemView.findViewById(R.id.tv_mytodo_start_date);
-            tvMyTodoEndDate = itemView.findViewById(R.id.tv_mytodo_end_date);
-            tvMyTodoTeamName = itemView.findViewById(R.id.tv_mytodo_team_name);
-            btnMyTodoOptionMenu = itemView.findViewById(R.id.btn_mytodo_option_menu);
-            mcvMyTodoList = itemView.findViewById(R.id.mcv_mytodo_list);
+            tvMyTodoTitle = itemView.findViewById(R.id.tv_my_todo_title);
+            tvMyTodoDesc = itemView.findViewById(R.id.tv_my_todo_desc);
+            tvMyTodoStartDate = itemView.findViewById(R.id.tv_my_todo_start_date);
+            tvMyTodoEndDate = itemView.findViewById(R.id.tv_my_todo_end_date);
+            tvMyTodoTeamName = itemView.findViewById(R.id.tv_my_todo_team_name);
+            btnMyTodoOptionMenu = itemView.findViewById(R.id.btn_my_todo_option_menu);
+            mcvMyTodoList = itemView.findViewById(R.id.mcv_my_todo_list);
             pbMyTodoDDay = itemView.findViewById(R.id.pb_mytodo_d_day);
             btnDismissMyTodo = itemView.findViewById(R.id.btn_dismiss_mytodo);
-            btnStateMyTodo = itemView.findViewById(R.id.btn_state_mytodo);
+            btnStateMyTodo = itemView.findViewById(R.id.btn_state_my_todo);
         }
 
 
@@ -232,46 +227,5 @@ public class MyTodoListAdapter extends BaseAdapter<MyTodoListAdapter.MyTodoListV
             int position = getAdapterPosition();
             getOnRecyclerItemClickListener().onItemClick(position, view, myTodoDataList.get(position));
         }
-
-
-
-
-//        private void showMyTodoOptionMenu() {
-//            PopupMenu popupMenu = new PopupMenu(context, btnMyTodoOptionMenu);
-//            popupMenu.getMenuInflater().inflate(R.menu.menu_mytodo_option, popupMenu.getMenu());
-//            popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-//                @Override
-//                public boolean onMenuItemClick(MenuItem item) {
-//                    switch(item.getItemId()) {
-//                        case R.id.menu_delete_my_todo:
-//                            openDeleteMyTodoDialog();
-//                            break;
-//                    }
-//                    return true;
-//                }
-//            });
-//            popupMenu.show();
-//        }
-//
-//        private void openDeleteMyTodoDialog() {
-//            String delete_todo_message = "할 일을 삭제하시겠습니까?";
-//            String positiveText = "예";
-//            String negativeText = "아니오";
-//            new MaterialAlertDialogBuilder(context).setMessage(delete_todo_message)
-//                    .setPositiveButton(positiveText, new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            // TODO: 2021-04-17 삭제되면 TeamTodoList에서도 삭제되게 하기
-//                        }
-//                    })
-//                    .setNegativeButton(negativeText, new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//
-//                        }
-//                    })
-//                    .create()
-//                    .show();
-//        }
     }
 }

@@ -2,7 +2,7 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mcv_mytodo_list"
+    android:id="@+id/mcv_my_todo_list"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="10dp"
@@ -18,7 +18,7 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/tv_mytodo_title"
+            android:id="@+id/tv_my_todo_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -30,7 +30,7 @@
             tools:text="제목입니다" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/btn_mytodo_option_menu"
+            android:id="@+id/btn_my_todo_option_menu"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginEnd="8dp"
@@ -43,7 +43,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/tv_mytodo_start_date"
+            android:id="@+id/tv_my_todo_start_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -52,10 +52,10 @@
             android:textColor="@color/dark_gray"
             android:textSize="@dimen/body_text_size"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_mytodo_title" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_my_todo_title" />
 
         <TextView
-            android:id="@+id/tv_mytodo_end_date"
+            android:id="@+id/tv_my_todo_end_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -63,7 +63,7 @@
             android:textColor="@color/dark_gray"
             android:textSize="@dimen/body_text_size"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_mytodo_option_menu" />
+            app:layout_constraintTop_toBottomOf="@+id/btn_my_todo_option_menu" />
 
         <ProgressBar
             android:id="@+id/pb_mytodo_d_day"
@@ -73,11 +73,11 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="7dp"
             android:progressDrawable="@drawable/d_day_progress"
-            app:layout_constraintBottom_toTopOf="@+id/tv_mytodo_desc"
-            app:layout_constraintTop_toBottomOf="@+id/tv_mytodo_end_date" />
+            app:layout_constraintBottom_toTopOf="@+id/tv_my_todo_desc"
+            app:layout_constraintTop_toBottomOf="@+id/tv_my_todo_end_date" />
 
         <TextView
-            android:id="@+id/tv_mytodo_desc"
+            android:id="@+id/tv_my_todo_desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
@@ -91,7 +91,7 @@
             tools:text="@string/dummy_text" />
 
         <TextView
-            android:id="@+id/tv_mytodo_team_name"
+            android:id="@+id/tv_my_todo_team_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -114,11 +114,11 @@
             android:text="@string/dismiss_todo"
             android:textColor="@color/colorPrimaryRed"
             android:textSize="@dimen/small_text_size"
-            app:layout_constraintBottom_toBottomOf="@+id/btn_state_mytodo"
-            app:layout_constraintEnd_toStartOf="@+id/btn_state_mytodo" />
+            app:layout_constraintBottom_toBottomOf="@+id/btn_state_my_todo"
+            app:layout_constraintEnd_toStartOf="@+id/btn_state_my_todo" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_state_mytodo"
+            android:id="@+id/btn_state_my_todo"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_marginTop="10dp"
@@ -130,7 +130,7 @@
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/small_text_size"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_mytodo_desc" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_my_todo_desc" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

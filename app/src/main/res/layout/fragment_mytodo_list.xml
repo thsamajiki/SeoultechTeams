@@ -22,14 +22,14 @@
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/title_tab_now_mytodo_list"
+            android:text="@string/title_tab_now_my_todo_list"
             android:textColor="@color/black"
             android:textSize="@dimen/title_text_size" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/title_tab_completed_mytodo_list"
+            android:text="@string/title_tab_completed_my_todo_list"
             android:textColor="@color/black"
             android:textSize="@dimen/title_text_size" />
 
@@ -46,7 +46,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/item_mytodo_list" />
+            tools:listitem="@layout/item_my_todo_list" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
