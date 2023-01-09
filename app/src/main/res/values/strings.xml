@@ -64,9 +64,9 @@
     <string name="title_comment">Comment</string>
     <string name="edit_comment">Comment</string>
 
-    <string name="mytodo_list_title">나의 할 일</string>
-    <string name="title_tab_now_mytodo_list">진행중</string>
-    <string name="title_tab_completed_mytodo_list">완료됨</string>
+    <string name="my_todo_list_title">나의 할 일</string>
+    <string name="title_tab_now_my_todo_list">진행중</string>
+    <string name="title_tab_completed_my_todo_list">완료됨</string>
 
     <string name="btn_change_profile">프로필 수정</string>
     <string name="tv_notification">알림</string>
