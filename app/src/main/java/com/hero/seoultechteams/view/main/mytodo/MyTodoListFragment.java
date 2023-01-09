@@ -21,7 +21,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.hero.seoultechteams.Injector;
 import com.hero.seoultechteams.R;
 import com.hero.seoultechteams.database.todo.entity.Event;
-import com.hero.seoultechteams.databinding.FragmentMytodoListBinding;
+import com.hero.seoultechteams.databinding.FragmentMyTodoListBinding;
 import com.hero.seoultechteams.domain.team.entity.TeamEntity;
 import com.hero.seoultechteams.domain.todo.entity.TodoEntity;
 import com.hero.seoultechteams.listener.OnRecyclerItemClickListener;
@@ -35,7 +35,7 @@ import java.util.List;
 
 public class MyTodoListFragment extends Fragment implements OnRecyclerItemClickListener<TodoEntity>, SwipeRefreshLayout.OnRefreshListener, MyTodoListContract.View {
 
-    private FragmentMytodoListBinding binding;
+    private FragmentMyTodoListBinding binding;
     private final List<TodoEntity> myTodoNowDataList = new ArrayList<>();
     private final List<TodoEntity> myTodoCompletedDataList = new ArrayList<>();
     private MyTodoListAdapter myTodoListAdapter;
@@ -51,7 +51,7 @@ public class MyTodoListFragment extends Fragment implements OnRecyclerItemClickL
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentMytodoListBinding.inflate(getLayoutInflater());
+        binding = FragmentMyTodoListBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
 
         setOnRefreshListener();
@@ -150,7 +150,7 @@ public class MyTodoListFragment extends Fragment implements OnRecyclerItemClickL
     @Override
     public void onItemClick(int position, View view, TodoEntity data) {
         switch (view.getId()) {
-            case R.id.btn_dismiss_mytodo:
+            case R.id.btn_dismiss_my_todo:
                 updateMyTodo(true, position, data);
                 break;
             case R.id.btn_state_my_todo:

@@ -11,18 +11,14 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.card.MaterialCardView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.hero.seoultechteams.R;
+import com.hero.seoultechteams.databinding.ItemMyTodoListBinding;
 import com.hero.seoultechteams.domain.team.entity.TeamEntity;
 import com.hero.seoultechteams.domain.todo.entity.TodoEntity;
 import com.hero.seoultechteams.utils.TimeUtils;
@@ -91,19 +87,19 @@ public class MyTodoListAdapter extends BaseAdapter<MyTodoListAdapter.MyTodoListV
     @Override
     public void onBindViewHolder(@NonNull MyTodoListViewHolder holder, int position) {
         TodoEntity todoData = myTodoDataList.get(position);
-        holder.tvMyTodoTitle.setText(todoData.getTodoTitle());
+        holder.binding.tvMyTodoTitle.setText(todoData.getTodoTitle());
 
         if (TextUtils.isEmpty(todoData.getTodoDesc())) {
-            holder.tvMyTodoDesc.setVisibility(View.GONE);
+            holder.binding.tvMyTodoDesc.setVisibility(View.GONE);
         } else {
-            holder.tvMyTodoDesc.setVisibility(View.VISIBLE);
-            holder.tvMyTodoDesc.setText(todoData.getTodoDesc());
+            holder.binding.tvMyTodoDesc.setVisibility(View.VISIBLE);
+            holder.binding.tvMyTodoDesc.setText(todoData.getTodoDesc());
         }
 
-        holder.tvMyTodoTeamName.setText(todoData.getTeamName());
+        holder.binding.tvMyTodoTeamName.setText(todoData.getTeamName());
 
-        holder.tvMyTodoStartDate.setText(TimeUtils.getInstance().convertTimeFormat(todoData.getTodoCreatedTime(), "MM월dd일"));
-        holder.tvMyTodoEndDate.setText(TimeUtils.getInstance().convertTimeFormat(todoData.getTodoEndTime(), "MM월dd일 HH:mm 까지"));
+        holder.binding.tvMyTodoStartDate.setText(TimeUtils.getInstance().convertTimeFormat(todoData.getTodoCreatedTime(), "MM월dd일"));
+        holder.binding.tvMyTodoEndDate.setText(TimeUtils.getInstance().convertTimeFormat(todoData.getTodoEndTime(), "MM월dd일 HH:mm 까지"));
 
         long todoInterval = todoData.getTodoEndTime() - todoData.getTodoCreatedTime();
         long todayInterval = System.currentTimeMillis() - todoData.getTodoCreatedTime();
@@ -111,14 +107,14 @@ public class MyTodoListAdapter extends BaseAdapter<MyTodoListAdapter.MyTodoListV
         int todoIntervalDate = (int) (todoInterval / oneDay);
         int todayIntervalDate = (int) (todayInterval / oneDay);
         if (todoInterval <= 0) {
-            holder.pbMyTodoDDay.setProgress(100);
+            holder.binding.pbMyTodoDDay.setProgress(100);
         } else {
             int percent = (int) (((double) todayIntervalDate / (double) todoIntervalDate) * 100);
 
             if (percent < 0) {
-                holder.pbMyTodoDDay.setProgress(100);
+                holder.binding.pbMyTodoDDay.setProgress(100);
             } else {
-                holder.pbMyTodoDDay.setProgress(percent);
+                holder.binding.pbMyTodoDDay.setProgress(percent);
             }
         }
 
@@ -136,47 +132,47 @@ public class MyTodoListAdapter extends BaseAdapter<MyTodoListAdapter.MyTodoListV
 
     private void setTodoState(MyTodoListViewHolder holder, TodoEntity todoEntity, boolean isLeader) {
         String todoState = todoEntity.getTodoState();
-        holder.btnDismissMyTodo.setVisibility(View.GONE);
+        holder.binding.btnDismissMyTodo.setVisibility(View.GONE);
         switch (todoState) {
             case TODO_STATE_IN_PROGRESS:
                 if (todoEntity.getTodoEndTime() < System.currentTimeMillis()) {
-                    holder.btnStateMyTodo.setText("지연제출");    // Todo 의 버튼은 "지연 제출"로 바뀐다.
-                    holder.btnStateMyTodo.setTextColor(Color.parseColor(context.getString(Integer.parseInt(String.valueOf(R.color.colorPrimaryYellow)))));
-                    holder.btnStateMyTodo.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.colorPrimaryYellow30));
-                    holder.btnStateMyTodo.setClickable(true);
+                    holder.binding.btnStateMyTodo.setText("지연제출");    // Todo 의 버튼은 "지연 제출"로 바뀐다.
+                    holder.binding.btnStateMyTodo.setTextColor(Color.parseColor(context.getString(Integer.parseInt(String.valueOf(R.color.colorPrimaryYellow)))));
+                    holder.binding.btnStateMyTodo.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.colorPrimaryYellow30));
+                    holder.binding.btnStateMyTodo.setClickable(true);
                 } else {    // Todo 의 마감시간이 현재 시간보다 크면
-                    holder.btnStateMyTodo.setText("제출");  // Todo 의 버튼은 "제출"로 바뀐다.
-                    holder.btnStateMyTodo.setTextColor(Color.parseColor(context.getString(Integer.parseInt(String.valueOf(R.color.colorPrimary)))));
-                    holder.btnStateMyTodo.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.colorPrimary30));
-                    holder.btnStateMyTodo.setClickable(true);
+                    holder.binding.btnStateMyTodo.setText("제출");  // Todo 의 버튼은 "제출"로 바뀐다.
+                    holder.binding.btnStateMyTodo.setTextColor(Color.parseColor(context.getString(Integer.parseInt(String.valueOf(R.color.colorPrimary)))));
+                    holder.binding.btnStateMyTodo.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.colorPrimary30));
+                    holder.binding.btnStateMyTodo.setClickable(true);
                 }
                 break;
             case TODO_STATE_DISMISSED:
-                holder.btnStateMyTodo.setText("다시제출");
-                holder.btnStateMyTodo.setTextColor(Color.parseColor(context.getString(Integer.parseInt(String.valueOf(R.color.colorPrimaryRed)))));
-                holder.btnStateMyTodo.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.colorPrimaryRed60));
-                holder.btnStateMyTodo.setClickable(true);
+                holder.binding.btnStateMyTodo.setText("다시제출");
+                holder.binding.btnStateMyTodo.setTextColor(Color.parseColor(context.getString(Integer.parseInt(String.valueOf(R.color.colorPrimaryRed)))));
+                holder.binding.btnStateMyTodo.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.colorPrimaryRed60));
+                holder.binding.btnStateMyTodo.setClickable(true);
                 break;
             case TODO_STATE_CONFIRMED:
-                holder.btnStateMyTodo.setText("승인됨");
-                holder.btnStateMyTodo.setTextColor(Color.parseColor(context.getString(Integer.parseInt(String.valueOf(R.color.colorPrimaryGreen)))));
-                holder.btnStateMyTodo.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.colorPrimaryGreen30));
-                holder.btnStateMyTodo.setClickable(false);
+                holder.binding.btnStateMyTodo.setText("승인됨");
+                holder.binding.btnStateMyTodo.setTextColor(Color.parseColor(context.getString(Integer.parseInt(String.valueOf(R.color.colorPrimaryGreen)))));
+                holder.binding.btnStateMyTodo.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.colorPrimaryGreen30));
+                holder.binding.btnStateMyTodo.setClickable(false);
                 break;
             case TODO_STATE_SUBMITTED:
                 if (isLeader) {
-                    holder.btnDismissMyTodo.setVisibility(View.VISIBLE);
-                    holder.btnDismissMyTodo.setTextColor(Color.parseColor(context.getString(Integer.parseInt(String.valueOf(R.color.colorPrimaryRed)))));
-                    holder.btnDismissMyTodo.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.colorPrimaryRed60));
-                    holder.btnStateMyTodo.setText("승인");
-                    holder.btnStateMyTodo.setTextColor(Color.parseColor(context.getString(Integer.parseInt(String.valueOf(R.color.colorPrimaryGreen)))));
-                    holder.btnStateMyTodo.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.colorPrimaryGreen30));
-                    holder.btnStateMyTodo.setClickable(true);
+                    holder.binding.btnDismissMyTodo.setVisibility(View.VISIBLE);
+                    holder.binding.btnDismissMyTodo.setTextColor(Color.parseColor(context.getString(Integer.parseInt(String.valueOf(R.color.colorPrimaryRed)))));
+                    holder.binding.btnDismissMyTodo.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.colorPrimaryRed60));
+                    holder.binding.btnStateMyTodo.setText("승인");
+                    holder.binding.btnStateMyTodo.setTextColor(Color.parseColor(context.getString(Integer.parseInt(String.valueOf(R.color.colorPrimaryGreen)))));
+                    holder.binding.btnStateMyTodo.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.colorPrimaryGreen30));
+                    holder.binding.btnStateMyTodo.setClickable(true);
                 } else {
-                    holder.btnStateMyTodo.setText("대기중");
-                    holder.btnStateMyTodo.setTextColor(Color.parseColor(context.getString(Integer.parseInt(String.valueOf(R.color.gray_333)))));
-                    holder.btnStateMyTodo.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.light_gray));
-                    holder.btnStateMyTodo.setClickable(false);
+                    holder.binding.btnStateMyTodo.setText("대기중");
+                    holder.binding.btnStateMyTodo.setTextColor(Color.parseColor(context.getString(Integer.parseInt(String.valueOf(R.color.gray_333)))));
+                    holder.binding.btnStateMyTodo.setBackgroundTintList(ContextCompat.getColorStateList(context, R.color.light_gray));
+                    holder.binding.btnStateMyTodo.setClickable(false);
                 }
                 break;
         }
@@ -189,38 +185,20 @@ public class MyTodoListAdapter extends BaseAdapter<MyTodoListAdapter.MyTodoListV
 
     class MyTodoListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private TextView tvMyTodoTitle, tvMyTodoDesc, tvMyTodoTeamName, tvMyTodoStartDate, tvMyTodoEndDate;
-        private MaterialCardView mcvMyTodoList;
-        ImageView btnMyTodoOptionMenu;
-        ProgressBar pbMyTodoDDay;
-        private MaterialButton btnDismissMyTodo, btnStateMyTodo;
+        private final ItemMyTodoListBinding binding;
 
         public MyTodoListViewHolder(@NonNull View itemView) {
             super(itemView);
-            initView(itemView);
+            binding = ItemMyTodoListBinding.bind(itemView);
             setOnClickListener();
         }
 
         private void setOnClickListener() {
-            mcvMyTodoList.setOnClickListener(this);
-            btnDismissMyTodo.setOnClickListener(this);
-            btnStateMyTodo.setOnClickListener(this);
-            btnMyTodoOptionMenu.setOnClickListener(this);
+            binding.mcvMyTodoList.setOnClickListener(this);
+            binding.btnDismissMyTodo.setOnClickListener(this);
+            binding.btnStateMyTodo.setOnClickListener(this);
+            binding.btnMyTodoOptionMenu.setOnClickListener(this);
         }
-
-        private void initView(View itemView) {
-            tvMyTodoTitle = itemView.findViewById(R.id.tv_my_todo_title);
-            tvMyTodoDesc = itemView.findViewById(R.id.tv_my_todo_desc);
-            tvMyTodoStartDate = itemView.findViewById(R.id.tv_my_todo_start_date);
-            tvMyTodoEndDate = itemView.findViewById(R.id.tv_my_todo_end_date);
-            tvMyTodoTeamName = itemView.findViewById(R.id.tv_my_todo_team_name);
-            btnMyTodoOptionMenu = itemView.findViewById(R.id.btn_my_todo_option_menu);
-            mcvMyTodoList = itemView.findViewById(R.id.mcv_my_todo_list);
-            pbMyTodoDDay = itemView.findViewById(R.id.pb_mytodo_d_day);
-            btnDismissMyTodo = itemView.findViewById(R.id.btn_dismiss_mytodo);
-            btnStateMyTodo = itemView.findViewById(R.id.btn_state_my_todo);
-        }
-
 
         @Override
         public void onClick(View view) {
