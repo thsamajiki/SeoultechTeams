@@ -1,6 +1,7 @@
 package com.hero.seoultechteams.database.todo.datastore;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -72,6 +73,7 @@ public class TodoCloudStore extends CloudStore<TodoData> {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
+                        Log.e("getTodo-error", "onFailure: " + e.getMessage());
                         onCompleteListener.onComplete(false, null);
                     }
                 });
