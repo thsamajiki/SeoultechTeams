@@ -28,7 +28,7 @@
         tools:text="Username" />
 
     <TextView
-        android:id="@+id/tv_searched_user_email"
+        android:id="@+id/tv_member_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_member_name"

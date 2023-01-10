@@ -4,13 +4,9 @@ import static com.hero.seoultechteams.view.photoview.PhotoActivity.EXTRA_PROFILE
 
 import android.content.Context;
 import android.content.Intent;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.hero.seoultechteams.R;
+import com.hero.seoultechteams.databinding.ItemInviteListBinding;
 import com.hero.seoultechteams.domain.user.entity.UserEntity;
 import com.hero.seoultechteams.view.BaseAdapter;
 import com.hero.seoultechteams.view.photoview.PhotoActivity;
@@ -25,15 +22,13 @@ import com.hero.seoultechteams.view.photoview.PhotoActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
 
 public class InviteAdapter extends BaseAdapter<InviteAdapter.InviteViewHolder, UserEntity> {
 
-    private Context context;
-    private List<UserEntity> searchedUserDataList = new ArrayList<>();
-    private ArrayList<UserEntity> inviteUserDataList = new ArrayList<>();
-    private LayoutInflater inflater;
+    private final Context context;
+    private final List<UserEntity> searchedUserDataList = new ArrayList<>();
+    private final ArrayList<UserEntity> inviteUserDataList = new ArrayList<>();
+    private final LayoutInflater inflater;
     private RequestManager requestManager;
 
     public void replaceAll(List<UserEntity> data) {
@@ -79,24 +74,12 @@ public class InviteAdapter extends BaseAdapter<InviteAdapter.InviteViewHolder, U
 
     class InviteViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private CircleImageView ivSearchedUserProfile;
-        private TextView tvSearchedUserName, tvSearchedUserEmail;
-        private CheckBox chkboxInvite;
-        private RelativeLayout rlItemInviteUserList;
+        private final ItemInviteListBinding binding;
 
         public InviteViewHolder(@NonNull View itemView) {
             super(itemView);
-            initView(itemView);
-        }
-
-        private void initView(View itemView) {
-            ivSearchedUserProfile = itemView.findViewById(R.id.iv_searched_user_profile);
-            tvSearchedUserName = itemView.findViewById(R.id.tv_searched_user_name);
-            tvSearchedUserEmail = itemView.findViewById(R.id.tv_searched_user_email);
-            chkboxInvite = itemView.findViewById(R.id.chkbox_invite);
-            rlItemInviteUserList = itemView.findViewById(R.id.rl_item_invite_user_list);
-
-            chkboxInvite.setOnClickListener(this);
+            binding = ItemInviteListBinding.bind(itemView);
+            binding.chkboxInvite.setOnClickListener(this);
         }
 
         @Override
@@ -105,8 +88,6 @@ public class InviteAdapter extends BaseAdapter<InviteAdapter.InviteViewHolder, U
             getOnRecyclerItemClickListener().onItemClick(position, view, inviteUserDataList.get(position));
         }
 
-
-
         private void intentPhoto(String profileImageUrl) {
             Intent intent = new Intent(context, PhotoActivity.class);
             intent.putExtra(EXTRA_PROFILE_IMAGE_URL, profileImageUrl);
@@ -114,19 +95,19 @@ public class InviteAdapter extends BaseAdapter<InviteAdapter.InviteViewHolder, U
         }
 
         public void bind(UserEntity userData) {
-            if (TextUtils.isEmpty(userData.getProfileImageUrl())) {
-                requestManager.load(R.drawable.sample_profile_image).into(ivSearchedUserProfile);
-            } else {
-                requestManager.load(userData.getProfileImageUrl()).into(ivSearchedUserProfile);
-            }
+//            if (TextUtils.isEmpty(userData.getProfileImageUrl())) {
+//                requestManager.load(R.drawable.sample_profile_image).into(ivSearchedUserProfile);
+//            } else {
+//                requestManager.load(userData.getProfileImageUrl()).into(ivSearchedUserProfile);
+//            }
 
-            tvSearchedUserName.setText(userData.getName());
-            tvSearchedUserEmail.setText(userData.getEmail());
+            binding.tvSearchedUserName.setText(userData.getName());
+            binding.tvSearchedUserEmail.setText(userData.getEmail());
 
-            chkboxInvite.setOnClickListener(new View.OnClickListener() {
+            binding.chkboxInvite.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
-                    if (chkboxInvite.isChecked()) {
+                public void onClick(View view) {
+                    if (binding.chkboxInvite.isChecked()) {
                         inviteUserDataList.add(userData);
                     }
                 }

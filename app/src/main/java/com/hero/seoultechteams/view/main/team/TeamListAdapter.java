@@ -5,8 +5,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
@@ -14,8 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
-import com.google.android.material.card.MaterialCardView;
 import com.hero.seoultechteams.R;
+import com.hero.seoultechteams.databinding.ItemTeamListBinding;
 import com.hero.seoultechteams.domain.team.entity.TeamEntity;
 import com.hero.seoultechteams.view.BaseAdapter;
 
@@ -59,12 +57,12 @@ public class TeamListAdapter extends BaseAdapter<TeamListAdapter.TeamListViewHol
     public void onBindViewHolder(@NonNull TeamListViewHolder holder, int position) {
         TeamEntity teamData = teamDataList.get(position);
 
-        holder.tvTeamName.setText(teamData.getTeamName());
-        holder.tvTeamDesc.setText(teamData.getTeamDesc());
+        holder.binding.tvTeamName.setText(teamData.getTeamName());
+        holder.binding.tvTeamDesc.setText(teamData.getTeamDesc());
     }
 
     private void openTeamOptionMenu(@NonNull TeamListViewHolder holder, TeamEntity teamData) {
-        PopupMenu popupMenu = new PopupMenu(context, holder.ivTeamOptionMenu);
+        PopupMenu popupMenu = new PopupMenu(context, holder.binding.ivTeamOptionMenu);
         popupMenu.getMenuInflater().inflate(R.menu.menu_team_option, popupMenu.getMenu());
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
@@ -87,26 +85,17 @@ public class TeamListAdapter extends BaseAdapter<TeamListAdapter.TeamListViewHol
 
     class TeamListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView tvTeamName, tvTeamDesc;
-        ImageView ivTeamOptionMenu;
-        MaterialCardView mcvTeamList;
+        private final ItemTeamListBinding binding;
 
         public TeamListViewHolder(View itemView) {
             super(itemView);
-            initView(itemView);
+            binding = ItemTeamListBinding.bind(itemView);
             setOnClickListener();
         }
 
-        private void initView(View itemView) {
-            tvTeamName = itemView.findViewById(R.id.tv_team_name);
-            tvTeamDesc = itemView.findViewById(R.id.tv_team_desc);
-            ivTeamOptionMenu = itemView.findViewById(R.id.iv_team_option_menu);
-            mcvTeamList = itemView.findViewById(R.id.mcv_team_list);
-        }
-
         private void setOnClickListener() {
-            mcvTeamList.setOnClickListener(this);
-            ivTeamOptionMenu.setOnClickListener(this);
+            binding.mcvTeamList.setOnClickListener(this);
+            binding.ivTeamOptionMenu.setOnClickListener(this);
         }
 
         @Override
