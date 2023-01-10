@@ -12,7 +12,7 @@
         <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/layout/activity_edit_profile.xml" value="0.16590678824721378" />
         <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/layout/activity_invite.xml" value="0.32518115942028986" />
         <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/layout/activity_login.xml" value="0.3411458333333333" />
-        <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/layout/activity_main.xml" value="0.16590678824721378" />
+        <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/layout/activity_main.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/layout/activity_notice_list.xml" value="0.4466666666666667" />
         <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/layout/activity_photo.xml" value="0.3029045643153527" />
         <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/layout/activity_setting.xml" value="0.16590678824721378" />
@@ -40,6 +40,7 @@
         <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/layout/item_team_member_list.xml" value="0.3411458333333333" />
         <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/layout/item_team_todo_list.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/menu/menu_account_actionbar_option.xml" value="0.28888888888888886" />
+        <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/menu/menu_bt_nav.xml" value="0.34427083333333336" />
         <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/menu/menu_team_todolist_actionbar_option.xml" value="0.3411458333333333" />
         <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/menu/menu_todo_detail_option.xml" value="0.3411458333333333" />
         <entry key="..\:/Users/Hoseop/AndroidStudioProjects/SeoulTechTeams/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.21041666666666667" />

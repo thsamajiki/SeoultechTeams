@@ -4,27 +4,23 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.RequestManager;
-import com.google.android.material.card.MaterialCardView;
 import com.hero.seoultechteams.R;
-import com.hero.seoultechteams.database.notice.entity.NoticeData;
+import com.hero.seoultechteams.databinding.ItemNoticeListBinding;
 import com.hero.seoultechteams.domain.notice.entity.NoticeEntity;
 import com.hero.seoultechteams.view.BaseAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
 public class NoticeListAdapter extends BaseAdapter<NoticeListAdapter.NoticeViewHolder, NoticeEntity> implements View.OnClickListener {
 
-    private Context context;
-    private List<NoticeEntity> noticeDataList;
+    private final Context context;
+    private final List<NoticeEntity> noticeDataList;
     private RequestManager requestManager;
 
 
@@ -46,8 +42,8 @@ public class NoticeListAdapter extends BaseAdapter<NoticeListAdapter.NoticeViewH
     public void onBindViewHolder(@NonNull NoticeViewHolder holder, int position) {
         NoticeEntity noticeData = noticeDataList.get(position);
 
-        holder.tvDateNoticeItem.setText(noticeData.getNoticeDate());
-        holder.tvTitleNoticeItem.setText(noticeData.getNoticeTitle());
+        holder.binding.tvDateNoticeItem.setText(noticeData.getNoticeDate());
+        holder.binding.tvTitleNoticeItem.setText(noticeData.getNoticeTitle());
     }
 
     @Override
@@ -62,21 +58,12 @@ public class NoticeListAdapter extends BaseAdapter<NoticeListAdapter.NoticeViewH
 
     class NoticeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private TextView tvDateNoticeItem, tvTitleNoticeItem;
-        private MaterialCardView mcvNoticeItem;
-        private LinearLayout llContentNoticeItem;
+        private final ItemNoticeListBinding binding;
 
         public NoticeViewHolder(@NonNull View itemView) {
             super(itemView);
-            initView(itemView);
-        }
-
-        private void initView(View itemView) {
-            tvDateNoticeItem = itemView.findViewById(R.id.tv_date_notice_item);
-            tvTitleNoticeItem = itemView.findViewById(R.id.tv_title_notice_item);
-            llContentNoticeItem = itemView.findViewById(R.id.ll_content_notice_item);
-            mcvNoticeItem = itemView.findViewById(R.id.mcv_notice_item);
-            mcvNoticeItem.setOnClickListener(this);
+            binding = ItemNoticeListBinding.bind(itemView);
+            binding.mcvNoticeItem.setOnClickListener(this);
         }
 
         @Override
@@ -85,12 +72,12 @@ public class NoticeListAdapter extends BaseAdapter<NoticeListAdapter.NoticeViewH
             getOnRecyclerItemClickListener().onItemClick(position, view, noticeDataList.get(position));
 
             view = itemView.findViewById(R.id.iv_toggle_arrow);
-            if (llContentNoticeItem.getVisibility() == View.GONE) {
+            if (binding.llContentNoticeItem.getVisibility() == View.GONE) {
                 rotateView(view);
-                llContentNoticeItem.setVisibility(View.VISIBLE);
+                binding.llContentNoticeItem.setVisibility(View.VISIBLE);
             } else {
                 rotateView(view);
-                llContentNoticeItem.setVisibility(View.GONE);
+                binding.llContentNoticeItem.setVisibility(View.GONE);
             }
         }
 
