@@ -47,9 +47,9 @@ public class SignUp01Activity extends AppCompatActivity implements View.OnClickL
     }
 
     private void enterNextStepSignUp() {
-        String email = binding.editEmail.getText().toString();
-        String pwd = binding.editPwd.getText().toString();
-        String pwdConfirm = binding.editPwdConfirm.getText().toString();
+        String email = binding.editEmail.getText().toString().trim();
+        String pwd = binding.editPwd.getText().toString().trim();
+        String pwdConfirm = binding.editPwdConfirm.getText().toString().trim();
 
         if (presenter.checkLoginForm(email, pwd, pwdConfirm)) {
             Intent intent = new Intent(this, SignUp02Activity.class);

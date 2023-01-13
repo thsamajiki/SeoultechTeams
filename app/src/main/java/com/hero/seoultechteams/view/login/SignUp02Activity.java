@@ -59,7 +59,7 @@ public class SignUp02Activity extends AppCompatActivity implements View.OnClickL
     }
 
     private void finishSignUp() {
-        final String userName = binding.editUserName.getText().toString();
+        final String userName = binding.editUserName.getText().toString().trim();
 
         presenter.signUp(getEmail(), getPwd(), userName);
     }
