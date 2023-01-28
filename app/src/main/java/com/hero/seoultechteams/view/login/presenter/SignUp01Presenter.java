@@ -9,7 +9,7 @@ import com.hero.seoultechteams.view.login.contract.SignUp01Contract;
 
 
 public class SignUp01Presenter implements SignUp01Contract.Presenter {
-    private SignUp01Contract.View view;
+    private final SignUp01Contract.View view;
 
     public SignUp01Presenter(SignUp01Contract.View view) {
         this.view = view;
