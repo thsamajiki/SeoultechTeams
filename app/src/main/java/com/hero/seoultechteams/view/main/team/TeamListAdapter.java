@@ -26,8 +26,6 @@ public class TeamListAdapter extends BaseAdapter<TeamListAdapter.TeamListViewHol
     private final List<TeamEntity> teamDataList;
     private final LayoutInflater inflater;
     private final RequestManager requestManager;
-    private String myUserKey;
-    public static final int UPDATE_TEAM_REQ_CODE = 222;
 
     public interface OnPopupClickListener {
         void popupOnClick(TeamEntity teamData);
@@ -57,8 +55,7 @@ public class TeamListAdapter extends BaseAdapter<TeamListAdapter.TeamListViewHol
     public void onBindViewHolder(@NonNull TeamListViewHolder holder, int position) {
         TeamEntity teamData = teamDataList.get(position);
 
-        holder.binding.tvTeamName.setText(teamData.getTeamName());
-        holder.binding.tvTeamDesc.setText(teamData.getTeamDesc());
+        holder.bind(teamData);
     }
 
     private void openTeamOptionMenu(@NonNull TeamListViewHolder holder, TeamEntity teamData) {
@@ -91,6 +88,11 @@ public class TeamListAdapter extends BaseAdapter<TeamListAdapter.TeamListViewHol
             super(itemView);
             binding = ItemTeamListBinding.bind(itemView);
             setOnClickListener();
+        }
+
+        public void bind(TeamEntity teamItem) {
+            binding.tvTeamName.setText(teamItem.getTeamName());
+            binding.tvTeamDesc.setText(teamItem.getTeamDesc());
         }
 
         private void setOnClickListener() {
