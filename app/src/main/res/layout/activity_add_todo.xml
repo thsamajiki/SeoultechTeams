@@ -37,7 +37,7 @@
             android:textColor="@color/gray_333"
             android:textSize="@dimen/body_text_size" />
 
-        <RelativeLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize">
 
@@ -46,6 +46,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="20dp"
                 android:orientation="horizontal">
 
@@ -72,7 +75,9 @@
                 android:id="@+id/btn_finish_add_todo"
                 android:layout_width="70dp"
                 android:layout_height="40dp"
-                android:layout_alignParentEnd="true"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="20dp"
                 android:backgroundTint="@color/selector_add_btn_background"
@@ -81,7 +86,7 @@
                 android:textColor="@color/selector_add_btn_text_color"
                 android:textSize="@dimen/body_text_size" />
 
-        </RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>
 
