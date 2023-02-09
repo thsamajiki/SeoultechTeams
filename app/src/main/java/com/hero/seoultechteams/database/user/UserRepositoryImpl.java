@@ -105,32 +105,6 @@ public class UserRepositoryImpl implements UserRepository {
                 }
             }
         }, userKey);
-
-        // TODO: 2022-09-22 나중에 캐시 데이터를 통합하는 방법을 고려해보기
-//        getUserFromCache(new OnCompleteListener<UserData>() {
-//            @Override
-//            public void onComplete(boolean isSuccess, UserData data) {
-//                if (isSuccess && data != null) {
-//                    onCompleteListener.onComplete(true, getUserEntity(data));
-//                } else {
-//                    getUserFromCloud(onCompleteListener, userKey);
-//                }
-//            }
-//        }, userKey);
-//        getUserFromCache(new OnCompleteListener<UserData>() {
-//            @Override
-//            public void onComplete(boolean isSuccess, UserData data) {
-//                if (isSuccess) {
-//                    if (data != null) {
-//                        onCompleteListener.onComplete(true, data);
-//                    } else {
-//                        onCompleteListener.onComplete(true, null);
-//                    }
-//                } else {
-////                    getUserFromLocal(onCompleteListener, data);
-//                }
-//            }
-//        }, userKey);
     }
 
     @Override
