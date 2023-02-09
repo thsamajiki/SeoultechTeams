@@ -3,7 +3,6 @@ package com.hero.seoultechteams.view.main.team.option_menu;
 import static com.hero.seoultechteams.view.main.team.TeamListFragment.EXTRA_TEAM_DATA;
 import static com.hero.seoultechteams.view.main.team.option_menu.InviteActivity.EXTRA_INVITE_USER;
 import static com.hero.seoultechteams.view.main.team.todo.TeamTodoListActivity.EXTRA_TEAM_MEMBER_LIST;
-import static com.hero.seoultechteams.view.photoview.PhotoActivity.EXTRA_PROFILE_IMAGE_URL;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,7 +24,6 @@ import com.hero.seoultechteams.domain.user.entity.UserEntity;
 import com.hero.seoultechteams.listener.OnRecyclerItemClickListener;
 import com.hero.seoultechteams.view.main.team.option_menu.contract.TeamMemberListContract;
 import com.hero.seoultechteams.view.main.team.option_menu.presenter.TeamMemberListPresenter;
-import com.hero.seoultechteams.view.photoview.PhotoActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -128,14 +126,6 @@ public class TeamMemberListActivity extends BaseActivity implements View.OnClick
                     }
                 }
             });
-
-    // TODO: 2022-09-27 멤버 프로필 이미지 클릭할 때 PhotoActivity로 이동하는 것을 어댑터에서 처리해야 하나요?
-    private void intentMemberProfilePhoto(String profileImageUrl) {
-        Intent intent = new Intent(this, PhotoActivity.class);
-        intent.putExtra(EXTRA_PROFILE_IMAGE_URL, profileImageUrl);
-        photoResultLauncher.launch(intent);
-    }
-
 
     @Override
     public void onItemClick(int position, View view, MemberEntity data) {
