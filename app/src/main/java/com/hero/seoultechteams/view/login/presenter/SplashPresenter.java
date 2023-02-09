@@ -26,11 +26,6 @@ public class SplashPresenter implements SplashContract.Presenter {
     }
 
     @Override
-    public void firebaseLogin(String email, String pwd) {
-
-    }
-
-    @Override
     public void getTeamListFromDatabase() {
         getTeamListUseCase.invoke(new OnCompleteListener<List<TeamEntity>>() {
             @Override
@@ -57,4 +52,7 @@ public class SplashPresenter implements SplashContract.Presenter {
     public FirebaseUser getCurrentUser() {
         return FirebaseAuth.getInstance().getCurrentUser();
     }
+
+    @Override
+    public void firebaseLogin(String email, String pwd) { }
 }
