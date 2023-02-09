@@ -80,11 +80,11 @@ public class TeamTodoListAdapter extends BaseAdapter<TeamTodoListAdapter.TeamTod
 
     @Override
     public void onBindViewHolder(@NonNull TeamTodoListViewHolder holder, int position) {
-        TodoEntity todoEntity = teamTodoEntityList.get(position);
+        TodoEntity todo = teamTodoEntityList.get(position);
 
-        holder.bind(todoEntity);
+        holder.bind(todo);
 
-        setTodoState(holder, todoEntity);
+        setTodoState(holder, todo);
     }
 
     private long getDismissedTime(TodoEntity todoEntity) {
