@@ -291,7 +291,6 @@ public class UserCloudStore extends CloudStore<UserData> {
                     @Override
                     public void onComplete(boolean isSuccess, List<TodoData> todoList) {
                         if (isSuccess) {
-                            // TODO: 2022-09-29 ||로 해야할 수도??
                             if (teamList == null && todoList == null) {
                                 // 그냥 업데이트
                                 updateUser(onCompleteListener, userData);
