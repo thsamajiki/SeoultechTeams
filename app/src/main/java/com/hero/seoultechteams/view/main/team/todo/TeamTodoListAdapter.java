@@ -81,43 +81,8 @@ public class TeamTodoListAdapter extends BaseAdapter<TeamTodoListAdapter.TeamTod
     @Override
     public void onBindViewHolder(@NonNull TeamTodoListViewHolder holder, int position) {
         TodoEntity todoEntity = teamTodoEntityList.get(position);
-        holder.binding.tvTodoTitle.setText(todoEntity.getTodoTitle());
 
-        if (TextUtils.isEmpty(todoEntity.getManagerProfileImageUrl())) {
-            requestManager.load(R.drawable.sample_profile_image).into(holder.binding.ivMemberProfile);
-        } else {
-            requestManager.load(todoEntity.getManagerProfileImageUrl()).into(holder.binding.ivMemberProfile);
-        }
-
-        holder.binding.tvTodoStartDate.setText(TimeUtils.getInstance().convertTimeFormat(todoEntity.getTodoCreatedTime(), "MM월dd일"));
-        holder.binding.tvTodoEndDate.setText(TimeUtils.getInstance().convertTimeFormat(todoEntity.getTodoEndTime(), "MM월dd일 HH:mm 까지"));
-
-        String profileImageUri = todoEntity.getManagerProfileImageUrl();
-        if (profileImageUri != null) {
-            Glide.with(context).load(profileImageUri).into(holder.binding.ivMemberProfile);
-        } else {
-            holder.binding.ivMemberProfile.setImageResource(R.drawable.sample_profile_image);
-        }
-
-        holder.binding.tvTodoUserName.setText(todoEntity.getManagerName());
-        holder.binding.tvTodoUserEmail.setText(todoEntity.getManagerEmail());
-
-        long todoInterval = todoEntity.getTodoEndTime() - todoEntity.getTodoCreatedTime();
-        long todayInterval = System.currentTimeMillis() - todoEntity.getTodoCreatedTime();
-        long oneDay = 24 * 60 * 60 * 1000;
-        int todoIntervalDate = (int) (todoInterval / oneDay);
-        int todayIntervalDate = (int) (todayInterval / oneDay);
-        if (todoInterval <= 0) {
-            holder.binding.piTodoDDay.setProgress(100);
-        } else {
-            int percent = (int) (((double) todayIntervalDate / (double) todoIntervalDate) * 100);
-
-            if (percent < 0) {
-                holder.binding.piTodoDDay.setProgress(100);
-            } else {
-                holder.binding.piTodoDDay.setProgress(percent);
-            }
-        }
+        holder.bind(todoEntity);
 
         setTodoState(holder, todoEntity);
     }
@@ -220,6 +185,46 @@ public class TeamTodoListAdapter extends BaseAdapter<TeamTodoListAdapter.TeamTod
             super(itemView);
             binding = ItemTeamTodoListBinding.bind(itemView);
             setOnClickListener();
+        }
+
+        public void bind(TodoEntity todoItem) {
+            binding.tvTodoTitle.setText(todoItem.getTodoTitle());
+
+            if (TextUtils.isEmpty(todoItem.getManagerProfileImageUrl())) {
+                requestManager.load(R.drawable.sample_profile_image).into(binding.ivMemberProfile);
+            } else {
+                requestManager.load(todoItem.getManagerProfileImageUrl()).into(binding.ivMemberProfile);
+            }
+
+            binding.tvTodoStartDate.setText(TimeUtils.getInstance().convertTimeFormat(todoItem.getTodoCreatedTime(), "MM월dd일"));
+            binding.tvTodoEndDate.setText(TimeUtils.getInstance().convertTimeFormat(todoItem.getTodoEndTime(), "MM월dd일 HH:mm 까지"));
+
+            String profileImageUri = todoItem.getManagerProfileImageUrl();
+            if (profileImageUri != null) {
+                Glide.with(context).load(profileImageUri).into(binding.ivMemberProfile);
+            } else {
+                binding.ivMemberProfile.setImageResource(R.drawable.sample_profile_image);
+            }
+
+            binding.tvTodoUserName.setText(todoItem.getManagerName());
+            binding.tvTodoUserEmail.setText(todoItem.getManagerEmail());
+
+            long todoInterval = todoItem.getTodoEndTime() - todoItem.getTodoCreatedTime();
+            long todayInterval = System.currentTimeMillis() - todoItem.getTodoCreatedTime();
+            long oneDay = 24 * 60 * 60 * 1000;
+            int todoIntervalDate = (int) (todoInterval / oneDay);
+            int todayIntervalDate = (int) (todayInterval / oneDay);
+            if (todoInterval <= 0) {
+                binding.piTodoDDay.setProgress(100);
+            } else {
+                int percent = (int) (((double) todayIntervalDate / (double) todoIntervalDate) * 100);
+
+                if (percent < 0) {
+                    binding.piTodoDDay.setProgress(100);
+                } else {
+                    binding.piTodoDDay.setProgress(percent);
+                }
+            }
         }
 
         private void setOnClickListener() {
