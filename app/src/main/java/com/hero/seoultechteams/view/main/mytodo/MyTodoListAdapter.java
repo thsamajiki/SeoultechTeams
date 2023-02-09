@@ -34,7 +34,7 @@ public class MyTodoListAdapter extends BaseAdapter<MyTodoListAdapter.MyTodoListV
     private final Context context;
     private final LayoutInflater inflater;
     private final List<TodoEntity> myTodoDataList;
-    private String myKey;
+    private final String myKey;
     private final List<TeamEntity> myTeamDataList = new ArrayList<>();
     public static final String EXTRA_SUBMIT_MY_TODO = "submitMyTodo";
     public static final String EXTRA_SUBMIT_LATE_MY_TODO = "submitLateMyTodo";
@@ -86,39 +86,11 @@ public class MyTodoListAdapter extends BaseAdapter<MyTodoListAdapter.MyTodoListV
 
     @Override
     public void onBindViewHolder(@NonNull MyTodoListViewHolder holder, int position) {
-        TodoEntity todoData = myTodoDataList.get(position);
-        holder.binding.tvMyTodoTitle.setText(todoData.getTodoTitle());
+        TodoEntity todo = myTodoDataList.get(position);
 
-        if (TextUtils.isEmpty(todoData.getTodoDesc())) {
-            holder.binding.tvMyTodoDesc.setVisibility(View.GONE);
-        } else {
-            holder.binding.tvMyTodoDesc.setVisibility(View.VISIBLE);
-            holder.binding.tvMyTodoDesc.setText(todoData.getTodoDesc());
-        }
+        holder.bind(todo);
 
-        holder.binding.tvMyTodoTeamName.setText(todoData.getTeamName());
-
-        holder.binding.tvMyTodoStartDate.setText(TimeUtils.getInstance().convertTimeFormat(todoData.getTodoCreatedTime(), "MM월dd일"));
-        holder.binding.tvMyTodoEndDate.setText(TimeUtils.getInstance().convertTimeFormat(todoData.getTodoEndTime(), "MM월dd일 HH:mm 까지"));
-
-        long todoInterval = todoData.getTodoEndTime() - todoData.getTodoCreatedTime();
-        long todayInterval = System.currentTimeMillis() - todoData.getTodoCreatedTime();
-        long oneDay = 24 * 60 * 60 * 1000;
-        int todoIntervalDate = (int) (todoInterval / oneDay);
-        int todayIntervalDate = (int) (todayInterval / oneDay);
-        if (todoInterval <= 0) {
-            holder.binding.pbMyTodoDDay.setProgress(100);
-        } else {
-            int percent = (int) (((double) todayIntervalDate / (double) todoIntervalDate) * 100);
-
-            if (percent < 0) {
-                holder.binding.pbMyTodoDDay.setProgress(100);
-            } else {
-                holder.binding.pbMyTodoDDay.setProgress(percent);
-            }
-        }
-
-        setTodoState(holder, todoData, isLeader(todoData));
+        setTodoState(holder, todo, isLeader(todo));
     }
 
     private boolean isLeader(TodoEntity todoData) {
@@ -191,6 +163,39 @@ public class MyTodoListAdapter extends BaseAdapter<MyTodoListAdapter.MyTodoListV
             super(itemView);
             binding = ItemMyTodoListBinding.bind(itemView);
             setOnClickListener();
+        }
+
+        public void bind(TodoEntity todoItem) {
+            binding.tvMyTodoTitle.setText(todoItem.getTodoTitle());
+
+            if (TextUtils.isEmpty(todoItem.getTodoDesc())) {
+                binding.tvMyTodoDesc.setVisibility(View.GONE);
+            } else {
+                binding.tvMyTodoDesc.setVisibility(View.VISIBLE);
+                binding.tvMyTodoDesc.setText(todoItem.getTodoDesc());
+            }
+
+            binding.tvMyTodoTeamName.setText(todoItem.getTeamName());
+
+            binding.tvMyTodoStartDate.setText(TimeUtils.getInstance().convertTimeFormat(todoItem.getTodoCreatedTime(), "MM월dd일"));
+            binding.tvMyTodoEndDate.setText(TimeUtils.getInstance().convertTimeFormat(todoItem.getTodoEndTime(), "MM월dd일 HH:mm 까지"));
+
+            long todoInterval = todoItem.getTodoEndTime() - todoItem.getTodoCreatedTime();
+            long todayInterval = System.currentTimeMillis() - todoItem.getTodoCreatedTime();
+            long oneDay = 24 * 60 * 60 * 1000;
+            int todoIntervalDate = (int) (todoInterval / oneDay);
+            int todayIntervalDate = (int) (todayInterval / oneDay);
+            if (todoInterval <= 0) {
+                binding.pbMyTodoDDay.setProgress(100);
+            } else {
+                int percent = (int) (((double) todayIntervalDate / (double) todoIntervalDate) * 100);
+
+                if (percent < 0) {
+                    binding.pbMyTodoDDay.setProgress(100);
+                } else {
+                    binding.pbMyTodoDDay.setProgress(percent);
+                }
+            }
         }
 
         private void setOnClickListener() {
