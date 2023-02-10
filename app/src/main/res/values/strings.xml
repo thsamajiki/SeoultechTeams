@@ -53,7 +53,7 @@
     <string name="member_add_todo_title">할 일 추가</string>
     <string name="edit_member_add_todo_title">해야 할 일을 요약해서 작성해주세요</string>
     <string name="edit_member_add_todo_desc">나의 할 일을 자세히 메모해보세요</string>
-    <string name="member_finish_add_todo">완료</string>
+    <string name="finish">완료</string>
     <string name="todo_d_day">D-Day</string>
     <string name="set_title_manager">담당자</string>
     <string name="manager_name">김봉식</string>

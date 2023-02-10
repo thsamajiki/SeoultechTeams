@@ -82,7 +82,7 @@
                 android:layout_marginEnd="20dp"
                 android:backgroundTint="@color/selector_add_btn_background"
                 android:enabled="false"
-                android:text="@string/member_finish_add_todo"
+                android:text="@string/finish"
                 android:textColor="@color/selector_add_btn_text_color"
                 android:textSize="@dimen/body_text_size" />
 
