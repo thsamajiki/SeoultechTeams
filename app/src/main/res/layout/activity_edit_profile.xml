@@ -13,7 +13,7 @@
         android:layout_height="?attr/actionBarSize"
         app:contentInsetStart="0dp">
 
-        <RelativeLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -21,6 +21,8 @@
                 android:id="@+id/iv_back"
                 android:layout_width="?attr/actionBarSize"
                 android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 android:padding="13dp"
                 android:src="@drawable/ic_back_arrow" />
 
@@ -28,7 +30,9 @@
                 android:id="@+id/tv_edit_profile_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
+                app:layout_constraintStart_toEndOf="@id/iv_back"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 android:text="@string/title_change_profile"
                 android:textColor="@color/black"
                 android:textSize="@dimen/title_text_size" />
@@ -37,7 +41,9 @@
                 android:id="@+id/tv_edit_profile_complete"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_alignParentEnd="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 android:enabled="false"
                 android:gravity="center"
                 android:paddingStart="20dp"
@@ -46,7 +52,7 @@
                 android:textColor="@color/selector_complete_btn"
                 android:textSize="@dimen/title_text_size" />
 
-        </RelativeLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.appcompat.widget.Toolbar>
 
