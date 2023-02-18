@@ -172,4 +172,5 @@
     <string name="empty_user_name">사용자명을 입력해주세요</string>
 
     <string name="percent_template">%d%</string>
+    <string name="item_drop_out">탈퇴하기</string>
 </resources>
