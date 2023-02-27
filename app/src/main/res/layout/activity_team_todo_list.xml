@@ -44,7 +44,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:clickable="true"
                 android:padding="17dp"
-                android:src="@drawable/ic_member_list" />
+                android:src="@drawable/ic_member_list"
+                android:focusable="true" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
