@@ -20,7 +20,7 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_back"
-                android:layout_width="wrap_content"
+                android:layout_width="?attr/actionBarSize"
                 android:layout_height="match_parent"
                 android:padding="14dp"
                 android:src="@drawable/ic_back_arrow"
@@ -83,6 +83,5 @@
         android:lineSpacingExtra="7dp"
         android:padding="20dp"
         android:textSize="@dimen/body_text_size" />
-
 
 </LinearLayout>
