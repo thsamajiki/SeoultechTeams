@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context=".view.main.account.AccountFragment">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -19,6 +19,8 @@
             android:layout_marginTop="20dp"
             android:scaleType="centerCrop"
             app:shapeAppearance="@style/Circle"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             tools:src="@drawable/sample_profile_image" />
 
         <TextView
@@ -26,8 +28,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="40dp"
-            android:layout_toEndOf="@+id/iv_my_user_profile"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toTopOf="@id/iv_my_user_profile"
+            app:layout_constraintStart_toEndOf="@id/iv_my_user_profile"
             android:textColor="@color/black"
             android:textSize="@dimen/body_text_size"
             tools:text="Username" />
@@ -40,14 +43,15 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="60dp"
-            android:layout_toEndOf="@+id/iv_my_user_profile"
+            app:layout_constraintTop_toBottomOf="@id/tv_my_user_name"
+            app:layout_constraintStart_toEndOf="@id/iv_my_user_profile"
             android:ellipsize="end"
             android:maxLines="2"
             android:textColor="@color/dark_gray"
             android:textSize="@dimen/body_text_size"
             tools:text="bongsik@gmail.com" />
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_edit_profile"
