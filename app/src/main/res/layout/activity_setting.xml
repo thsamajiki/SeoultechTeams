@@ -152,8 +152,8 @@
             android:text="@string/item_delete_cache"
             android:textColor="@color/dark_gray"
             android:textSize="@dimen/title_text_size"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="25dp"
@@ -164,7 +164,7 @@
             android:padding="6dp"
             android:src="@drawable/ic_right_arrow"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
