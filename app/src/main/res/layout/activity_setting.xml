@@ -295,8 +295,8 @@
             android:text="@string/item_drop_out"
             android:textColor="@color/dark_gray"
             android:textSize="@dimen/title_text_size"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:layout_width="25dp"
