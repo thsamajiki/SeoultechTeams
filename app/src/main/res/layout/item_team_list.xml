@@ -13,7 +13,7 @@
     app:contentPadding="10dp"
     app:rippleColor="@color/colorPrimary30">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -25,11 +25,13 @@
             android:layout_marginTop="15dp"
             android:textColor="@color/black"
             android:textSize="@dimen/title_text_size"
-            tools:text="TeamName" />
+            tools:text="TeamName"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/tv_team_desc"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_team_name"
             android:layout_marginStart="20dp"
@@ -39,7 +41,11 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:textColor="@color/dark_gray"
-            tools:text="@string/dummy_text" />
+            tools:text="@string/dummy_text"
+            app:layout_constraintTop_toBottomOf="@id/tv_team_name"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/iv_team_option_menu"
@@ -50,8 +56,10 @@
             android:layout_marginEnd="10dp"
             android:background="?selectableItemBackgroundBorderless"
             android:clickable="true"
-            android:src="@drawable/ic_option_menu" />
+            android:src="@drawable/ic_option_menu"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>
