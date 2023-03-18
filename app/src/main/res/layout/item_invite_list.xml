@@ -12,9 +12,9 @@
         android:layout_height="50dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:shapeAppearance="@style/Circle"
         tools:src="@drawable/sample_profile_image" />
 
@@ -24,11 +24,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
-        app:layout_constraintTop_toTopOf="@id/iv_searched_user_profile"
-        app:layout_constraintStart_toEndOf="@id/iv_searched_user_profile"
-        app:layout_constraintBottom_toTopOf="@id/tv_searched_user_email"
         android:textColor="@color/black"
         android:textSize="@dimen/body_text_size"
+        app:layout_constraintBottom_toTopOf="@id/tv_searched_user_email"
+        app:layout_constraintStart_toEndOf="@id/iv_searched_user_profile"
+        app:layout_constraintTop_toTopOf="@id/iv_searched_user_profile"
         tools:text="Username" />
 
     <TextView
@@ -42,17 +42,17 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:textColor="@color/dark_gray"
-        tools:text="@string/user_email"
-        app:layout_constraintTop_toBottomOf="@id/tv_searched_user_name"
+        app:layout_constraintBottom_toBottomOf="@id/iv_searched_user_profile"
         app:layout_constraintStart_toEndOf="@id/iv_searched_user_profile"
-        app:layout_constraintBottom_toBottomOf="@id/iv_searched_user_profile" />
+        app:layout_constraintTop_toBottomOf="@id/tv_searched_user_name"
+        tools:text="@string/user_email" />
 
     <CheckBox
         android:id="@+id/chkbox_invite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
