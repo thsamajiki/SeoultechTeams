@@ -1,6 +1,7 @@
 package com.hero.seoultechteams.view.main.team.option_menu;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,28 +60,7 @@ public class TeamMemberListAdapter extends BaseAdapter<TeamMemberListAdapter.Tea
     public void onBindViewHolder(@NonNull TeamMemberViewHolder holder, int position) {
         MemberEntity memberEntity = teamMemberDataList.get(position);
 
-//        if (TextUtils.isEmpty(memberEntity.getProfileImageUrl())) {
-//            requestManager.load(R.drawable.sample_profile_image).into(holder.ivMemberProfile);
-//        } else {
-//            requestManager.load(memberEntity.getProfileImageUrl()).into(holder.ivMemberProfile);
-//        }
-
-//        holder.ivMemberProfile.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                onMemberProfileImageClickListener.profileImageOnClick(memberEntity.getProfileImageUrl());
-//            }
-//        });
-
-        holder.binding.tvMemberName.setText(memberEntity.getName());
-        holder.binding.tvMemberEmail.setText(memberEntity.getEmail());
-
-        boolean isLeader = leaderKey.equals(memberEntity.getKey());
-        if (isLeader) {
-            holder.binding.ivTeamLeader.setVisibility(View.VISIBLE);
-        } else {
-            holder.binding.ivTeamLeader.setVisibility(View.GONE);
-        }
+        holder.bind(memberEntity);
     }
 
     @Override
@@ -97,6 +77,31 @@ public class TeamMemberListAdapter extends BaseAdapter<TeamMemberListAdapter.Tea
 
             binding = ItemTeamMemberListBinding.bind(itemView);
             binding.rlItemTeamMemberList.setOnClickListener(this);
+        }
+
+        public void bind(MemberEntity memberItem) {
+            if (TextUtils.isEmpty(memberItem.getProfileImageUrl())) {
+                requestManager.load(R.drawable.sample_profile_image).into(binding.ivMemberProfile);
+            } else {
+                requestManager.load(memberItem.getProfileImageUrl()).into(binding.ivMemberProfile);
+            }
+
+            binding.tvMemberName.setText(memberItem.getName());
+            binding.tvMemberEmail.setText(memberItem.getEmail());
+
+            boolean isLeader = leaderKey.equals(memberItem.getKey());
+            if (isLeader) {
+                binding.ivTeamLeader.setVisibility(View.VISIBLE);
+            } else {
+                binding.ivTeamLeader.setVisibility(View.GONE);
+            }
+
+            binding.ivMemberProfile.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onMemberProfileImageClickListener.profileImageOnClick(memberItem.getProfileImageUrl());
+                }
+            });
         }
 
         @Override
