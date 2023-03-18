@@ -371,7 +371,6 @@
                                 android:id="@+id/iv_latest_icon"
                                 android:layout_width="25dp"
                                 android:layout_height="25dp"
-                                android:layout_alignParentEnd="true"
                                 android:layout_marginTop="12dp"
                                 android:layout_marginEnd="20dp"
                                 android:src="@drawable/ic_late_member"
