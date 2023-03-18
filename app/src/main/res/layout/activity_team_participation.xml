@@ -270,7 +270,7 @@
                         android:layout_height="200dp"
                         android:orientation="vertical">
 
-                        <RelativeLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
                             android:layout_height="42dp">
 
@@ -281,6 +281,9 @@
                                 android:layout_marginStart="15dp"
                                 android:layout_marginTop="13dp"
                                 android:layout_marginBottom="5dp"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent"
                                 android:text="@string/our_hero"
                                 android:textSize="@dimen/title_text_size" />
 
@@ -291,10 +294,12 @@
                                 android:layout_alignParentEnd="true"
                                 android:layout_marginTop="12dp"
                                 android:layout_marginEnd="20dp"
-                                android:src="@drawable/ic_best_member" />
+                                android:src="@drawable/ic_best_member"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent" />
 
 
-                        </RelativeLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -346,7 +351,7 @@
                         android:layout_height="200dp"
                         android:orientation="vertical">
 
-                        <RelativeLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
                             android:layout_height="42dp">
 
@@ -358,7 +363,10 @@
                                 android:layout_marginTop="13dp"
                                 android:layout_marginBottom="5dp"
                                 android:text="@string/late_king"
-                                android:textSize="@dimen/title_text_size" />
+                                android:textSize="@dimen/title_text_size"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintBottom_toBottomOf="parent" />
 
                             <androidx.appcompat.widget.AppCompatImageView
                                 android:id="@+id/iv_latest_icon"
@@ -367,9 +375,11 @@
                                 android:layout_alignParentEnd="true"
                                 android:layout_marginTop="12dp"
                                 android:layout_marginEnd="20dp"
-                                android:src="@drawable/ic_late_member" />
+                                android:src="@drawable/ic_late_member"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent" />
 
-                        </RelativeLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <LinearLayout
                             android:layout_width="match_parent"
