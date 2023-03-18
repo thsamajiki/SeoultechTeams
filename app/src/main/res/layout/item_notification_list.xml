@@ -47,7 +47,7 @@
         app:layout_constraintTop_toBottomOf="@id/tv_notification_title"
         tools:text="@string/dummy_text" />
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/iv_delete_notification"
         android:layout_width="20dp"
         android:layout_height="20dp"
