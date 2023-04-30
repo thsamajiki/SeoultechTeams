@@ -147,43 +147,4 @@ public class TeamDetailActivity extends BaseActivity implements View.OnClickList
     public void failedLoadTeam() {
         Toast.makeText(this, "데이터를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show();
     }
-
-
-//    private void showTeamDetailOptionMenu(){
-//        PopupMenu popupMenu = new PopupMenu(this, btnOptionMenu);
-//        popupMenu.getMenuInflater().inflate(R.menu.menu_team_detail_option, popupMenu.getMenu());
-//        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-//            @Override
-//            public boolean onMenuItemClick(MenuItem item) {
-//                switch (item.getItemId()) {
-//                    case R.id.menu_delete_team:
-//                        openDeleteTeamDialog();
-//                        break;
-//                }
-//                return true;
-//            }
-//        });
-//        popupMenu.show();
-//    }
-//
-//    private void openDeleteTeamDialog() {
-//        String delete_todo_message = "팀을 삭제하시겠습니까?";
-//        String positiveText = "예";
-//        String negativeText = "아니오";
-//        new MaterialAlertDialogBuilder(this).setMessage(delete_todo_message)
-//                .setPositiveButton(positiveText, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//
-//                    }
-//                })
-//                .setNegativeButton(negativeText, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//
-//                    }
-//                })
-//                .create()
-//                .show();
-//    }
 }

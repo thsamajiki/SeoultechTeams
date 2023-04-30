@@ -62,14 +62,6 @@ public class TeamCloudStore extends CloudStore<TeamData> {
                             DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
                             TeamData teamData = documentSnapshot.toObject(TeamData.class);
 
-//                            for (DocumentSnapshot documentSnapshot: queryDocumentSnapshots.getDocuments()) {
-//                                TeamData teamData = documentSnapshot.toObject(TeamData.class);
-//                                if (teamData.getTeamKey().equals(teamKey)) {
-//                                    teamLocalStore.add(onCompleteListener, teamData);
-//                                    onCompleteListener.onComplete(true, teamData);
-//                                }
-//                            }
-
                             teamLocalStore.add(null, teamData);
                             TeamCacheStore.getInstance().add(null, teamData);
                             onCompleteListener.onComplete(true, teamData);

@@ -132,15 +132,6 @@ public class UserRepositoryImpl implements UserRepository {
         return userRemoteDataSource.getFirebaseAuthProfile().toEntity();
     }
 
-//    public void getUserFromCache(final OnCompleteListener<UserData> onCompleteListener, String userKey) {
-//        userLocalDataSource.getData(new OnCompleteListener<UserData>() {
-//            @Override
-//            public void onComplete(boolean isSuccess, UserData data) {
-//                onCompleteListener.onComplete(isSuccess, data);
-//            }
-//        }, userKey);
-//    }
-
     private void getUserFromLocal(final OnCompleteListener<UserData> onCompleteListener, String userKey) {
         userLocalDataSource.getData(new OnCompleteListener<UserData>() {
             @Override

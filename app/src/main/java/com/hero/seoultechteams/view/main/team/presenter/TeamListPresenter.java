@@ -1,7 +1,5 @@
 package com.hero.seoultechteams.view.main.team.presenter;
 
-import android.util.Log;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.hero.seoultechteams.domain.common.OnCompleteListener;
 import com.hero.seoultechteams.domain.team.entity.TeamEntity;

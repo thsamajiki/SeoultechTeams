@@ -95,12 +95,6 @@ public class InviteAdapter extends BaseAdapter<InviteAdapter.InviteViewHolder, U
         }
 
         public void bind(UserEntity userData) {
-//            if (TextUtils.isEmpty(userData.getProfileImageUrl())) {
-//                requestManager.load(R.drawable.sample_profile_image).into(ivSearchedUserProfile);
-//            } else {
-//                requestManager.load(userData.getProfileImageUrl()).into(ivSearchedUserProfile);
-//            }
-
             binding.tvSearchedUserName.setText(userData.getName());
             binding.tvSearchedUserEmail.setText(userData.getEmail());
 

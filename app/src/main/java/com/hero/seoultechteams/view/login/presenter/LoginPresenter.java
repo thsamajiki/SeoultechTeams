@@ -49,12 +49,6 @@ public class LoginPresenter implements LoginContract.Presenter {
 
         Log.i(TAG, "firebaseLogin: getUser = "+ mAuth.getCurrentUser());
 
-//        getUserUseCase.invoke(new OnCompleteListener<UserEntity>() {
-//            @Override
-//            public void onComplete(boolean isSuccess, UserEntity data) {
-//
-//            }
-//        }, getCurrentUser().getUid());
 
         FirebaseAuth.getInstance().signInWithEmailAndPassword(email, pwd)
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
