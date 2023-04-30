@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase;
 import com.hero.seoultechteams.database.notice.dao.NoticeDao;
 import com.hero.seoultechteams.database.notice.entity.NoticeData;
 
-@Database(entities = {NoticeData.class}, version = 1)
+@Database(entities = {NoticeData.class}, version = 1, exportSchema = false)
 public abstract class AppNoticeDatabase extends RoomDatabase {
 
     private static final Object sLock = new Object();

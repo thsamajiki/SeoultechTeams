@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase;
 import com.hero.seoultechteams.database.member.dao.MemberDao;
 import com.hero.seoultechteams.database.member.entity.MemberData;
 
-@Database(entities = {MemberData.class}, version = 1)
+@Database(entities = {MemberData.class}, version = 1, exportSchema = false)
 public abstract class AppMemberDatabase extends RoomDatabase {
 
     private static final Object sLock = new Object();
