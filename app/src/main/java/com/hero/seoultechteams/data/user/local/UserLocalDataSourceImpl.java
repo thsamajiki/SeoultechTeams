@@ -1,5 +1,7 @@
 package com.hero.seoultechteams.data.user.local;
 
+import android.util.Log;
+
 import com.hero.seoultechteams.domain.common.OnCompleteListener;
 import com.hero.seoultechteams.database.user.datastore.UserLocalStore;
 import com.hero.seoultechteams.database.user.entity.UserData;
@@ -57,14 +59,16 @@ public class UserLocalDataSourceImpl implements UserLocalDataSource {
     }
 
     @Override
-    public void removeUser(OnCompleteListener<UserData> onCompleteListener, UserData userData) {
+    public void removeUser(OnCompleteListener<UserData> onCompleteListener, OnFailedListener onFailedListener, UserData userData) {
         userLocalStore.remove(new OnCompleteListener<UserData>() {
             @Override
             public void onComplete(boolean isSuccess, UserData localData) {
                 if (isSuccess) {
                     onCompleteListener.onComplete(true, localData);
+                    Log.d("UserLocalDataSourceImpl", "onComplete: local remove success");
                 } else {
-                    onCompleteListener.onComplete(false, null);
+                    onFailedListener.onFailed(new FailedAddLocalUserException("failed remove"));
+                    Log.d("UserLocalDataSourceImpl", "onComplete: local remove fail");
                 }
             }
         }, userData);
