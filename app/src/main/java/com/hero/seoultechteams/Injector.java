@@ -60,6 +60,7 @@ import com.hero.seoultechteams.domain.todo.usecase.UpdateTodoStateUseCase;
 import com.hero.seoultechteams.domain.user.repository.UserRepository;
 import com.hero.seoultechteams.domain.user.usecase.GetAccountProfileUseCase;
 import com.hero.seoultechteams.domain.user.usecase.GetUserUseCase;
+import com.hero.seoultechteams.domain.user.usecase.RemoveUserUseCase;
 import com.hero.seoultechteams.domain.user.usecase.SignUpUseCase;
 import com.hero.seoultechteams.domain.user.usecase.UpdateUserUseCase;
 import com.hero.seoultechteams.view.main.SignOutUseCase;
@@ -334,6 +335,19 @@ public class Injector {
     @NonNull
     public SignOutUseCase provideSignOutUseCase() {
         return new SignOutUseCase(new UserRepositoryImpl(
+                new UserRemoteDataSourceImpl(
+                        getUserCloudStore(),
+                        FirebaseAuth.getInstance()
+                ),
+                new UserLocalDataSourceImpl(
+                        provideUserLocalStore()
+                )
+        ));
+    }
+
+    @NonNull
+    public RemoveUserUseCase provideRemoveUserUseCase() {
+        return new RemoveUserUseCase(new UserRepositoryImpl(
                 new UserRemoteDataSourceImpl(
                         getUserCloudStore(),
                         FirebaseAuth.getInstance()
