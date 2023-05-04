@@ -1,6 +1,7 @@
 package com.hero.seoultechteams.database.user;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -83,6 +84,25 @@ public class UserRepositoryImpl implements UserRepository {
     public void signOut() {
         userRemoteDataSource.signOut();
         userLocalDataSource.signOut();
+    }
+
+    @Override
+    public void removeUser(OnCompleteListener<UserEntity> onCompleteListener, OnFailedListener onFailedListener, UserEntity userEntity) {
+        UserData userData = UserData.toData(userEntity);
+
+        userLocalDataSource.removeUser(new OnCompleteListener<UserData>() {
+            @Override
+            public void onComplete(boolean isSuccess, UserData localData) {
+                if (isSuccess) {
+                    onCompleteListener.onComplete(true, localData.toEntity());
+                    Log.d("UserRepositoryImpl", "onComplete: local remove success");
+                } else {
+                    onCompleteListener.onComplete(false, null);
+                    Log.d("UserRepositoryImpl", "onComplete: local remove fail");
+                }
+            }
+        }, onFailedListener, userData);
+
     }
 
     public void getUser(final OnCompleteListener<UserEntity> onCompleteListener, final String userKey) {
