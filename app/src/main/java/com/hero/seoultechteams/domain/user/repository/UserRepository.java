@@ -6,7 +6,6 @@ import com.hero.seoultechteams.domain.member.entity.MemberEntity;
 import com.hero.seoultechteams.domain.team.entity.TeamEntity;
 import com.hero.seoultechteams.domain.user.entity.UserEntity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface UserRepository {
@@ -21,6 +20,8 @@ public interface UserRepository {
     void addUser(final OnCompleteListener<UserEntity> onCompleteListener, OnFailedListener onFailedListener, String userName, String email, String pwd);
 
     void updateUser(final OnCompleteListener<UserEntity> onCompleteListener, UserEntity userEntity);
+
+    void removeUser(final OnCompleteListener<UserEntity> onCompleteListener, OnFailedListener onFailedListener, UserEntity userEntity);
 
     void signOut();
 
