@@ -150,6 +150,11 @@ public class UserRemoteDataSourceImpl implements UserRemoteDataSource {
         FirebaseAuth.getInstance().signOut();
     }
 
+    @Override
+    public void removeUser(OnCompleteListener<UserData> onCompleteListener, OnFailedListener onFailedListener, UserData userData) {
+        userCloudStore.remove(onCompleteListener, userData);
+    }
+
     public FirebaseUser getCurrentUser() {
         return FirebaseAuth.getInstance().getCurrentUser();
     }
