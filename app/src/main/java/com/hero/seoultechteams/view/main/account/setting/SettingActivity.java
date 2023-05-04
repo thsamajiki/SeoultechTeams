@@ -18,11 +18,15 @@ import com.google.android.play.core.tasks.OnCompleteListener;
 import com.google.android.play.core.tasks.OnFailureListener;
 import com.google.android.play.core.tasks.OnSuccessListener;
 import com.google.android.play.core.tasks.Task;
+import com.hero.seoultechteams.Injector;
 import com.hero.seoultechteams.R;
 import com.hero.seoultechteams.databinding.ActivitySettingBinding;
+import com.hero.seoultechteams.domain.user.entity.UserEntity;
+import com.hero.seoultechteams.view.login.LoginActivity;
 import com.hero.seoultechteams.view.main.account.OpenSourceLicenseDialog;
 import com.hero.seoultechteams.view.main.account.setting.contract.SettingContract;
 import com.hero.seoultechteams.view.main.account.setting.notice.NoticeListActivity;
+import com.hero.seoultechteams.view.main.account.setting.presenter.SettingPresenter;
 
 public class SettingActivity extends AppCompatActivity implements View.OnClickListener, SettingContract.View {
 
@@ -30,6 +34,10 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     private ReviewManager reviewManager;
     private ReviewInfo reviewInfo;
     public static final String EXTRA_SETTING_DATA = "settingData";
+
+    private final SettingContract.Presenter presenter = new SettingPresenter(this,
+            Injector.getInstance().provideGetAccountProfileUseCase(),
+            Injector.getInstance().provideRemoveUserUseCase());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,12 +52,13 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
 
     private void setOnClickListener() {
         binding.ivBack.setOnClickListener(this);
-        binding.rlItemNotice.setOnClickListener(this);
-        binding.rlItemFont.setOnClickListener(this);
-        binding.rlItemDeleteCache.setOnClickListener(this);
-        binding.rlItemInquiry.setOnClickListener(this);
-        binding.rlItemReview.setOnClickListener(this);
-        binding.rlItemOpenSource.setOnClickListener(this);
+        binding.layoutItemNotice.setOnClickListener(this);
+        binding.layoutItemFont.setOnClickListener(this);
+        binding.layoutItemDeleteCache.setOnClickListener(this);
+        binding.layoutItemInquiry.setOnClickListener(this);
+        binding.layoutItemReview.setOnClickListener(this);
+        binding.layoutItemOpenSource.setOnClickListener(this);
+        binding.layoutItemDropOut.setOnClickListener(this);
     }
 
     @Override
@@ -58,23 +67,26 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.iv_back:
                 finish();
                 break;
-            case R.id.rl_item_notice:
+            case R.id.layout_item_notice:
                 intentNoticeList();
                 break;
-            case R.id.rl_item_font:
+            case R.id.layout_item_font:
                 openFontPopUp();
                 break;
-            case R.id.rl_item_delete_cache:
+            case R.id.layout_item_delete_cache:
                 openDeleteCachePopUp();
                 break;
-            case R.id.rl_item_inquiry:
+            case R.id.layout_item_inquiry:
                 openInquiryPopUp();
                 break;
-            case R.id.rl_item_review:
+            case R.id.layout_item_review:
                 launchReviewDialog(reviewManager, reviewInfo);
                 break;
-            case R.id.rl_item_open_source:
+            case R.id.layout_item_open_source:
                 openOpenSource();
+                break;
+            case R.id.layout_item_drop_out:
+                openDropOutDialog();
                 break;
         }
     }
@@ -168,6 +180,30 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         openSourceLicenseDialog.getOpenSourceLicenseDialog();
     }
 
+    private void openDropOutDialog() {
+        String openDropOutTitle = "탈퇴";
+        String openDropOutMessage = "정말로 탈퇴하시겠습니까?";
+        String positiveText = "예";
+        String negativeText = "아니오";
+
+        new MaterialAlertDialogBuilder(this).setTitle(openDropOutTitle)
+                .setMessage(openDropOutMessage)
+                .setPositiveButton(positiveText, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dropOut();
+                    }
+                })
+                .setNegativeButton(negativeText, null)
+                .create()
+                .show();
+    }
+
+    private void dropOut() {
+        UserEntity user = presenter.getUserEntity();
+        presenter.dropOut(user);
+    }
+
     @Override
     public void onGetSetting() {
         Intent intent = new Intent();
@@ -178,5 +214,17 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void failedGetSetting() {
         Toast.makeText(SettingActivity.this, "설정을 불러오는 데 실패했습니다.", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDropOut() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        finishAffinity();
+    }
+
+    @Override
+    public void failedDropOut() {
+        Toast.makeText(SettingActivity.this, "회원 탈퇴에 실패했습니다.", Toast.LENGTH_SHORT).show();
     }
 }
