@@ -3,6 +3,7 @@ package com.hero.seoultechteams.database.user.datastore;
 import android.content.Context;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -471,7 +472,27 @@ public class UserCloudStore extends CloudStore<UserData> {
 
     @Override
     public void remove(final OnCompleteListener<UserData> onCompleteListener, final UserData userData) {
-        // TODO: 2021-03-12 탈퇴 기능 추가시 해야 할 것
+        FirebaseAuth.getInstance().getCurrentUser().delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        if (onCompleteListener != null) {
+//                            removeUser(onCompleteListener, userData);
+                            onCompleteListener.onComplete(true, userData);
+                            Log.d("UserCloudStore2", "onComplete: remote remove success");
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        if (onCompleteListener != null) {
+                            onCompleteListener.onComplete(false, null);
+                            Log.d("UserCloudStore2", "onComplete: remote remove failed");
+                        }
+                    }
+                });
+
         // 1. 유저정보 삭제
 
         // 2. 각각의 팀들의 멤버 정보 삭제
@@ -515,14 +536,35 @@ public class UserCloudStore extends CloudStore<UserData> {
 //                });
     }
 
-    private void removeUser(final OnCompleteListener<UserData> onCompleteListener, List<TeamData> teamDataList, UserData userData) {
-        getFirestore().runTransaction(new Transaction.Function<Object>() {
-            @Nullable
-            @Override
-            public Object apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
-                DocumentReference userRef = getFirestore().collection("User")
-                        .document(userData.getKey());
-                transaction.delete(userRef);
+    private void removeUser(final OnCompleteListener<UserData> onCompleteListener, UserData userData) {
+        getFirestore().collection("User")
+                .document(userData.getKey())
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        if (onCompleteListener != null) {
+                            onCompleteListener.onComplete(true, userData);
+                            Log.d("UserCloudStore1", "onComplete: remote remove success");
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        if (onCompleteListener != null) {
+                            onCompleteListener.onComplete(false, null);
+                            Log.d("UserCloudStore1", "onComplete: remote remove failed");
+                        }
+                    }
+                });
+//        getFirestore().runTransaction(new Transaction.Function<Object>() {
+//            @Nullable
+//            @Override
+//            public Object apply(@NonNull Transaction transaction) throws FirebaseFirestoreException {
+//                DocumentReference userRef = getFirestore().collection("User")
+//                        .document(userData.getKey());
+//                transaction.delete(userRef);
 
 
 //                for (TodoData todoData : todoDataList) {
@@ -536,32 +578,32 @@ public class UserCloudStore extends CloudStore<UserData> {
 //                }
 
 
-                for (TeamData teamData : teamDataList) {
-                    DocumentReference memberRef = getFirestore()
-                            .collection("Team")
-                            .document(teamData.getTeamKey())
-                            .collection("Member")
-                            .document(userData.getKey());
-                    transaction.delete(memberRef);
-                }
-
-
-                return null;
-            }
-        }).addOnSuccessListener(new OnSuccessListener<Object>() {
-            @Override
-            public void onSuccess(Object o) {
-                if (onCompleteListener != null) {
-                    onCompleteListener.onComplete(true, userData);
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                if (onCompleteListener != null) {
-                    onCompleteListener.onComplete(false, null);
-                }
-            }
-        });
+//                for (TeamData teamData : teamDataList) {
+//                    DocumentReference memberRef = getFirestore()
+//                            .collection("Team")
+//                            .document(teamData.getTeamKey())
+//                            .collection("Member")
+//                            .document(userData.getKey());
+//                    transaction.delete(memberRef);
+//                }
+//
+//
+//                return null;
+//            }
+//        }).addOnSuccessListener(new OnSuccessListener<Object>() {
+//            @Override
+//            public void onSuccess(Object o) {
+//                if (onCompleteListener != null) {
+//                    onCompleteListener.onComplete(true, userData);
+//                }
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                if (onCompleteListener != null) {
+//                    onCompleteListener.onComplete(false, null);
+//                }
+//            }
+//        });
     }
 }
