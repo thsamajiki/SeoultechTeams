@@ -77,14 +77,14 @@ public class TodoDetailActivity extends BaseActivity implements View.OnClickList
     private void setOnClickListener() {
         binding.ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 updateTodoDetail();
             }
         });
 
         binding.ivOptionMenu.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
 //                showTodoDetailOptionMenu();
 //                break;
             }
