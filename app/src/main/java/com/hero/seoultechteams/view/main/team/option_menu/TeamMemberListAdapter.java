@@ -98,7 +98,7 @@ public class TeamMemberListAdapter extends BaseAdapter<TeamMemberListAdapter.Tea
 
             binding.ivMemberProfile.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View view) {
                     onMemberProfileImageClickListener.profileImageOnClick(memberItem.getProfileImageUrl());
                 }
             });
