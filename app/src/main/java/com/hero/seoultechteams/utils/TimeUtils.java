@@ -2,6 +2,7 @@ package com.hero.seoultechteams.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class TimeUtils {    // 시간 관련 함수들을 클래스로 모아둠
     private static TimeUtils instance;
@@ -16,14 +17,14 @@ public class TimeUtils {    // 시간 관련 함수들을 클래스로 모아둠
     }
 
     public String convertTimeFormat(long timestamp, String format) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(format);
+        SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.KOREA);
         Date date = new Date();
         date.setTime(timestamp);
         return dateFormat.format(date);
     }
 
     public String convertTimeFormat(Date date, String format) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(format);
+        SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.KOREA);
         return dateFormat.format(date);
     }
 }
