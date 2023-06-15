@@ -80,21 +80,21 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
         switch (view.getId()) {
             case R.id.iv_my_user_profile:
                 String myProfileImageUrl = presenter.getUserEntity().getProfileImageUrl();
-                intentPhoto(myProfileImageUrl);
+                onMyUserProfileImageClick(myProfileImageUrl);
                 break;
             case R.id.btn_edit_profile:
-                intentEditProfile();
+                onEditProfileButtonClick();
                 break;
         }
     }
 
-    private void intentPhoto(String profileImageUrl) {
+    private void onMyUserProfileImageClick(String profileImageUrl) {
         Intent intent = new Intent(requireActivity(), PhotoActivity.class);
         intent.putExtra(EXTRA_PROFILE_IMAGE_URL, profileImageUrl);
         photoResultLauncher.launch(intent);
     }
 
-    private void intentEditProfile() {
+    private void onEditProfileButtonClick() {
         Intent intent = new Intent(requireActivity(), EditProfileActivity.class);
         editProfileResultLauncher.launch(intent);
     }
