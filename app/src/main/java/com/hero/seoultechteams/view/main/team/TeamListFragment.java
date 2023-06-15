@@ -84,12 +84,12 @@ public class TeamListFragment extends Fragment implements View.OnClickListener, 
                 openTeamOptionMenu(data, view);
                 break;
             default:
-                intentTeamTodoList(data);
+                onTeamListItemClick(data);
                 break;
         }
     }
 
-    private void intentTeamTodoList(TeamEntity data) {
+    private void onTeamListItemClick(TeamEntity data) {
         Intent intent = new Intent(requireActivity(), TeamTodoListActivity.class);
         intent.putExtra(EXTRA_TEAM_DATA, data);
         startActivity(intent);
@@ -103,7 +103,7 @@ public class TeamListFragment extends Fragment implements View.OnClickListener, 
             public boolean onMenuItemClick(MenuItem item) {
                 switch(item.getItemId()) {
                     case R.id.menu_modify_team:
-                        intentTeamDetail(teamData);
+                        onModifyTeamMenuClick(teamData);
                         break;
                 }
                 return true;
@@ -112,7 +112,7 @@ public class TeamListFragment extends Fragment implements View.OnClickListener, 
         popupMenu.show();
     }
 
-    private void intentTeamDetail(TeamEntity teamData) {
+    private void onModifyTeamMenuClick(TeamEntity teamData) {
         Intent intent = new Intent(requireActivity(), TeamDetailActivity.class);
         intent.putExtra(EXTRA_TEAM_KEY, teamData.getTeamKey());
         updateTeamDetailLauncher.launch(intent);
@@ -122,12 +122,12 @@ public class TeamListFragment extends Fragment implements View.OnClickListener, 
     public void onClick(View view) {
         switch(view.getId()) {
             case R.id.btn_create_team:
-                intentCreateTeam();
+                onCreateTeamButtonClick();
                 break;
         }
     }
 
-    private void intentCreateTeam() {
+    private void onCreateTeamButtonClick() {
         Intent intent = new Intent(requireActivity(), CreateTeamActivity.class);
         addTeamLauncher.launch(intent);
     }
