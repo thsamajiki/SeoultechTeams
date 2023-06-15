@@ -87,13 +87,13 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
                 break;
             case R.id.fab_profile_image_edit:
                 if (checkStoragePermission()) {
-                    intentGallery();
+                    openGallery();
                 }
                 break;
         }
     }
 
-    private void intentGallery() {
+    private void openGallery() {
         Intent pickIntent = new Intent(Intent.ACTION_PICK);
         pickIntent.setDataAndType(EXTERNAL_CONTENT_URI, "image/*");
         openGalleryLauncher.launch(pickIntent);
@@ -138,7 +138,7 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            intentGallery();
+            openGallery();
         }
     }
 
