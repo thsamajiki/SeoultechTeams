@@ -52,7 +52,7 @@
     </androidx.appcompat.widget.Toolbar>
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/mcv_create_todo"
+        android:id="@+id/mcv_add_todo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="10dp"
