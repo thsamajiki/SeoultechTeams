@@ -88,7 +88,7 @@ public class TeamTodoListActivity extends BaseActivity implements View.OnClickLi
 
     private void setOnClickListener() {
         binding.ivBack.setOnClickListener(this);
-        binding.mcvCreateTodo.setOnClickListener(this);
+        binding.mcvAddTodo.setOnClickListener(this);
         binding.ivTeamOptionMenu.setOnClickListener(this);
     }
 
@@ -101,8 +101,8 @@ public class TeamTodoListActivity extends BaseActivity implements View.OnClickLi
             case R.id.iv_team_option_menu:
                 showTeamTodoListOptionMenu();
                 break;
-            case R.id.mcv_create_todo:
-                intentAddTodo();
+            case R.id.mcv_add_todo:
+                onAddTodoCardViewClick();
                 break;
         }
     }
@@ -132,7 +132,7 @@ public class TeamTodoListActivity extends BaseActivity implements View.OnClickLi
         popupMenu.show();
     }
 
-    private void intentAddTodo() {
+    private void onAddTodoCardViewClick() {
         Intent intent = new Intent(this, AddTodoActivity.class);
         intent.putExtra(EXTRA_TEAM_DATA, getTeamData());
         addTodoResultLauncher.launch(intent);
