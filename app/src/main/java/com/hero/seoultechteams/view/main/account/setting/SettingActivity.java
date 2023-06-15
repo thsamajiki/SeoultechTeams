@@ -68,7 +68,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
                 finish();
                 break;
             case R.id.layout_item_notice:
-                intentNoticeList();
+                onNoticeLayoutClick();
                 break;
             case R.id.layout_item_font:
                 openFontPopUp();
@@ -91,7 +91,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-    private void intentNoticeList() {
+    private void onNoticeLayoutClick() {
         Intent intent = new Intent(this, NoticeListActivity.class);
         startActivity(intent);
     }
