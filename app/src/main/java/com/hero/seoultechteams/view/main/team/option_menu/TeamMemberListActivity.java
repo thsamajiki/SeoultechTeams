@@ -80,7 +80,7 @@ public class TeamMemberListActivity extends BaseActivity implements View.OnClick
                 //intentMemberProfilePhoto(getTeamData().getUserKey());
                 break;
             case R.id.btn_go_to_invite:
-                intentInviteActivity();
+                onGotoInviteButtonClick();
                 break;
         }
     }
@@ -93,7 +93,7 @@ public class TeamMemberListActivity extends BaseActivity implements View.OnClick
         return getIntent().getParcelableArrayListExtra(EXTRA_TEAM_MEMBER_LIST);
     }
 
-    private void intentInviteActivity() {
+    private void onGotoInviteButtonClick() {
         Intent intent = new Intent(this, InviteActivity.class);
         intent.putExtra(EXTRA_TEAM_DATA, getTeamData());
         intent.putParcelableArrayListExtra(EXTRA_TEAM_MEMBER_LIST, teamMemberDataList);
