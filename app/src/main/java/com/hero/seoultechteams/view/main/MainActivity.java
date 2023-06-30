@@ -64,6 +64,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 super.onPageSelected(position);
                 binding.mainBottomNav.getMenu().getItem(position).setChecked(true);
                 binding.tvMainTitle.setText(titleArr[position]);
+
+                if (position == 2) {
+                    binding.ivAccountOptionMenu.setVisibility(View.VISIBLE);
+                    binding.ivAccountOptionMenu.setClickable(true);
+                } else {
+                    binding.ivAccountOptionMenu.setVisibility(View.INVISIBLE);
+                    binding.ivAccountOptionMenu.setClickable(false);
+                }
             }
 
             @Override
@@ -80,12 +88,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 switch (item.getItemId()) {
                     case R.id.menu_team:
                         binding.mainViewPager.setCurrentItem(0, true);
-                        binding.ivAccountOptionMenu.setVisibility(View.GONE);
+                        binding.ivAccountOptionMenu.setVisibility(View.INVISIBLE);
                         binding.ivAccountOptionMenu.setClickable(false);
                         break;
                     case R.id.menu_mytodo:
                         binding.mainViewPager.setCurrentItem(1, true);
-                        binding.ivAccountOptionMenu.setVisibility(View.GONE);
+                        binding.ivAccountOptionMenu.setVisibility(View.INVISIBLE);
+                        binding.ivAccountOptionMenu.setClickable(false);
                         break;
                     case R.id.menu_account:
                         binding.mainViewPager.setCurrentItem(2, true);
