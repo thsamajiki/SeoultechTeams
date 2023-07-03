@@ -26,7 +26,6 @@
 
     <string name="title_todo_list">할 일 목록</string>
 
-    <string name="submission">서브미션</string>
     <string name="d_day_countdown">D-10</string>
     <string name="todo_list">할 일 목록</string>
     <string name="add_todo">추가</string>
@@ -131,14 +130,13 @@
     <string name="future_lawyer_name">변호사 이름</string>
     <string name="about_leader">팀장에 대한 어떤 것</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="loading">잠시만 기다려주세요.</string>
 
     <string name="dummy_text">
         Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate
     </string>
 
-    <string name="first_notice_desc">안녕하세요. SeoultechTeams에 오신 것을 환영합니다!</string>
+    <string name="first_notice_desc">안녕하세요. SeoultechTeams 오신 것을 환영합니다!</string>
 
     <string-array name="title_array">
         <item>팀 목록</item>
