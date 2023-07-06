@@ -42,7 +42,6 @@ public class AddTodoActivity extends BaseActivity implements View.OnClickListene
     private TeamMemberListAdapter teamMemberListAdapter;
     private final ArrayList<MemberEntity> teamMemberDataList = new ArrayList<>();
     public static final String EXTRA_ADD_TODO = "addTodo";
-    public static final String EXTRA_MEMBER_DATA = "memberData";
     private MemberEntity managerData;
     private final AddTodoContract.Presenter presenter = new AddTodoPresenter(this,
             Injector.getInstance().provideAddTodoUseCase(),
