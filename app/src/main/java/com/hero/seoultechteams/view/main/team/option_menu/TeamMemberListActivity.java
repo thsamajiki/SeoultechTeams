@@ -34,7 +34,6 @@ public class TeamMemberListActivity extends BaseActivity implements View.OnClick
     private ActivityTeamMemberListBinding binding;
     private final ArrayList<MemberEntity> teamMemberDataList = new ArrayList<>();
     private TeamMemberListAdapter teamMemberListAdapter;
-    private ActivityResultLauncher<Intent> photoResultLauncher;
 
     private final TeamMemberListContract.Presenter presenter = new TeamMemberListPresenter(this,
             Injector.getInstance().provideGetMemberListUseCase());
