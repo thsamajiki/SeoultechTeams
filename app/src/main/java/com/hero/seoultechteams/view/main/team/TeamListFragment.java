@@ -223,7 +223,6 @@ public class TeamListFragment extends Fragment implements View.OnClickListener, 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-
         binding = null;
     }
 }
