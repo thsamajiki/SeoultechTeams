@@ -144,7 +144,6 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-
         binding = null;
     }
 }
