@@ -35,7 +35,6 @@ public class SplashActivity extends BaseActivity implements SplashContract.View 
                 autoLogin();
             }
         }, 1000);
-
     }
 
     private void autoLogin() {
