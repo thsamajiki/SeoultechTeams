@@ -29,9 +29,8 @@ import com.hero.seoultechteams.utils.RealPathUtil;
 import com.hero.seoultechteams.view.main.account.contract.EditProfileContract;
 import com.hero.seoultechteams.view.main.account.presenter.EditProfilePresenter;
 
-public class EditProfileActivity extends BaseActivity implements View.OnClickListener, TextWatcher, EditProfileContract.View {
+public class EditProfileActivity extends BaseActivity<ActivityEditProfileBinding> implements View.OnClickListener, TextWatcher, EditProfileContract.View {
 
-    private ActivityEditProfileBinding binding;
     private String myCurrentUserName;
     private static final int PERMISSION_REQ_CODE = 1010;
     public static final String EXTRA_UPDATE_USER_DATA = "updateUser";
@@ -42,11 +41,13 @@ public class EditProfileActivity extends BaseActivity implements View.OnClickLis
 
 
     @Override
+    protected ActivityEditProfileBinding getViewBinding() {
+        return ActivityEditProfileBinding.inflate(getLayoutInflater());
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityEditProfileBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
 
         setupListeners();
         setMyCurrentUserData();
