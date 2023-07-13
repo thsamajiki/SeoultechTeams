@@ -3,26 +3,27 @@ package com.hero.seoultechteams.view.photoview;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.bumptech.glide.Glide;
 import com.github.chrisbanes.photoview.PhotoView;
+import com.hero.seoultechteams.BaseActivity;
 import com.hero.seoultechteams.R;
 import com.hero.seoultechteams.databinding.ActivityPhotoBinding;
 
 
-public class PhotoActivity extends AppCompatActivity implements View.OnClickListener {
-    private ActivityPhotoBinding binding;
+public class PhotoActivity extends BaseActivity<ActivityPhotoBinding> implements View.OnClickListener {
 
     private PhotoView photoView;
     public static final String EXTRA_PROFILE_IMAGE_URL = "profileImageUrl";
 
     @Override
+    protected ActivityPhotoBinding getViewBinding() {
+        return ActivityPhotoBinding.inflate(getLayoutInflater());
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityPhotoBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
+
         loadImage();
     }
 
