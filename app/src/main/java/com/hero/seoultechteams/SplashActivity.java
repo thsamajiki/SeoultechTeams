@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.View;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.hero.seoultechteams.databinding.ActivitySplashBinding;
@@ -14,8 +13,7 @@ import com.hero.seoultechteams.view.login.presenter.SplashPresenter;
 import com.hero.seoultechteams.view.main.MainActivity;
 
 
-public class SplashActivity extends BaseActivity implements SplashContract.View {
-    private ActivitySplashBinding binding;
+public class SplashActivity extends BaseActivity<ActivitySplashBinding> implements SplashContract.View {
 
     private final SplashContract.Presenter presenter = new SplashPresenter(this,
             Injector.getInstance().provideGetTeamListUseCase(),
@@ -23,11 +21,13 @@ public class SplashActivity extends BaseActivity implements SplashContract.View 
             Injector.getInstance().provideGetAccountProfileUseCase());
 
     @Override
+    protected ActivitySplashBinding getViewBinding() {
+        return ActivitySplashBinding.inflate(getLayoutInflater());
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivitySplashBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
 
         new Handler().postDelayed(new Runnable() {
             @Override
