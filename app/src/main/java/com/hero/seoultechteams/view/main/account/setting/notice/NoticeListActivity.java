@@ -4,8 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import com.hero.seoultechteams.BaseActivity;
 import com.hero.seoultechteams.Injector;
 import com.hero.seoultechteams.R;
 import com.hero.seoultechteams.databinding.ActivityNoticeListBinding;
@@ -18,20 +17,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class NoticeListActivity extends AppCompatActivity implements View.OnClickListener, OnRecyclerItemClickListener<NoticeEntity>, NoticeListContract.View {
+public class NoticeListActivity extends BaseActivity<ActivityNoticeListBinding> implements View.OnClickListener, OnRecyclerItemClickListener<NoticeEntity>, NoticeListContract.View {
 
-    private ActivityNoticeListBinding binding;
     private List<NoticeEntity> noticeDataList = new ArrayList<>();
     private NoticeListAdapter noticeListAdapter;
     private final NoticeListContract.Presenter presenter = new NoticeListPresenter(this,
             Injector.getInstance().provideGetNoticeListUseCase());
 
     @Override
+    protected ActivityNoticeListBinding getViewBinding() {
+        return ActivityNoticeListBinding.inflate(getLayoutInflater());
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityNoticeListBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
 
         initNoticeListRecyclerViewAdapter();
         presenter.getNoticeListFromDatabase(noticeDataList);
