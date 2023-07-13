@@ -14,19 +14,21 @@ import com.hero.seoultechteams.view.login.contract.LoginContract;
 import com.hero.seoultechteams.view.login.presenter.LoginPresenter;
 import com.hero.seoultechteams.view.main.MainActivity;
 
-public class LoginActivity extends BaseActivity implements View.OnClickListener, LoginContract.View {
+public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements View.OnClickListener, LoginContract.View {
 
-    private ActivityLoginBinding binding;
     private final LoginContract.Presenter presenter = new LoginPresenter(this,
             Injector.getInstance().provideGetUserUseCase());
 
 
     @Override
+    protected ActivityLoginBinding getViewBinding() {
+        return ActivityLoginBinding.inflate(getLayoutInflater());
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityLoginBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
+
 
         setOnClickListener();
     }
