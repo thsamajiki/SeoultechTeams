@@ -38,9 +38,8 @@ import com.hero.seoultechteams.view.main.team.todo.presenter.TeamTodoListPresent
 import java.util.ArrayList;
 import java.util.List;
 
-public class TeamTodoListActivity extends BaseActivity implements View.OnClickListener, OnRecyclerItemClickListener<TodoEntity>, SwipeRefreshLayout.OnRefreshListener, TeamTodoListContract.View {
+public class TeamTodoListActivity extends BaseActivity<ActivityTeamTodoListBinding> implements View.OnClickListener, OnRecyclerItemClickListener<TodoEntity>, SwipeRefreshLayout.OnRefreshListener, TeamTodoListContract.View {
 
-    private ActivityTeamTodoListBinding binding;
     private final List<TodoEntity> teamTodoDataList = new ArrayList<>();
     private TeamTodoListAdapter teamTodoListAdapter;
 
@@ -53,11 +52,14 @@ public class TeamTodoListActivity extends BaseActivity implements View.OnClickLi
 
 
     @Override
+    protected ActivityTeamTodoListBinding getViewBinding() {
+        return ActivityTeamTodoListBinding.inflate(getLayoutInflater());
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityTeamTodoListBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
+
         initView();
         initTeamTodoListAdapter();
         presenter.getTeamTodoDataListFromDatabase(getTeamData().getTeamKey());
