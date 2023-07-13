@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.play.core.review.ReviewInfo;
@@ -18,6 +17,7 @@ import com.google.android.play.core.tasks.OnCompleteListener;
 import com.google.android.play.core.tasks.OnFailureListener;
 import com.google.android.play.core.tasks.OnSuccessListener;
 import com.google.android.play.core.tasks.Task;
+import com.hero.seoultechteams.BaseActivity;
 import com.hero.seoultechteams.Injector;
 import com.hero.seoultechteams.R;
 import com.hero.seoultechteams.databinding.ActivitySettingBinding;
@@ -28,9 +28,8 @@ import com.hero.seoultechteams.view.main.account.setting.contract.SettingContrac
 import com.hero.seoultechteams.view.main.account.setting.notice.NoticeListActivity;
 import com.hero.seoultechteams.view.main.account.setting.presenter.SettingPresenter;
 
-public class SettingActivity extends AppCompatActivity implements View.OnClickListener, SettingContract.View {
+public class SettingActivity extends BaseActivity<ActivitySettingBinding> implements View.OnClickListener, SettingContract.View {
 
-    private ActivitySettingBinding binding;
     private ReviewManager reviewManager;
     private ReviewInfo reviewInfo;
     public static final String EXTRA_SETTING_DATA = "settingData";
@@ -40,11 +39,13 @@ public class SettingActivity extends AppCompatActivity implements View.OnClickLi
             Injector.getInstance().provideRemoveUserUseCase());
 
     @Override
+    protected ActivitySettingBinding getViewBinding() {
+        return ActivitySettingBinding.inflate(getLayoutInflater());
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivitySettingBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
 
         setOnClickListener();
         readyPlayStoreReview();
