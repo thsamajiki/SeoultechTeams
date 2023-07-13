@@ -19,9 +19,8 @@ import com.hero.seoultechteams.domain.todo.entity.TodoEntity;
 import com.hero.seoultechteams.view.main.team.todo.contract.TodoDetailContract;
 import com.hero.seoultechteams.view.main.team.todo.presenter.TodoDetailPresenter;
 
-public class TodoDetailActivity extends BaseActivity implements View.OnClickListener, TodoDetailContract.View {
+public class TodoDetailActivity extends BaseActivity<ActivityTodoDetailBinding> implements View.OnClickListener, TodoDetailContract.View {
 
-    private ActivityTodoDetailBinding binding;
     public static final String EXTRA_UPDATE_TODO = "updateTodo";
     public static final String EXTRA_TODO_KEY = "todoKey";
     private final TodoDetailContract.Presenter presenter = new TodoDetailPresenter(this,
@@ -29,11 +28,14 @@ public class TodoDetailActivity extends BaseActivity implements View.OnClickList
             Injector.getInstance().provideGetTodoUseCase());
 
     @Override
+    protected ActivityTodoDetailBinding getViewBinding() {
+        return ActivityTodoDetailBinding.inflate(getLayoutInflater());
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityTodoDetailBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
+
         initView();
         setOnClickListener();
         addTextWatcher();
