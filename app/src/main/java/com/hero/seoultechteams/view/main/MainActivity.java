@@ -7,12 +7,12 @@ import android.view.MenuItem;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationBarView;
+import com.hero.seoultechteams.BaseActivity;
 import com.hero.seoultechteams.FragmentAdapter;
 import com.hero.seoultechteams.Injector;
 import com.hero.seoultechteams.R;
@@ -25,18 +25,19 @@ import com.hero.seoultechteams.view.main.mytodo.MyTodoListFragment;
 import com.hero.seoultechteams.view.main.team.TeamListFragment;
 
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, MainContract.View {
+public class MainActivity extends BaseActivity<ActivityMainBinding> implements View.OnClickListener, MainContract.View {
 
-    private ActivityMainBinding binding;
     private final MainContract.Presenter presenter = new MainPresenter(this,
             Injector.getInstance().provideSignOutUseCase());
 
     @Override
+    protected ActivityMainBinding getViewBinding() {
+        return ActivityMainBinding.inflate(getLayoutInflater());
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
 
         setFragmentAdapter();
         setBottomNavClickListener();
