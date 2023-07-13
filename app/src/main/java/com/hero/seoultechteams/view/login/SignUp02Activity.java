@@ -5,8 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import com.hero.seoultechteams.BaseActivity;
 import com.hero.seoultechteams.Injector;
 import com.hero.seoultechteams.R;
 import com.hero.seoultechteams.databinding.ActivitySignUp02Binding;
@@ -16,22 +15,22 @@ import com.hero.seoultechteams.view.login.presenter.SignUp02Presenter;
 import com.hero.seoultechteams.view.main.MainActivity;
 
 
-public class SignUp02Activity extends AppCompatActivity implements View.OnClickListener, SignUp02Contract.View {
+public class SignUp02Activity extends BaseActivity<ActivitySignUp02Binding> implements View.OnClickListener, SignUp02Contract.View {
 
-    private ActivitySignUp02Binding binding;
     private final SignUp02Contract.Presenter presenter = new SignUp02Presenter(this,
             Injector.getInstance().provideSignUpUserUseCase());
 
     @Override
+    protected ActivitySignUp02Binding getViewBinding() {
+        return ActivitySignUp02Binding.inflate(getLayoutInflater());
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivitySignUp02Binding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
 
         setOnClickListener();
     }
-
 
     private void setOnClickListener() {
         binding.ivBack.setOnClickListener(this);
