@@ -5,25 +5,25 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import com.hero.seoultechteams.BaseActivity;
 import com.hero.seoultechteams.R;
 import com.hero.seoultechteams.databinding.ActivitySignUp01Binding;
 import com.hero.seoultechteams.view.login.contract.SignUp01Contract;
 import com.hero.seoultechteams.view.login.presenter.SignUp01Presenter;
 
 
-public class SignUp01Activity extends AppCompatActivity implements View.OnClickListener, SignUp01Contract.View {
+public class SignUp01Activity extends BaseActivity<ActivitySignUp01Binding> implements View.OnClickListener, SignUp01Contract.View {
 
-    private ActivitySignUp01Binding binding;
     private final SignUp01Contract.Presenter presenter = new SignUp01Presenter(this);
+
+    @Override
+    protected ActivitySignUp01Binding getViewBinding() {
+        return ActivitySignUp01Binding.inflate(getLayoutInflater());
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivitySignUp01Binding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
 
         setOnClickListener();
     }
