@@ -36,9 +36,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class AddTodoActivity extends BaseActivity implements View.OnClickListener, TextWatcher, OnRecyclerItemClickListener<MemberEntity>, AddTodoContract.View {
+public class AddTodoActivity extends BaseActivity<ActivityAddTodoBinding> implements View.OnClickListener, TextWatcher, OnRecyclerItemClickListener<MemberEntity>, AddTodoContract.View {
 
-    private ActivityAddTodoBinding binding;
     private TeamMemberListAdapter teamMemberListAdapter;
     private final ArrayList<MemberEntity> teamMemberDataList = new ArrayList<>();
     public static final String EXTRA_ADD_TODO = "addTodo";
@@ -48,11 +47,14 @@ public class AddTodoActivity extends BaseActivity implements View.OnClickListene
             Injector.getInstance().provideGetMemberListUseCase());
 
     @Override
+    protected ActivityAddTodoBinding getViewBinding() {
+        return ActivityAddTodoBinding.inflate(getLayoutInflater());
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityAddTodoBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
+
         initView();
         setOnClickListeners();
         addTextWatcher();
