@@ -84,7 +84,6 @@ public class AddTodoActivity extends BaseActivity<ActivityAddTodoBinding> implem
             }
         });
         teamMemberListAdapter.setOnRecyclerItemClickListener(this);
-        //rvTeamMemberList.setAdapter(teamMemberListAdapter);
     }
 
     @Override
