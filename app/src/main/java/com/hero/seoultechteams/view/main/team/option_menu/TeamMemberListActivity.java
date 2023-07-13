@@ -29,9 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class TeamMemberListActivity extends BaseActivity implements View.OnClickListener, OnRecyclerItemClickListener<MemberEntity>, TeamMemberListContract.View {
+public class TeamMemberListActivity extends BaseActivity<ActivityTeamMemberListBinding> implements View.OnClickListener, OnRecyclerItemClickListener<MemberEntity>, TeamMemberListContract.View {
 
-    private ActivityTeamMemberListBinding binding;
     private final ArrayList<MemberEntity> teamMemberDataList = new ArrayList<>();
     private TeamMemberListAdapter teamMemberListAdapter;
 
@@ -40,11 +39,13 @@ public class TeamMemberListActivity extends BaseActivity implements View.OnClick
 
 
     @Override
+    protected ActivityTeamMemberListBinding getViewBinding() {
+        return ActivityTeamMemberListBinding.inflate(getLayoutInflater());
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityTeamMemberListBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
 
         initTeamMemberListRecyclerViewAdapter();
         presenter.getMemberDataListFromDatabase(getTeamData(), teamMemberDataList);
