@@ -19,8 +19,8 @@ import com.hero.seoultechteams.domain.team.entity.TeamEntity;
 import com.hero.seoultechteams.view.main.team.contract.TeamDetailContract;
 import com.hero.seoultechteams.view.main.team.presenter.TeamDetailPresenter;
 
-public class TeamDetailActivity extends BaseActivity implements View.OnClickListener, TeamDetailContract.View {
-    private ActivityTeamDetailBinding binding;
+public class TeamDetailActivity extends BaseActivity<ActivityTeamDetailBinding> implements View.OnClickListener, TeamDetailContract.View {
+
     public static final String EXTRA_UPDATE_TEAM = "updateTeam";
     public static final String EXTRA_TEAM_KEY = "teamKey";
     private final TeamDetailContract.Presenter presenter = new TeamDetailPresenter(this,
@@ -28,11 +28,14 @@ public class TeamDetailActivity extends BaseActivity implements View.OnClickList
             Injector.getInstance().provideGetTeamUseCase());
 
     @Override
+    protected ActivityTeamDetailBinding getViewBinding() {
+        return ActivityTeamDetailBinding.inflate(getLayoutInflater());
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityTeamDetailBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
+
         initView();
         setOnClickListener();
         addTextWatcher();
