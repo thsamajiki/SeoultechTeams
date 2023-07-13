@@ -9,9 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.bumptech.glide.Glide;
+import com.hero.seoultechteams.BaseActivity;
 import com.hero.seoultechteams.Injector;
 import com.hero.seoultechteams.R;
 import com.hero.seoultechteams.databinding.ActivityTeamParticipationBinding;
@@ -23,19 +22,19 @@ import com.hero.seoultechteams.view.main.team.option_menu.presenter.TeamParticip
 import java.util.List;
 
 
-public class TeamParticipationActivity extends AppCompatActivity implements View.OnClickListener, TeamParticipationContract.View {
-
-    private ActivityTeamParticipationBinding binding;
+public class TeamParticipationActivity extends BaseActivity<ActivityTeamParticipationBinding> implements View.OnClickListener, TeamParticipationContract.View {
 
     private final TeamParticipationContract.Presenter presenter = new TeamParticipationPresenter(this,
             Injector.getInstance().provideGetMemberParticipationUseCase());
 
     @Override
+    protected ActivityTeamParticipationBinding getViewBinding() {
+        return ActivityTeamParticipationBinding.inflate(getLayoutInflater());
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityTeamParticipationBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
 
         setOnClickListener();
         presenter.getMemberParticipationList(getTeamData().getTeamKey());
