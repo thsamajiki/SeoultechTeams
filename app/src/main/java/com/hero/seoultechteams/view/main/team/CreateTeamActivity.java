@@ -7,8 +7,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import com.hero.seoultechteams.BaseActivity;
 import com.hero.seoultechteams.Injector;
 import com.hero.seoultechteams.R;
 import com.hero.seoultechteams.databinding.ActivityCreateTeamBinding;
@@ -16,20 +15,21 @@ import com.hero.seoultechteams.domain.team.entity.TeamEntity;
 import com.hero.seoultechteams.view.main.team.contract.CreateTeamContract;
 import com.hero.seoultechteams.view.main.team.presenter.CreateTeamPresenter;
 
-public class CreateTeamActivity extends AppCompatActivity implements View.OnClickListener, CreateTeamContract.View {
+public class CreateTeamActivity extends BaseActivity<ActivityCreateTeamBinding> implements View.OnClickListener, CreateTeamContract.View {
 
-    private ActivityCreateTeamBinding binding;
     public static final String EXTRA_CREATE_TEAM = "createTeam";
     private final CreateTeamContract.Presenter presenter = new CreateTeamPresenter(this,
             Injector.getInstance().provideAddTeamUseCase(),
             Injector.getInstance().provideGetAccountProfileUseCase());
 
     @Override
+    protected ActivityCreateTeamBinding getViewBinding() {
+        return ActivityCreateTeamBinding.inflate(getLayoutInflater());
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityCreateTeamBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
 
         setOnClickListener();
         addTextWatcher();
