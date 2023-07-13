@@ -12,9 +12,8 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.hero.seoultechteams.BaseActivity;
 import com.hero.seoultechteams.Injector;
 import com.hero.seoultechteams.R;
 import com.hero.seoultechteams.databinding.ActivityInviteBinding;
@@ -29,19 +28,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class InviteActivity extends AppCompatActivity implements View.OnClickListener, OnRecyclerItemClickListener<UserEntity>, InviteContract.View {
+public class InviteActivity extends BaseActivity<ActivityInviteBinding> implements View.OnClickListener, OnRecyclerItemClickListener<UserEntity>, InviteContract.View {
 
-    private ActivityInviteBinding binding;
     private InviteAdapter inviteAdapter;
     public static final String EXTRA_INVITE_USER = "addInvitedUser";
     private InviteContract.Presenter presenter;
 
     @Override
+    protected ActivityInviteBinding getViewBinding() {
+        return ActivityInviteBinding.inflate(getLayoutInflater());
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityInviteBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-        setContentView(view);
 
         presenter = new InvitePresenter(this,
                 Injector.getInstance().provideAddNewMemberListUseCase(),
