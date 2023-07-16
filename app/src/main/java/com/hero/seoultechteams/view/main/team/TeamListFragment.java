@@ -21,9 +21,9 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.PopupMenu;
-import androidx.fragment.app.Fragment;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.hero.seoultechteams.BaseFragment;
 import com.hero.seoultechteams.Injector;
 import com.hero.seoultechteams.R;
 import com.hero.seoultechteams.databinding.FragmentTeamListBinding;
@@ -37,26 +37,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class TeamListFragment extends Fragment implements View.OnClickListener, OnRecyclerItemClickListener<TeamEntity>, TeamListContract.View {
+public class TeamListFragment extends BaseFragment<FragmentTeamListBinding> implements View.OnClickListener, OnRecyclerItemClickListener<TeamEntity>, TeamListContract.View {
 
-    private FragmentTeamListBinding binding;
     private TeamListAdapter teamListAdapter;
     private final List<TeamEntity> teamDataList = new ArrayList<>();
     public static final String EXTRA_TEAM_DATA = "teamData";
     private final TeamListContract.Presenter presenter = new TeamListPresenter(this,
             Injector.getInstance().provideGetTeamListUseCase());
 
+    @NonNull
+    @Override
+    protected FragmentTeamListBinding getViewBinding(@NonNull LayoutInflater inflater, @Nullable ViewGroup container) {
+        return FragmentTeamListBinding.inflate(getLayoutInflater());
+    }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentTeamListBinding.inflate(inflater);
-        View view = binding.getRoot();
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         initTeamListAdapter();
         presenter.getTeamListFromDatabase();
         setOnClickListeners();
-
-        return view;
     }
 
     private void initTeamListAdapter() {
