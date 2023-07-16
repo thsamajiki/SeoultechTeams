@@ -14,10 +14,10 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.tabs.TabLayout;
+import com.hero.seoultechteams.BaseFragment;
 import com.hero.seoultechteams.Injector;
 import com.hero.seoultechteams.R;
 import com.hero.seoultechteams.database.todo.entity.Event;
@@ -33,9 +33,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MyTodoListFragment extends Fragment implements OnRecyclerItemClickListener<TodoEntity>, SwipeRefreshLayout.OnRefreshListener, MyTodoListContract.View {
+public class MyTodoListFragment extends BaseFragment<FragmentMyTodoListBinding> implements OnRecyclerItemClickListener<TodoEntity>, SwipeRefreshLayout.OnRefreshListener, MyTodoListContract.View {
 
-    private FragmentMyTodoListBinding binding;
     private final List<TodoEntity> myTodoNowDataList = new ArrayList<>();
     private final List<TodoEntity> myTodoCompletedDataList = new ArrayList<>();
     private MyTodoListAdapter myTodoListAdapter;
@@ -48,17 +47,19 @@ public class MyTodoListFragment extends Fragment implements OnRecyclerItemClickL
                     Injector.getInstance().provideSetRefreshUseCase(),
                     Injector.getInstance().provideUpdateTodoStateUseCase());
 
-    @Nullable
+    @NonNull
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        binding = FragmentMyTodoListBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
+    protected FragmentMyTodoListBinding getViewBinding(@NonNull LayoutInflater inflater, @Nullable ViewGroup container) {
+        return FragmentMyTodoListBinding.inflate(getLayoutInflater());
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         setOnRefreshListener();
         initMyTodoListAdapter();
         showMyTodoListOnSeparatedTabs();
-
-        return view;
     }
 
     @Override
