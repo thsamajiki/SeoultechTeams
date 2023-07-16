@@ -30,25 +30,15 @@ import com.hero.seoultechteams.view.main.account.contract.AccountContract;
 import com.hero.seoultechteams.view.main.account.presenter.AccountPresenter;
 import com.hero.seoultechteams.view.photoview.PhotoActivity;
 
-public class AccountFragment extends BaseFragment implements View.OnClickListener, AccountContract.View {
-
-    private FragmentAccountBinding binding;
+public class AccountFragment extends BaseFragment<FragmentAccountBinding> implements View.OnClickListener, AccountContract.View {
 
     private final AccountContract.Presenter presenter = new AccountPresenter(this,
             Injector.getInstance().provideGetAccountProfileUseCase());
 
-
-    @Nullable
+    @NonNull
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        binding = FragmentAccountBinding.inflate(getLayoutInflater());
-        View view = binding.getRoot();
-
-        setOnClickListeners();
-
-        return view;
+    protected FragmentAccountBinding getViewBinding(@NonNull LayoutInflater inflater, @Nullable ViewGroup container) {
+        return FragmentAccountBinding.inflate(getLayoutInflater());
     }
 
     private void setOnClickListeners() {
@@ -56,10 +46,10 @@ public class AccountFragment extends BaseFragment implements View.OnClickListene
         binding.btnEditProfile.setOnClickListener(this);
     }
 
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setOnClickListeners();
         setUserData(presenter.getUserEntity());
     }
 
