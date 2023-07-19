@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
-import com.github.chrisbanes.photoview.PhotoView;
 import com.hero.seoultechteams.BaseActivity;
 import com.hero.seoultechteams.R;
 import com.hero.seoultechteams.databinding.ActivityPhotoBinding;
@@ -12,7 +11,6 @@ import com.hero.seoultechteams.databinding.ActivityPhotoBinding;
 
 public class PhotoActivity extends BaseActivity<ActivityPhotoBinding> implements View.OnClickListener {
 
-    private PhotoView photoView;
     public static final String EXTRA_PROFILE_IMAGE_URL = "profileImageUrl";
 
     @Override
