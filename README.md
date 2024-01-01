@@ -40,7 +40,7 @@
 
 ## 사용된 기술
 - Android Clean Architecture
-- MVP 디자인 패턴
+- MVP 패턴
 - ROOM
 - RecyclerView
 - ViewBinding
