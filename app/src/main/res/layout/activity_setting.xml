@@ -10,6 +10,7 @@
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/light_blue_tool_bar"
         app:contentInsetStart="0dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -43,267 +44,275 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <View
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="35dp" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/light_blue_background">
 
-    <TextView
-        android:id="@+id/tv_subtitle_general_setting"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        android:text="@string/subtitle_general_setting"
-        android:textColor="@color/dark_gray"
-        android:textSize="@dimen/body_text_size"
-        android:textStyle="bold" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout_item_notice"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="35dp" />
 
         <TextView
+            android:id="@+id/tv_subtitle_general_setting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="15dp"
-            android:text="@string/item_notice"
+            android:layout_marginTop="10dp"
+            android:text="@string/subtitle_general_setting"
             android:textColor="@color/dark_gray"
-            android:textSize="@dimen/title_text_size"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textSize="@dimen/body_text_size"
+            android:textStyle="bold" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="15dp"
-            android:padding="6dp"
-            android:src="@drawable/ic_right_arrow"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_item_notice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
+                android:text="@string/item_notice"
+                android:textColor="@color/dark_gray"
+                android:textSize="@dimen/title_text_size"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout_item_font"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="15dp"
+                android:padding="6dp"
+                android:src="@drawable/ic_right_arrow"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_item_font"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
+                android:text="@string/item_font"
+                android:textColor="@color/dark_gray"
+                android:textSize="@dimen/title_text_size"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="15dp"
+                android:padding="6dp"
+                android:src="@drawable/ic_right_arrow"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="40dp" />
 
         <TextView
+            android:id="@+id/tv_subtitle_data_management_setting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="15dp"
-            android:text="@string/item_font"
+            android:layout_marginTop="10dp"
+            android:text="@string/subtitle_data_management_setting"
             android:textColor="@color/dark_gray"
-            android:textSize="@dimen/title_text_size"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textSize="@dimen/body_text_size"
+            android:textStyle="bold" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="15dp"
-            android:padding="6dp"
-            android:src="@drawable/ic_right_arrow"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_item_delete_cache"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
+                android:text="@string/item_delete_cache"
+                android:textColor="@color/dark_gray"
+                android:textSize="@dimen/title_text_size"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="40dp" />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="15dp"
+                android:padding="6dp"
+                android:src="@drawable/ic_right_arrow"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_subtitle_data_management_setting"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        android:text="@string/subtitle_data_management_setting"
-        android:textColor="@color/dark_gray"
-        android:textSize="@dimen/body_text_size"
-        android:textStyle="bold" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout_item_delete_cache"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="40dp" />
 
         <TextView
+            android:id="@+id/tv_subtitle_inquiry"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="15dp"
-            android:text="@string/item_delete_cache"
+            android:layout_marginTop="10dp"
+            android:text="@string/subtitle_others"
             android:textColor="@color/dark_gray"
-            android:textSize="@dimen/title_text_size"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textSize="@dimen/body_text_size"
+            android:textStyle="bold" />
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="15dp"
-            android:padding="6dp"
-            android:src="@drawable/ic_right_arrow"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="40dp" />
-
-    <TextView
-        android:id="@+id/tv_subtitle_inquiry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        android:text="@string/subtitle_others"
-        android:textColor="@color/dark_gray"
-        android:textSize="@dimen/body_text_size"
-        android:textStyle="bold" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout_item_inquiry"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true">
-
-        <TextView
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_item_inquiry"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="15dp"
-            android:text="@string/item_inquiry"
-            android:textColor="@color/dark_gray"
-            android:textSize="@dimen/title_text_size"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="15dp"
-            android:padding="6dp"
-            android:src="@drawable/ic_right_arrow"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
+                android:text="@string/item_inquiry"
+                android:textColor="@color/dark_gray"
+                android:textSize="@dimen/title_text_size"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="15dp"
+                android:padding="6dp"
+                android:src="@drawable/ic_right_arrow"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout_item_review"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true">
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_item_review"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="15dp"
-            android:text="@string/item_review"
-            android:textColor="@color/dark_gray"
-            android:textSize="@dimen/title_text_size"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="15dp"
-            android:padding="6dp"
-            android:src="@drawable/ic_right_arrow"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
+                android:text="@string/item_review"
+                android:textColor="@color/dark_gray"
+                android:textSize="@dimen/title_text_size"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="15dp"
+                android:padding="6dp"
+                android:src="@drawable/ic_right_arrow"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout_item_open_source"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true">
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_item_open_source"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="15dp"
-            android:text="@string/item_open_source"
-            android:textColor="@color/dark_gray"
-            android:textSize="@dimen/title_text_size"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="15dp"
-            android:padding="6dp"
-            android:src="@drawable/ic_right_arrow"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
+                android:text="@string/item_open_source"
+                android:textColor="@color/dark_gray"
+                android:textSize="@dimen/title_text_size"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="15dp"
+                android:padding="6dp"
+                android:src="@drawable/ic_right_arrow"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout_item_drop_out"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?selectableItemBackground"
-        android:clickable="true"
-        android:focusable="true">
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_item_drop_out"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="15dp"
-            android:text="@string/item_drop_out"
-            android:textColor="@color/dark_gray"
-            android:textSize="@dimen/title_text_size"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true">
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginEnd="15dp"
-            android:padding="6dp"
-            android:src="@drawable/ic_right_arrow"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="15dp"
+                android:text="@string/item_drop_out"
+                android:textColor="@color/dark_gray"
+                android:textSize="@dimen/title_text_size"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="15dp"
+                android:padding="6dp"
+                android:src="@drawable/ic_right_arrow"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
 
 </LinearLayout>
