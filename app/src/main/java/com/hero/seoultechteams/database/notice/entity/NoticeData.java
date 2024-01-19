@@ -2,6 +2,7 @@ package com.hero.seoultechteams.database.notice.entity;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.hero.seoultechteams.domain.notice.entity.NoticeEntity;
@@ -16,6 +17,10 @@ public class NoticeData {
     @PrimaryKey
     @NonNull
     private String noticeKey;
+
+    @Ignore
+    public NoticeData() {
+    }
 
     public NoticeData(String noticeTitle, String noticeDesc, String noticeDate, @NonNull String noticeKey) {
         this.noticeTitle = noticeTitle;
@@ -33,9 +38,6 @@ public class NoticeData {
                 noticeEntity.getNoticeDesc(),
                 noticeEntity.getNoticeDate(),
                 noticeEntity.getNoticeKey());
-    }
-
-    public NoticeData() {
     }
 
     public String getNoticeTitle() {
