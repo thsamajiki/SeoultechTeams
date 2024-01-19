@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/light_blue_background"
     tools:context=".view.main.account.AccountFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -59,9 +60,9 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="35dp"
         android:layout_marginTop="7dp"
-        android:backgroundTint="@color/colorPrimary30"
+        android:backgroundTint="@color/colorPrimary"
         android:text="@string/btn_change_profile"
-        android:textColor="@color/dark_gray"
+        android:textColor="@color/colorPrimary30"
         app:rippleColor="@color/colorPrimary" />
 
     <View
