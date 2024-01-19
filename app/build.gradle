@@ -33,8 +33,8 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation "androidx.room:room-runtime:2.6.0"
-    annotationProcessor "androidx.room:room-compiler:2.6.0"
+    implementation "androidx.room:room-runtime:2.6.1"
+    annotationProcessor "androidx.room:room-compiler:2.6.1"
     implementation "ru.tinkoff.scrollingpagerindicator:scrollingpagerindicator:1.2.1"
     implementation 'me.zhanghai.android.materialprogressbar:library:1.6.1'
     implementation 'com.wdullaer:materialdatetimepicker:4.2.3'
