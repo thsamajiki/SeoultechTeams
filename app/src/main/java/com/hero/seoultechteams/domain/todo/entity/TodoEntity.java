@@ -21,24 +21,6 @@ public class TodoEntity implements Parcelable, Comparable<TodoEntity> {
     @StringDef({TODO_STATE_IN_PROGRESS, TODO_STATE_DISMISSED, TODO_STATE_CONFIRMED, TODO_STATE_SUBMITTED})
     public @interface TodoState{}
 
-    public TodoEntity(String todoTitle, String todoDesc, String userKey, String managerProfileImageUrl,
-                      String managerName, String managerEmail, String todoState, String teamName, String teamKey,
-                      long todoCreatedTime, long todoEndTime, List<Event> eventHistory, String todoKey) {
-        this.todoTitle = todoTitle;
-        this.todoDesc = todoDesc;
-        this.userKey = userKey;
-        this.managerProfileImageUrl = managerProfileImageUrl;
-        this.managerName = managerName;
-        this.managerEmail = managerEmail;
-        this.todoState = todoState;
-        this.teamName = teamName;
-        this.teamKey = teamKey;
-        this.todoCreatedTime = todoCreatedTime;
-        this.todoEndTime = todoEndTime;
-        this.eventHistory = eventHistory;
-        this.todoKey = todoKey;
-    }
-
     private String todoTitle;
     private String todoDesc;
     private String userKey;
@@ -58,6 +40,24 @@ public class TodoEntity implements Parcelable, Comparable<TodoEntity> {
     private List<Event> eventHistory = new ArrayList<>();  // 이벤트 발생마다의 로그
 
     private String todoKey;
+
+    public TodoEntity(String todoTitle, String todoDesc, String userKey, String managerProfileImageUrl,
+                      String managerName, String managerEmail, String todoState, String teamName, String teamKey,
+                      long todoCreatedTime, long todoEndTime, List<Event> eventHistory, String todoKey) {
+        this.todoTitle = todoTitle;
+        this.todoDesc = todoDesc;
+        this.userKey = userKey;
+        this.managerProfileImageUrl = managerProfileImageUrl;
+        this.managerName = managerName;
+        this.managerEmail = managerEmail;
+        this.todoState = todoState;
+        this.teamName = teamName;
+        this.teamKey = teamKey;
+        this.todoCreatedTime = todoCreatedTime;
+        this.todoEndTime = todoEndTime;
+        this.eventHistory = eventHistory;
+        this.todoKey = todoKey;
+    }
 
     protected TodoEntity(Parcel in) {
         this.todoTitle = in.readString();

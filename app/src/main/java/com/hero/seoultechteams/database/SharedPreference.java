@@ -1,17 +1,17 @@
 package com.hero.seoultechteams.database;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Context;
 import android.content.SharedPreferences;
+
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import static android.content.Context.MODE_PRIVATE;
-
-import com.google.gson.Gson;
 
 public class SharedPreference {
 
