@@ -71,9 +71,9 @@
     <string name="tv_notification">알림</string>
     <string name="title_about_us">앱의 정보</string>
     <string name="title_version">버전</string>
-    <string name="version">1.0 Beta</string>
+    <string name="version">2.0</string>
     <string name="title_copyright">저작권</string>
-    <string name="copyright">Copyright © 2023 AppZiggy\n\nPowered by Seoultech Software</string>
+    <string name="copyright">Copyright © 2024 AppZiggy\n\nPowered by Seoultech Software</string>
 
     <string name="title_image_open_source">이미지</string>
     <string name="item01_image_open_source">flaticon</string>
