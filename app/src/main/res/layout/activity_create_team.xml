@@ -11,6 +11,7 @@
         android:id="@+id/create_team_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/light_blue_tool_bar"
         app:contentInsetStart="0dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,7 +24,7 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:padding="13dp"
+                android:padding="15dp"
                 android:src="@drawable/ic_back_arrow" />
 
             <TextView
@@ -59,7 +60,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/colorPrimary30">
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/edit_create_team_name"
@@ -77,7 +79,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/light_gray" />
+            android:background="@color/light_blue_300" />
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/edit_create_team_desc"
