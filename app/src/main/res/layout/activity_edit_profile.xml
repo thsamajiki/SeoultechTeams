@@ -11,6 +11,7 @@
     <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/light_blue_tool_bar"
         app:contentInsetStart="0dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -21,82 +22,90 @@
                 android:id="@+id/iv_back"
                 android:layout_width="?attr/actionBarSize"
                 android:layout_height="wrap_content"
+                android:padding="15dp"
+                android:src="@drawable/ic_back_arrow"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:padding="13dp"
-                android:src="@drawable/ic_back_arrow" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_edit_profile_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toEndOf="@id/iv_back"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 android:text="@string/title_change_profile"
                 android:textColor="@color/black"
-                android:textSize="@dimen/title_text_size" />
+                android:textSize="@dimen/title_text_size"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/iv_back"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_edit_profile_complete"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 android:enabled="false"
                 android:gravity="center"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
                 android:text="@string/finish"
                 android:textColor="@color/selector_complete_btn"
-                android:textSize="@dimen/title_text_size" />
+                android:textSize="@dimen/title_text_size"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.appcompat.widget.Toolbar>
 
-    <FrameLayout
-        android:layout_width="140dp"
-        android:layout_height="140dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="60dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/light_blue_background"
+        android:orientation="vertical">
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/iv_my_user_profile"
+        <FrameLayout
             android:layout_width="140dp"
             android:layout_height="140dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/sample_profile_image"
-            app:shapeAppearance="@style/Circle" />
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="60dp">
 
-        <com.skydoves.elasticviews.ElasticFloatingActionButton
-            android:id="@+id/fab_profile_image_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:src="@drawable/ic_camera"
-            app:backgroundTint="@color/white"
-            app:fabCustomSize="40dp"
-            app:rippleColor="@color/colorPrimary30" />
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/iv_my_user_profile"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/sample_profile_image"
+                app:shapeAppearance="@style/Circle" />
 
-    </FrameLayout>
+            <com.skydoves.elasticviews.ElasticFloatingActionButton
+                android:id="@+id/fab_profile_image_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:src="@drawable/ic_camera"
+                app:backgroundTint="@color/colorPrimary30"
+                app:fabCustomSize="40dp"
+                app:rippleColor="@color/colorPrimary30" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="30dp"
-        android:layout_marginTop="30dp" >
+        </FrameLayout>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_user_name"
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="@string/edit_username"
-            android:inputType="text"
-            android:maxLines="1" />
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginTop="30dp">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_user_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/edit_username"
+                android:inputType="text"
+                android:maxLines="1" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
 
 </LinearLayout>

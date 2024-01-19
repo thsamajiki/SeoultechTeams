@@ -12,6 +12,7 @@
         android:id="@+id/detail_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/light_blue_tool_bar"
         app:contentInsetStart="0dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,7 +23,7 @@
                 android:id="@+id/iv_back"
                 android:layout_width="?attr/actionBarSize"
                 android:layout_height="match_parent"
-                android:padding="14dp"
+                android:padding="15dp"
                 android:src="@drawable/ic_back_arrow"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -54,30 +55,38 @@
 
     </androidx.appcompat.widget.Toolbar>
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/edit_team_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@null"
-        android:gravity="top|start"
-        android:hint="@string/edit_team_name"
-        android:padding="20dp"
-        android:textSize="@dimen/title_text_size" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/light_gray" />
-
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/edit_team_desc"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@null"
-        android:gravity="top|start"
-        android:hint="@string/edit_team_desc"
-        android:lineSpacingExtra="7dp"
-        android:padding="20dp"
-        android:textSize="@dimen/body_text_size" />
+        android:background="@drawable/light_blue_background"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edit_team_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:gravity="top|start"
+            android:hint="@string/edit_team_name"
+            android:padding="20dp"
+            android:textSize="@dimen/title_text_size" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/light_blue_400" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edit_team_desc"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:gravity="top|start"
+            android:hint="@string/edit_team_desc"
+            android:lineSpacingExtra="7dp"
+            android:padding="20dp"
+            android:textSize="@dimen/body_text_size" />
+
+    </LinearLayout>
 
 </LinearLayout>

@@ -12,6 +12,7 @@
         android:id="@+id/detail_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/light_blue_tool_bar"
         app:contentInsetStart="0dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,65 +23,73 @@
                 android:id="@+id/iv_back"
                 android:layout_width="?attr/actionBarSize"
                 android:layout_height="match_parent"
-                android:padding="14dp"
+                android:padding="15dp"
                 android:src="@drawable/ic_back_arrow"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_detail_todo_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:text="@string/detail_todo_title"
                 android:textColor="@color/black"
-                android:textSize="@dimen/title_text_size" />
+                android:textSize="@dimen/title_text_size"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_option_menu"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="10dp"
                 android:paddingTop="7dp"
                 android:paddingEnd="7dp"
                 android:paddingBottom="7dp"
                 android:src="@drawable/ic_option_menu"
-                android:visibility="invisible" />
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.appcompat.widget.Toolbar>
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/edit_todo_title"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@null"
-        android:gravity="top|start"
-        android:hint="@string/edit_todo_title"
-        android:padding="20dp"
-        android:textSize="@dimen/title_text_size" />
+        android:layout_height="match_parent"
+        android:background="@drawable/light_blue_background"
+        android:orientation="vertical">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/light_gray" />
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edit_todo_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:gravity="top|start"
+            android:hint="@string/edit_todo_title"
+            android:padding="20dp"
+            android:textSize="@dimen/title_text_size" />
 
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/edit_todo_desc"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@null"
-        android:gravity="top|start"
-        android:hint="@string/edit_todo_desc"
-        android:lineSpacingExtra="7dp"
-        android:padding="20dp"
-        android:textSize="@dimen/body_text_size" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/light_blue_400" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edit_todo_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:gravity="top|start"
+            android:hint="@string/edit_todo_desc"
+            android:lineSpacingExtra="7dp"
+            android:padding="20dp"
+            android:textSize="@dimen/body_text_size" />
+
+    </LinearLayout>
 
 </LinearLayout>

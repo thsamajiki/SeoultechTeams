@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/light_blue_background"
     tools:context=".view.main.team.TeamListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
@@ -27,7 +28,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_margin="10dp"
         android:src="@drawable/ic_plus"
-        app:backgroundTint="@color/white"
+        app:backgroundTint="@color/colorPrimary"
         app:useCompatPadding="true" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
