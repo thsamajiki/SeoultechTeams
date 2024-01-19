@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/light_blue_background"
     tools:context=".view.main.mytodo.MyTodoListFragment">
 
     <com.google.android.material.tabs.TabLayout
@@ -13,11 +14,12 @@
         android:layout_height="wrap_content"
         android:layout_marginVertical="10dp"
         android:layout_marginStart="10dp"
+        android:background="@color/tabBackground"
         app:tabGravity="start"
-        app:tabIndicatorColor="@color/white"
+        app:tabIndicatorColor="@color/colorPrimary"
         app:tabSelectedTextColor="@color/black"
         app:tabTextAppearance="@style/TabTextAppearance"
-        app:tabTextColor="@color/normal_gray">
+        app:tabTextColor="@color/colorPrimary30">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
