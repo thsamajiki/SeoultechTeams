@@ -1,11 +1,9 @@
 package com.hero.seoultechteams.database.team.entity;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.hero.seoultechteams.domain.team.entity.TeamEntity;
@@ -21,6 +19,10 @@ public class TeamData {
     @PrimaryKey
     @NonNull
     private String teamKey;
+
+    @Ignore
+    public TeamData() {
+    }
 
     public TeamData(String teamName, String teamDesc, String leaderKey, long createdDate, @NonNull String teamKey) {
         this.teamName = teamName;
@@ -40,9 +42,6 @@ public class TeamData {
                 teamEntity.getLeaderKey(),
                 teamEntity.getCreatedDate(),
                 teamEntity.getTeamKey());
-    }
-
-    public TeamData() {
     }
 
     public String getTeamName() {

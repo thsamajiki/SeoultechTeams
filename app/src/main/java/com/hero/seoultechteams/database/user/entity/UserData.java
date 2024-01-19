@@ -1,12 +1,10 @@
 package com.hero.seoultechteams.database.user.entity;
 
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.hero.seoultechteams.domain.user.entity.UserEntity;
@@ -22,8 +20,9 @@ public class UserData {
     @NonNull
     private String key;
 
+    @Ignore
     public UserData() {
-    };
+    }
 
     public UserData(String name, String email, String profileImageUrl, @NonNull String key) {
         this.name = name;
@@ -67,6 +66,7 @@ public class UserData {
         this.profileImageUrl = profileImageUrl;
     }
 
+    @NonNull
     public String getKey() {
         return key;
     }

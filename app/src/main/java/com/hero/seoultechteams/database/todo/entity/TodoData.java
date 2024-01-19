@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.room.Embedded;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.hero.seoultechteams.domain.todo.entity.TodoEntity;
@@ -14,6 +15,32 @@ import java.util.List;
 
 @Entity(tableName = "todo_table")
 public class TodoData implements Comparable<TodoData> {
+
+    private String todoTitle;
+    private String todoDesc;
+    private String userKey;
+    private String managerProfileImageUrl;
+    private String managerName;
+    private String managerEmail;
+
+    private String todoState;   // 현재 상태 기준으로 분기 처리를 위한 데이터
+
+    private String teamName;
+    private String teamKey;
+    private long todoCreatedTime;
+    private long todoEndTime;
+
+    @Embedded
+    private ArrayList<Event> eventHistory;  // 이벤트 발생마다의 로그
+
+    @PrimaryKey
+    @NonNull
+    private String todoKey;
+
+    @Ignore
+    public TodoData() {
+    }
+
     public TodoData(String todoTitle, String todoDesc, String userKey, String managerProfileImageUrl, String managerName, String managerEmail, String todoState, String teamName, String teamKey, long todoCreatedTime, long todoEndTime, ArrayList<Event> eventHistory, @NonNull String todoKey) {
         this.todoTitle = todoTitle;
         this.todoDesc = todoDesc;
@@ -58,31 +85,6 @@ public class TodoData implements Comparable<TodoData> {
                 new ArrayList<>(eventHistory),
                 todoEntity.getTodoKey());
     }
-
-    private String todoTitle;
-    private String todoDesc;
-    private String userKey;
-    private String managerProfileImageUrl;
-    private String managerName;
-    private String managerEmail;
-
-    private String todoState;   // 현재 상태 기준으로 분기 처리를 위한 데이터
-
-    private String teamName;
-    private String teamKey;
-    private long todoCreatedTime;
-    private long todoEndTime;
-
-    @Embedded
-    private ArrayList<Event> eventHistory;  // 이벤트 발생마다의 로그
-
-    @PrimaryKey
-    @NonNull
-    private String todoKey;
-
-    public TodoData() {
-    }
-
 
     public String getTodoTitle() {
         return todoTitle;

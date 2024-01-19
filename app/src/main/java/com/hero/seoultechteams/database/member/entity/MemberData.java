@@ -3,6 +3,7 @@ package com.hero.seoultechteams.database.member.entity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.hero.seoultechteams.domain.member.entity.MemberEntity;
@@ -19,6 +20,7 @@ public class MemberData implements Comparable<MemberData> {
     @NonNull
     private String key; // memberKey는 userKey와 동일하다.
 
+    @Ignore
     public MemberData() {
     }
 
@@ -41,8 +43,6 @@ public class MemberData implements Comparable<MemberData> {
                 memberEntity.getTeamKey(),
                 memberEntity.getKey());
     }
-
-
 
     public String getName() {
         return name;
@@ -85,8 +85,6 @@ public class MemberData implements Comparable<MemberData> {
         this.key = key;
     }
 
-
-
     @Override
     public boolean equals(@Nullable Object obj) {
         if (obj instanceof MemberData) {
@@ -94,7 +92,6 @@ public class MemberData implements Comparable<MemberData> {
         }
         return false;
     }
-
 
     @Override
     public int compareTo(MemberData o) {
