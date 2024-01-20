@@ -1,5 +1,6 @@
 package com.hero.seoultechteams.database.todo.entity;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.room.Embedded;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@Keep
 @Entity(tableName = "todo_table")
 public class TodoData implements Comparable<TodoData> {
 

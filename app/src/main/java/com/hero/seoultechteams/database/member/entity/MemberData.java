@@ -1,5 +1,6 @@
 package com.hero.seoultechteams.database.member.entity;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.room.Entity;
@@ -8,6 +9,7 @@ import androidx.room.PrimaryKey;
 
 import com.hero.seoultechteams.domain.member.entity.MemberEntity;
 
+@Keep
 @Entity(tableName = "member_table")
 public class MemberData implements Comparable<MemberData> {
 
