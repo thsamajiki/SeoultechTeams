@@ -50,13 +50,13 @@
 
 
 ## 사용된 라이브러리
-- 머티리얼 디자인 (com.google.android.material:material:1.6.1)
-- 머티리얼 프로그래스바 (me.zhanghai.android.materialprogressbar:library:1.6.1)
-- 머리티얼 날짜시간피커 (com.wdullaer:materialdatetimepicker:4.2.3)
-- 포토뷰 (com.github.chrisbanes:PhotoView:2.3.0)
-- 사진 첨부 (com.github.bumptech.glide:glide:4.11.0) (com.github.bumptech.glide:compiler:4.11.0)
-- (프로필) 사진 원형 표시 (de.hdodenhof:circleimageview:3.1.0)
-- 스와이프 새로고침 레이아웃 (androidx.swiperefreshlayout:swiperefreshlayout:1.1.0)
+- 머티리얼 디자인 (com.google.android.material:material)
+- 머티리얼 프로그래스바 (me.zhanghai.android.materialprogressbar:library)
+- 머리티얼 날짜시간피커 (com.wdullaer:materialdatetimepicker)
+- 포토뷰 (com.github.chrisbanes:PhotoView)
+- 사진 첨부 (com.github.bumptech.glide:glide)
+- (프로필) 사진 원형 표시 (de.hdodenhof:circleimageview)
+- 스와이프 새로고침 레이아웃 (androidx.swiperefreshlayout:swiperefreshlayout)
 
 
 ## 문제 및 해결 과정
