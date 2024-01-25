@@ -3,8 +3,10 @@ package com.hero.seoultechteams.database.todo.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import androidx.annotation.Keep;
 import androidx.annotation.StringDef;
 
+@Keep
 public class Event implements Parcelable {
 
     public static final String EVENT_CREATE = "create";
@@ -13,7 +15,7 @@ public class Event implements Parcelable {
     public static final String EVENT_CONFIRM = "confirm";
 
     @StringDef({EVENT_CREATE, EVENT_SUBMIT, EVENT_DISMISS, EVENT_CONFIRM})
-    public @interface TodoEvent {};
+    public @interface TodoEvent {}
 
     @TodoEvent
     private String event;

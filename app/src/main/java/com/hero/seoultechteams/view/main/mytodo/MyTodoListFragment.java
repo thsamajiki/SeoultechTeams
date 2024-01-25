@@ -146,8 +146,6 @@ public class MyTodoListFragment extends BaseFragment<FragmentMyTodoListBinding> 
         Toast.makeText(requireActivity(), "할 일을 갱신하는 데 실패했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
     }
 
-
-
     @Override
     public void onItemClick(int position, View view, TodoEntity data) {
         switch (view.getId()) {
@@ -216,11 +214,14 @@ public class MyTodoListFragment extends BaseFragment<FragmentMyTodoListBinding> 
         getTeamListFromDatabase();
 
         binding.srlMyTodoList.setRefreshing(false);
+
+        binding.tvNoTodoFound.setVisibility(View.INVISIBLE);
     }
 
     @Override
     public void emptyMyTodoList() {
-        Toast.makeText(requireActivity(), "나의 할 일이 아직 없습니다.", Toast.LENGTH_SHORT).show();
+        binding.tvNoTodoFound.setVisibility(View.VISIBLE);
+//        Toast.makeText(requireActivity(), "나의 할 일이 아직 없습니다.", Toast.LENGTH_SHORT).show();
     }
 
     @Override

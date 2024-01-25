@@ -4,9 +4,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
-import androidx.room.PrimaryKey;
-
-import com.hero.seoultechteams.database.member.entity.MemberData;
 
 public class MemberEntity implements Parcelable, Comparable<MemberEntity> {
     private String name;

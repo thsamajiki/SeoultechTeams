@@ -4,7 +4,6 @@ import com.hero.seoultechteams.domain.common.OnCompleteListener;
 import com.hero.seoultechteams.domain.todo.entity.TodoEntity;
 import com.hero.seoultechteams.domain.todo.repository.TodoRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class GetMyTodoListUseCase {

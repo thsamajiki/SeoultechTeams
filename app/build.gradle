@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.hero.seoultechteams"
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 34
         versionCode 1
         versionName "1.0"
@@ -21,11 +21,34 @@ android {
         viewBinding = true
     }
 
-    buildTypes {
+    signingConfigs {
+        debug {
+            storeFile file("debug-keystore.jks")
+            storePassword file("keystore_password.txt").text.trim()
+            keyAlias file("key_alias.txt").text.trim()
+            keyPassword file("key_password.txt").text.trim()
+        }
         release {
-            debuggable = false
+            storeFile file("release-keystore.jks")
+            storePassword file("keystore_password.txt").text.trim()
+            keyAlias file("key_alias.txt").text.trim()
+            keyPassword file("key_password.txt").text.trim()
+        }
+    }
+
+    buildTypes {
+        debug {
+            shrinkResources = false
             minifyEnabled = false
+            debuggable = true
+            signingConfig signingConfigs.debug
+        }
+        release {
+            shrinkResources = false
+            minifyEnabled = false
+            debuggable = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            signingConfig signingConfigs.release
         }
     }
 }

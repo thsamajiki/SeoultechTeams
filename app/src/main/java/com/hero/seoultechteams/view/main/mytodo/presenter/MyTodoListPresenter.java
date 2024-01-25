@@ -2,7 +2,6 @@ package com.hero.seoultechteams.view.main.mytodo.presenter;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.hero.seoultechteams.domain.common.OnCompleteListener;
-
 import com.hero.seoultechteams.domain.team.entity.TeamEntity;
 import com.hero.seoultechteams.domain.team.usecase.GetTeamListUseCase;
 import com.hero.seoultechteams.domain.todo.entity.TodoEntity;
@@ -11,7 +10,6 @@ import com.hero.seoultechteams.domain.todo.usecase.SetRefreshUseCase;
 import com.hero.seoultechteams.domain.todo.usecase.UpdateTodoStateUseCase;
 import com.hero.seoultechteams.view.main.mytodo.contract.MyTodoListContract;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MyTodoListPresenter implements MyTodoListContract.Presenter {
@@ -42,9 +40,11 @@ public class MyTodoListPresenter implements MyTodoListContract.Presenter {
             public void onComplete(boolean isSuccess, List<TodoEntity> data) {
                 if (isSuccess) {
                     if (data != null) {
-                        view.onGetMyTodoList(data);
-                    } else {
-                        view.emptyMyTodoList();
+                        if (data.isEmpty()) {
+                            view.emptyMyTodoList();
+                        } else {
+                            view.onGetMyTodoList(data);
+                        }
                     }
                 } else {
                     view.failedGetMyTodoList();

@@ -1,5 +1,6 @@
 package com.hero.seoultechteams.database.team.entity;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.room.Entity;
@@ -8,6 +9,7 @@ import androidx.room.PrimaryKey;
 
 import com.hero.seoultechteams.domain.team.entity.TeamEntity;
 
+@Keep
 @Entity(tableName = "team_table")
 public class TeamData {
 

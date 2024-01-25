@@ -235,13 +235,17 @@ public class TeamTodoListActivity extends BaseActivity<ActivityTeamTodoListBindi
         teamTodoListAdapter.notifyDataSetChanged();
 
         resetRefresh();
+
+        binding.tvAddFirstTodo.setVisibility(View.INVISIBLE);
     }
 
     @Override
     public void emptyTeamTodoList() {
-        Toast.makeText(TeamTodoListActivity.this, "첫 번째 할 일을 생성해보세요.", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(TeamTodoListActivity.this, "첫 번째 할 일을 생성해보세요.", Toast.LENGTH_SHORT).show();
 
         resetRefresh();
+
+        binding.tvAddFirstTodo.setVisibility(View.VISIBLE);
     }
 
     @Override

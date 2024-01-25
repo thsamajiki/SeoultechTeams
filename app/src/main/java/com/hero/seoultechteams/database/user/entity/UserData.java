@@ -1,6 +1,7 @@
 package com.hero.seoultechteams.database.user.entity;
 
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.room.Entity;
@@ -9,6 +10,7 @@ import androidx.room.PrimaryKey;
 
 import com.hero.seoultechteams.domain.user.entity.UserEntity;
 
+@Keep
 @Entity(tableName = "user_table")
 public class UserData {
 

@@ -1,5 +1,6 @@
 package com.hero.seoultechteams.database.notice.entity;
 
+import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.Ignore;
@@ -7,6 +8,7 @@ import androidx.room.PrimaryKey;
 
 import com.hero.seoultechteams.domain.notice.entity.NoticeEntity;
 
+@Keep
 @Entity(tableName = "notice_table")
 public class NoticeData {
 
