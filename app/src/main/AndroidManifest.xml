@@ -18,53 +18,69 @@
         tools:ignore="LockedOrientationActivity">
         <activity
             android:name=".view.main.team.TeamDetailActivity"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.main.account.setting.notice.NoticeListActivity"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.main.account.setting.SettingActivity"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.main.team.todo.AddTodoActivity"
+            android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/TranslucentActivity"
             android:windowSoftInputMode="adjustResize|stateVisible" />
         <activity
             android:name=".view.main.team.todo.TeamTodoListActivity"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.main.team.CreateTeamActivity"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.main.team.option_menu.TeamParticipationActivity"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.main.team.option_menu.InviteActivity"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.main.team.todo.TodoDetailActivity"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.main.account.EditProfileActivity"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.photoview.PhotoActivity"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.login.SignUp02Activity"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.login.SignUp01Activity"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.login.LoginActivity"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.main.team.option_menu.TeamMemberListActivity"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".view.main.MainActivity"
+            android:exported="false"
             android:screenOrientation="portrait" />
         <activity
             android:name=".SplashActivity"
