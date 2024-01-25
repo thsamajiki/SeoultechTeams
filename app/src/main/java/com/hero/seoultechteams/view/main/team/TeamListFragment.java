@@ -209,11 +209,14 @@ public class TeamListFragment extends BaseFragment<FragmentTeamListBinding> impl
         teamDataList.clear();
         teamDataList.addAll(data);
         teamListAdapter.notifyDataSetChanged();
+
+        binding.tvCreateFirstTeam.setVisibility(View.INVISIBLE);
     }
 
     @Override
     public void onEmptyTeamList() {
-        Toast.makeText(requireActivity(), "첫 번째 팀을 생성해보세요.", Toast.LENGTH_SHORT).show();
+        binding.tvCreateFirstTeam.setVisibility(View.VISIBLE);
+//        Toast.makeText(requireActivity(), "첫 번째 팀을 생성해보세요.", Toast.LENGTH_SHORT).show();
     }
 
     @Override

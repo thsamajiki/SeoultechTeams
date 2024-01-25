@@ -19,6 +19,20 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/item_team_list" />
 
+    <TextView
+        android:id="@+id/tv_create_first_team"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/create_first_team"
+        android:textSize="@dimen/body_text_size"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <com.skydoves.elasticviews.ElasticFloatingActionButton
         android:id="@+id/btn_create_team"
         android:layout_width="wrap_content"
