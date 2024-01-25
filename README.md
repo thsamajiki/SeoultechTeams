@@ -22,7 +22,7 @@
 
 
 ## 앱의 버전
-- minSdkVersion : 21
+- minSdkVersion : 23
 - targetSdkVersion : 34
 
 
@@ -50,13 +50,12 @@
 
 
 ## 사용된 라이브러리
-- 머티리얼 디자인 (com.google.android.material:material)
+- 머티리얼 디자인
 - 머티리얼 프로그래스바 (me.zhanghai.android.materialprogressbar:library)
 - 머리티얼 날짜시간피커 (com.wdullaer:materialdatetimepicker)
 - 포토뷰 (com.github.chrisbanes:PhotoView)
-- 사진 첨부 (com.github.bumptech.glide:glide)
-- (프로필) 사진 원형 표시 (de.hdodenhof:circleimageview)
-- 스와이프 새로고침 레이아웃 (androidx.swiperefreshlayout:swiperefreshlayout)
+- 사진 첨부 (Glide)
+- 스와이프 새로고침 레이아웃 (SwipeRefreshLayout)
 
 
 ## 문제 및 해결 과정
