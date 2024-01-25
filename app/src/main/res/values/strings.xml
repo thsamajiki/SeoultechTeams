@@ -171,4 +171,8 @@
 
     <string name="percent_template">%d%</string>
     <string name="item_drop_out">탈퇴하기</string>
+
+    <string name="create_first_team">첫 번째 팀을 생성해보세요.</string>
+    <string name="add_first_todo">첫 번째 할 일을 생성해보세요.</string>
+    <string name="no_todo_found">나의 할 일이 없어요.</string>
 </resources>

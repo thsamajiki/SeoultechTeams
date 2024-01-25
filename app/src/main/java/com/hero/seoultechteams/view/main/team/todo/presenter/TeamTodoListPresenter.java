@@ -32,9 +32,11 @@ public class TeamTodoListPresenter implements TeamTodoListContract.Presenter {
             public void onComplete(boolean isSuccess, List<TodoEntity> data) {
                 if (isSuccess) {
                     if (data != null) {
-                        view.onGetTeamTodoList(data);
-                    } else {
-                        view.emptyTeamTodoList();
+                        if (data.isEmpty()) {
+                            view.emptyTeamTodoList();
+                        } else {
+                            view.onGetTeamTodoList(data);
+                        }
                     }
                 } else {
                     view.failedGetTeamTodoList();

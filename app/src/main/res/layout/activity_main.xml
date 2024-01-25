@@ -28,6 +28,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:textColor="@color/black"
                 android:textSize="@dimen/title_text_size"
+                android:textStyle="bold"
                 tools:text="팀 목록" />
 
             <androidx.appcompat.widget.AppCompatImageView

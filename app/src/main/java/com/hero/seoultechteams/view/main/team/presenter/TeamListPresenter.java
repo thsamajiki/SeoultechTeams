@@ -25,9 +25,11 @@ public class TeamListPresenter implements TeamListContract.Presenter {
             public void onComplete(boolean isSuccess, List<TeamEntity> data) {
                 if (isSuccess) {
                     if (data != null) {
-                        view.onGetTeamList(data);
-                    } else {
-                        view.onEmptyTeamList();
+                        if (data.isEmpty()) {
+                            view.onEmptyTeamList();
+                        } else {
+                            view.onGetTeamList(data);
+                        }
                     }
                 } else {
                     view.failedGetTeamList();
