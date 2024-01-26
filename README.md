@@ -77,20 +77,18 @@ TodoData마다 생성, 제출, 승인, 반려된 시점들을 담은 List 변수
 - 클린 아키텍처를 적용하는 과정에서 시행착오가 많았고 예상보다 시간이 걸렸지만 성공적으로 구현했고, 앞으로 배우게 될 어려운 기술을 이해하고 구현할 수 있다는 자신감을 가지게 되었습니다. 또한 이번 개발을 계기로 클린 코드와 리팩토링에 관심을 가지게 되었습니다.
 
 ## 스크린샷
-<img src="/images/Splash.png" width="150px" height="320px" title="Splash" alt="Splash"></img>
-<img src="/images/Login.png" width="150px" height="320px" title="Login" alt="Login"></img>
-<img src="/images/SignUp.png" width="150px" height="320px" title="SignUp" alt="SignUp"></img>
-<img src="/images/MyTodoList.png" width="150px" height="320px" title="MyTodoList" alt="MyTodoList"></img>
-<img src="/images/TeamList.png" width="150px" height="320px" title="TeamList" alt="TeamList"></img>
-<img src="/images/CreateTeam.png" width="150px" height="320px" title="CreateTeam" alt="CreateTeam"></img>
-<img src="/images/TeamTodoList.png" width="150px" height="320px" title="TeamTodoList" alt="TeamTodoList"></img>
-<img src="/images/CreateTodo.png" width="150px" height="320px" title="CreateTodo" alt="CreateTodo"></img>
-<img src="/images/TeamMemberList.png" width="150px" height="320px" title="TeamMemberList" alt="TeamMemberList"></img>
-<img src="/images/MemberEvaluation.png" width="150px" height="320px" title="MemberEvaluation" alt="MemberEvaluation"></img>
-<img src="/images/InviteList.png" width="150px" height="320px" title="InviteList" alt="InviteList"></img>
-<img src="/images/Profile.png" width="150px" height="320px" title="Profile" alt="Profile"></img>
-<img src="/images/ProfileEdit.png" width="150px" height="320px" title="ProfileEdit" alt="ProfileEdit"></img>
-
+<img src="/images/Splash.png" width="200px" height="422px" title="Splash" alt="Splash"></img>
+<img src="/images/Login.png" width="200px" height="422px" title="Login" alt="Login"></img>
+<img src="/images/SignUp.png" width="200px" height="422px" title="SignUp" alt="SignUp"></img>
+<img src="/images/MyTodoList1.png" width="200px" height="422px" title="MyTodoList1" alt="MyTodoList1"></img>
+<img src="/images/MyTodoList2.png" width="200px" height="422px" title="MyTodoList2" alt="MyTodoList2"></img>
+<img src="/images/TeamList.png" width="200px" height="422px" title="TeamList" alt="TeamList"></img>
+<img src="/images/CreateTeam.png" width="200px" height="422px" title="CreateTeam" alt="CreateTeam"></img>
+<img src="/images/TeamTodoList.png" width="200px" height="422px" title="TeamTodoList" alt="TeamTodoList"></img>
+<img src="/images/CreateTodo.png" width="200px" height="422px" title="CreateTodo" alt="CreateTodo"></img>
+<img src="/images/TeamMemberList.png" width="200px" height="422px" title="TeamMemberList" alt="TeamMemberList"></img>
+<img src="/images/MemberEvaluation.png" width="200px" height="422px" title="MemberEvaluation" alt="MemberEvaluation"></img>
+<img src="/images/InviteList.png" width="200px" height="422px" title="InviteList" alt="InviteList"></img>
 
 
 ## 시연 영상
