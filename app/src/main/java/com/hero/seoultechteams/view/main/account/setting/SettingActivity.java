@@ -26,6 +26,8 @@ import com.hero.seoultechteams.view.login.LoginActivity;
 import com.hero.seoultechteams.view.main.account.OpenSourceLicenseDialog;
 import com.hero.seoultechteams.view.main.account.setting.contract.SettingContract;
 import com.hero.seoultechteams.view.main.account.setting.notice.NoticeListActivity;
+import com.hero.seoultechteams.view.main.account.setting.policy.PrivacyPolicyActivity;
+import com.hero.seoultechteams.view.main.account.setting.policy.ServicePolicyActivity;
 import com.hero.seoultechteams.view.main.account.setting.presenter.SettingPresenter;
 
 public class SettingActivity extends BaseActivity<ActivitySettingBinding> implements View.OnClickListener, SettingContract.View {
@@ -58,6 +60,8 @@ public class SettingActivity extends BaseActivity<ActivitySettingBinding> implem
         binding.layoutItemDeleteCache.setOnClickListener(this);
         binding.layoutItemInquiry.setOnClickListener(this);
         binding.layoutItemReview.setOnClickListener(this);
+        binding.layoutItemServicePolicy.setOnClickListener(this);
+        binding.layoutItemPrivacyPolicy.setOnClickListener(this);
         binding.layoutItemOpenSource.setOnClickListener(this);
         binding.layoutItemDropOut.setOnClickListener(this);
     }
@@ -82,6 +86,12 @@ public class SettingActivity extends BaseActivity<ActivitySettingBinding> implem
                 break;
             case R.id.layout_item_review:
                 launchReviewDialog(reviewManager, reviewInfo);
+                break;
+            case R.id.layout_item_service_policy:
+                onClickServicePolicy();
+                break;
+            case R.id.layout_item_privacy_policy:
+                onClickPrivacyPolicy();
                 break;
             case R.id.layout_item_open_source:
                 openOpenSource();
@@ -173,6 +183,16 @@ public class SettingActivity extends BaseActivity<ActivitySettingBinding> implem
                 }
             }
         });
+    }
+
+    private void onClickServicePolicy() {
+        Intent intent = new Intent(this, ServicePolicyActivity.class);
+        startActivity(intent);
+    }
+
+    private void onClickPrivacyPolicy() {
+        Intent intent = new Intent(this, PrivacyPolicyActivity.class);
+        startActivity(intent);
     }
 
     private void openOpenSource() {
