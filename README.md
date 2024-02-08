@@ -44,7 +44,7 @@
 - ROOM
 - RecyclerView
 - ViewBinding
-- Swipe Refresh Layout
+- SwipeRefreshLayout
 - Cache Manager
 - @StringDef
 
