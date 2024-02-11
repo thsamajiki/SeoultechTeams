@@ -22,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.PopupMenu;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.hero.seoultechteams.BaseFragment;
 import com.hero.seoultechteams.Injector;
@@ -58,6 +59,18 @@ public class TeamListFragment extends BaseFragment<FragmentTeamListBinding> impl
         initTeamListAdapter();
         presenter.getTeamListFromDatabase();
         setOnClickListeners();
+
+        BottomNavigationView nav = getActivity().findViewById(R.id.main_bottom_nav);
+        if (nav != null) {
+            nav.setOnItemReselectedListener(new BottomNavigationView.OnItemReselectedListener() {   
+                @Override
+                public void onNavigationItemReselected(@NonNull MenuItem item) {
+                    if (item.getItemId() == R.id.menu_team) {
+                        binding.rvTeamList.smoothScrollToPosition(0);
+                    }
+                }
+            });
+        }
     }
 
     private void initTeamListAdapter() {
