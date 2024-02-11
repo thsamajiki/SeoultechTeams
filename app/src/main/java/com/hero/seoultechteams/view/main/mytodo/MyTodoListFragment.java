@@ -98,6 +98,14 @@ public class MyTodoListFragment extends BaseFragment<FragmentMyTodoListBinding> 
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
+                int position = tab.getPosition();
+
+                switch (position) {
+                    case 0:
+                    case 1:
+                        binding.rvMyTodoList.smoothScrollToPosition(0);
+                        break;
+                }
             }
         });
     }
