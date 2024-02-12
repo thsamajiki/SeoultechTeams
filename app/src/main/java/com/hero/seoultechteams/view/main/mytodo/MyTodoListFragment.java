@@ -8,6 +8,7 @@ import static com.hero.seoultechteams.domain.todo.entity.TodoEntity.TODO_STATE_S
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -16,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.hero.seoultechteams.BaseFragment;
 import com.hero.seoultechteams.Injector;
@@ -60,6 +62,7 @@ public class MyTodoListFragment extends BaseFragment<FragmentMyTodoListBinding> 
         setOnRefreshListener();
         initMyTodoListAdapter();
         showMyTodoListOnSeparatedTabs();
+        switchTabs();
     }
 
     @Override
@@ -125,6 +128,24 @@ public class MyTodoListFragment extends BaseFragment<FragmentMyTodoListBinding> 
     private void setTodoCompleted(TodoEntity data) {
         myTodoNowDataList.remove(data);
         myTodoCompletedDataList.add(data);
+    }
+
+    private void switchTabs() {
+        BottomNavigationView nav = getActivity().findViewById(R.id.main_bottom_nav);
+        if (nav != null) {
+            nav.setOnItemReselectedListener(new BottomNavigationView.OnItemReselectedListener() {
+                @Override
+                public void onNavigationItemReselected(@NonNull MenuItem item) {
+                    if (item.getItemId() == R.id.menu_mytodo) {
+                        if (binding.tlMyTodoList.getSelectedTabPosition() == 0) {
+                            binding.tlMyTodoList.selectTab(binding.tlMyTodoList.getTabAt(1));
+                        } else {
+                            binding.tlMyTodoList.selectTab(binding.tlMyTodoList.getTabAt(0));
+                        }
+                    }
+                }
+            });
+        }
     }
 
     private void getTeamListFromDatabase() {
