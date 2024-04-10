@@ -45,7 +45,7 @@
 - RecyclerView
 - ViewBinding
 - SwipeRefreshLayout
-- Cache Manager
+- Cache Manager (직접 구현)
 - @StringDef
 
 
