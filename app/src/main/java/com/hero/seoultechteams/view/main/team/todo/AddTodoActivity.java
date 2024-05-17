@@ -191,6 +191,7 @@ public class AddTodoActivity extends BaseActivity<ActivityAddTodoBinding> implem
         intent.putExtra(EXTRA_ADD_TODO, data);
         setResult(RESULT_OK, intent);
         finish();
+        Toast.makeText(AddTodoActivity.this, "할 일을 생성했습니다.", Toast.LENGTH_SHORT).show();
     }
 
     @Override
