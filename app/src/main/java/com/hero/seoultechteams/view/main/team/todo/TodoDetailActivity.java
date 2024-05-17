@@ -148,6 +148,8 @@ public class TodoDetailActivity extends BaseActivity<ActivityTodoDetailBinding> 
         intent.putExtra(EXTRA_UPDATE_TODO, data);
         setResult(RESULT_OK, intent);
         finish();
+
+        Toast.makeText(this, "할 일을 수정했습니다.", Toast.LENGTH_SHORT).show();
     }
 
     @Override

@@ -134,6 +134,7 @@ public class TeamDetailActivity extends BaseActivity<ActivityTeamDetailBinding> 
         intent.putExtra(EXTRA_UPDATE_TEAM, data);
         setResult(RESULT_OK, intent);
         finish();
+        Toast.makeText(TeamDetailActivity.this, "팀의 정보를 수정했습니다.", Toast.LENGTH_SHORT).show();
     }
 
     @Override
