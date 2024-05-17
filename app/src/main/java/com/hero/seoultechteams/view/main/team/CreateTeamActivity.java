@@ -89,6 +89,8 @@ public class CreateTeamActivity extends BaseActivity<ActivityCreateTeamBinding> 
         intent.putExtra(EXTRA_CREATE_TEAM, data);
         setResult(RESULT_OK, intent);
         finish();
+
+        Toast.makeText(this, "팀을 생성했습니다.", Toast.LENGTH_SHORT).show();
     }
 
     @Override
