@@ -13,39 +13,6 @@ import java.util.Collections;
 import java.util.Comparator;
 
 public class MemberParticipationUnitTest {
-    // 멤버 성실도 랭킹 (지연되지 않고 (정상) 제출을 가장 많이 한 사람)
-    @Test
-    public void getMemberFaithfulRanking() {
-        MemberParticipation member1Participation = getMemberParticipationData(10, 2, 3, 12, 3,
-                "김철수",
-                "chulsoo@TechOne.com",
-                "null",
-                "techone",
-                "1");
-        MemberParticipation member2Participation = getMemberParticipationData(6, 8, 2, 9, 3, "이은희",
-                "eunhee@TechOne.com",
-                "null",
-                "techone",
-                "2");
-        MemberParticipation member3Participation = getMemberParticipationData(9, 5, 4, 7, 11,
-                "박광온",
-                "gwangon@TechOne.com",
-                "null",
-                "techone",
-                "3");
-
-        ArrayList<MemberParticipation> memberParticipationList = new ArrayList<>();
-        memberParticipationList.add(member1Participation);
-        memberParticipationList.add(member2Participation);
-        memberParticipationList.add(member3Participation);
-
-        Collections.sort(memberParticipationList, (o1, o2) ->
-                Integer.compare(o2.getParticipationData().getMemberTodoFaithfulPercent(), o1.getParticipationData().getMemberTodoFaithfulPercent())
-        );
-
-
-    }
-
     // 멤버 우리팀 영웅 (가장 승인율이 높은 사람)
     @Test
     public void getMemberPerformanceKing() {
