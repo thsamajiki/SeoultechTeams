@@ -12,11 +12,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
- */
 public class MemberParticipationUnitTest {
     // 멤버 성실도 랭킹 (지연되지 않고 (정상) 제출을 가장 많이 한 사람)
     @Test
