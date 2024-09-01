@@ -1,4 +1,4 @@
-package com.hero.seoultechteams;
+package com.hero.seoultechteams.team;
 
 import static org.junit.Assert.assertEquals;
 
