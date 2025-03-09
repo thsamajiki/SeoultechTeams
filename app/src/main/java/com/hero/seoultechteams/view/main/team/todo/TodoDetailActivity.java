@@ -125,14 +125,13 @@ public class TodoDetailActivity extends BaseActivity<ActivityTodoDetailBinding> 
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.iv_back:
-                updateTodoDetail();
-                break;
-//            case R.id.iv_option_menu:
-//                showTodoDetailOptionMenu();
-//                break;
+        if (view.getId() == R.id.iv_back) {
+            updateTodoDetail();
         }
+//        else if (view.getId() == R.id.iv_option_menu) {
+//            showTodoDetailOptionMenu();
+//        }
+
     }
 
     private void updateTodoDetail() {
