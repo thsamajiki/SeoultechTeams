@@ -177,18 +177,14 @@ public class MyTodoListFragment extends BaseFragment<FragmentMyTodoListBinding> 
 
     @Override
     public void onItemClick(int position, View view, TodoEntity data) {
-        switch (view.getId()) {
-            case R.id.btn_dismiss_my_todo:
-                updateMyTodo(true, position, data);
-                break;
-            case R.id.btn_state_my_todo:
-                updateMyTodo(false, position, data);
-                break;
-            default:
-                Intent intent = new Intent(requireActivity(), TodoDetailActivity.class);
-                intent.putExtra(TodoDetailActivity.EXTRA_TODO_KEY, data.getTodoKey());
-                startActivity(intent);
-                break;
+        if (view.getId() == R.id.btn_dismiss_my_todo) {
+            updateMyTodo(true, position, data);
+        } else if (view.getId() == R.id.btn_state_my_todo) {
+            updateMyTodo(false, position, data);
+        } else {
+            Intent intent = new Intent(requireActivity(), TodoDetailActivity.class);
+            intent.putExtra(TodoDetailActivity.EXTRA_TODO_KEY, data.getTodoKey());
+            startActivity(intent);
         }
     }
 
