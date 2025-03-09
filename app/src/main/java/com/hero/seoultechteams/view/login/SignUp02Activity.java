@@ -47,13 +47,10 @@ public class SignUp02Activity extends BaseActivity<ActivitySignUp02Binding> impl
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.iv_back:
-                finish();
-                break;
-            case R.id.btn_start:
-                finishSignUp();
-                break;
+        if (view.getId() == R.id.iv_back) {
+            finish();
+        } else if (view.getId() == R.id.btn_start) {
+            finishSignUp();
         }
     }
 
