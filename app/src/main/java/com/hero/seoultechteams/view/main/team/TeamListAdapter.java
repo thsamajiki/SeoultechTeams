@@ -19,7 +19,6 @@ import com.hero.seoultechteams.view.BaseAdapter;
 
 import java.util.List;
 
-
 public class TeamListAdapter extends BaseAdapter<TeamListAdapter.TeamListViewHolder, TeamEntity> {
 
     private final Context context;
@@ -64,11 +63,10 @@ public class TeamListAdapter extends BaseAdapter<TeamListAdapter.TeamListViewHol
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                switch(item.getItemId()) {
-                    case R.id.menu_modify_team:
-                        onPopupClickListener.popupOnClick(teamData);
-                        break;
+                if (item.getItemId() == R.id.menu_modify_team) {
+                    onPopupClickListener.popupOnClick(teamData);
                 }
+
                 return true;
             }
         });
