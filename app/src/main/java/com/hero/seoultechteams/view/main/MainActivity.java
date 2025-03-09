@@ -86,23 +86,20 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements V
         binding.mainBottomNav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.menu_team:
-                        binding.mainViewPager.setCurrentItem(0, true);
-                        binding.ivAccountOptionMenu.setVisibility(View.INVISIBLE);
-                        binding.ivAccountOptionMenu.setClickable(false);
-                        break;
-                    case R.id.menu_mytodo:
-                        binding.mainViewPager.setCurrentItem(1, true);
-                        binding.ivAccountOptionMenu.setVisibility(View.INVISIBLE);
-                        binding.ivAccountOptionMenu.setClickable(false);
-                        break;
-                    case R.id.menu_account:
-                        binding.mainViewPager.setCurrentItem(2, true);
-                        binding.ivAccountOptionMenu.setVisibility(View.VISIBLE);
-                        binding.ivAccountOptionMenu.setClickable(true);
-                        break;
+                if (item.getItemId() == R.id.menu_team) {
+                    binding.mainViewPager.setCurrentItem(0, true);
+                    binding.ivAccountOptionMenu.setVisibility(View.INVISIBLE);
+                    binding.ivAccountOptionMenu.setClickable(false);
+                } else if (item.getItemId() == R.id.menu_mytodo) {
+                    binding.mainViewPager.setCurrentItem(1, true);
+                    binding.ivAccountOptionMenu.setVisibility(View.INVISIBLE);
+                    binding.ivAccountOptionMenu.setClickable(false);
+                } else if (item.getItemId() == R.id.menu_account) {
+                    binding.mainViewPager.setCurrentItem(2, true);
+                    binding.ivAccountOptionMenu.setVisibility(View.VISIBLE);
+                    binding.ivAccountOptionMenu.setClickable(true);
                 }
+
                 return false;
             }
         });
@@ -114,10 +111,8 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements V
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.iv_account_option_menu:
-                showAccountOptionMenu();
-                break;
+        if (view.getId() == R.id.iv_account_option_menu) {
+            showAccountOptionMenu();
         }
     }
 
@@ -127,18 +122,15 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements V
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.menu_setting:
-                        Intent intent = new Intent(MainActivity.this, SettingActivity.class);
-                        startActivity(intent);
-                        break;
-                    case R.id.menu_about_us:
-                        showAboutUsDialog();
-                        break;
-                    case R.id.menu_logout:
-                        showLogoutDialog();
-                        break;
+                if (item.getItemId() == R.id.menu_setting) {
+                    Intent intent = new Intent(MainActivity.this, SettingActivity.class);
+                    startActivity(intent);
+                } else if (item.getItemId() == R.id.menu_about_us) {
+                    showAboutUsDialog();
+                } else if (item.getItemId() == R.id.menu_logout) {
+                    showLogoutDialog();
                 }
+
                 return true;
             }
         });
