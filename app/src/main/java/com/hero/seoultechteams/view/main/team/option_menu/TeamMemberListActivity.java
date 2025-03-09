@@ -28,7 +28,6 @@ import com.hero.seoultechteams.view.main.team.option_menu.presenter.TeamMemberLi
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class TeamMemberListActivity extends BaseActivity<ActivityTeamMemberListBinding> implements View.OnClickListener, OnRecyclerItemClickListener<MemberEntity>, TeamMemberListContract.View {
 
     private final ArrayList<MemberEntity> teamMemberDataList = new ArrayList<>();
@@ -72,16 +71,12 @@ public class TeamMemberListActivity extends BaseActivity<ActivityTeamMemberListB
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.iv_back:
-                finish();
-                break;
-            case R.id.iv_member_profile:
-                //intentMemberProfilePhoto(getTeamData().getUserKey());
-                break;
-            case R.id.btn_go_to_invite:
-                onGotoInviteButtonClick();
-                break;
+        if (view.getId() == R.id.iv_back) {
+            finish();
+        } else if (view.getId() == R.id.iv_member_profile) {
+            //intentMemberProfilePhoto(getTeamData().getUserKey());
+        } else if (view.getId() == R.id.btn_go_to_invite) {
+            onGotoInviteButtonClick();
         }
     }
 
