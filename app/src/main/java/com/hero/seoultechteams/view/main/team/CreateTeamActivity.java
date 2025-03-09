@@ -66,13 +66,10 @@ public class CreateTeamActivity extends BaseActivity<ActivityCreateTeamBinding> 
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.iv_back:
-                finish();
-                break;
-            case R.id.btn_finish_create_team:
-                addTeamToDatabase();
-                break;
+        if (view.getId() == R.id.iv_back) {
+            finish();
+        } else if (view.getId() == R.id.btn_finish_create_team) {
+            addTeamToDatabase();
         }
     }
 

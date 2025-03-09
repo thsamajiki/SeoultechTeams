@@ -16,7 +16,6 @@ import com.hero.seoultechteams.view.main.account.setting.notice.presenter.Notice
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class NoticeListActivity extends BaseActivity<ActivityNoticeListBinding> implements View.OnClickListener, OnRecyclerItemClickListener<NoticeEntity>, NoticeListContract.View {
 
     private List<NoticeEntity> noticeDataList = new ArrayList<>();
@@ -51,10 +50,8 @@ public class NoticeListActivity extends BaseActivity<ActivityNoticeListBinding> 
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.iv_back:
-                finish();
-                break;
+        if (view.getId() == R.id.iv_back) {
+            finish();
         }
     }
 

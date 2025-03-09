@@ -88,16 +88,12 @@ public class AddTodoActivity extends BaseActivity<ActivityAddTodoBinding> implem
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.view_add_todo_background:
-                finish();
-                break;
-            case R.id.btn_finish_add_todo:
-                openDatePicker();
-                break;
-            case R.id.ll_set_manager:
-                openMemberListDialog();
-                break;
+        if (view.getId() == R.id.view_add_todo_background) {
+            finish();
+        } else if (view.getId() == R.id.btn_finish_add_todo) {
+            openDatePicker();
+        } else if (view.getId() == R.id.ll_set_manager) {
+            openMemberListDialog();
         }
     }
 

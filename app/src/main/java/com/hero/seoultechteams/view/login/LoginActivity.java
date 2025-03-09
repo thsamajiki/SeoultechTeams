@@ -40,14 +40,11 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding> implements
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btn_sign_up:
-                Intent intent = new Intent(this, SignUp01Activity.class);
-                startActivity(intent);
-                break;
-            case R.id.btn_login:
+        if (view.getId() == R.id.btn_sign_up) {
+            Intent intent = new Intent(this, SignUp01Activity.class);
+            startActivity(intent);
+        } else if (view.getId() == R.id.btn_login) {
                 login();
-                break;
         }
     }
 

@@ -67,14 +67,11 @@ public class AccountFragment extends BaseFragment<FragmentAccountBinding> implem
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.iv_my_user_profile:
-                String myProfileImageUrl = presenter.getUserEntity().getProfileImageUrl();
-                onMyUserProfileImageClick(myProfileImageUrl);
-                break;
-            case R.id.btn_edit_profile:
-                onEditProfileButtonClick();
-                break;
+        if (view.getId() == R.id.iv_my_user_profile) {
+            String myProfileImageUrl = presenter.getUserEntity().getProfileImageUrl();
+            onMyUserProfileImageClick(myProfileImageUrl);
+        } else if (view.getId() == R.id.btn_edit_profile) {
+            onEditProfileButtonClick();
         }
     }
 

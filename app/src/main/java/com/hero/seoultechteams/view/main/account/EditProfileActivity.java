@@ -77,20 +77,15 @@ public class EditProfileActivity extends BaseActivity<ActivityEditProfileBinding
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.iv_back:
-                finish();
-                break;
-            case R.id.tv_edit_profile_complete:
-                String myNewUserName = binding.editUserName.getText().toString();
-                presenter.updateMyUserData(myNewUserName);
-
-                break;
-            case R.id.fab_profile_image_edit:
-                if (checkStoragePermission()) {
-                    openGallery();
-                }
-                break;
+        if (view.getId() == R.id.iv_back) {
+            finish();
+        } else if (view.getId() == R.id.tv_edit_profile_complete) {
+            String myNewUserName = binding.editUserName.getText().toString();
+            presenter.updateMyUserData(myNewUserName);
+        } else if (view.getId() == R.id.fab_profile_image_edit) {
+            if (checkStoragePermission()) {
+                openGallery();
+            }
         }
     }
 

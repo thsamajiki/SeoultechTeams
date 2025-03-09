@@ -93,13 +93,10 @@ public class TeamListFragment extends BaseFragment<FragmentTeamListBinding> impl
 
     @Override
     public void onItemClick(int position, View view, TeamEntity data) {
-        switch (view.getId()) {
-            case R.id.iv_team_option_menu:
-                openTeamOptionMenu(data, view);
-                break;
-            default:
-                onTeamListItemClick(data);
-                break;
+        if (view.getId() == R.id.iv_team_option_menu) {
+            openTeamOptionMenu(data, view);
+        } else {
+            onTeamListItemClick(data);
         }
     }
 
@@ -115,11 +112,10 @@ public class TeamListFragment extends BaseFragment<FragmentTeamListBinding> impl
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                switch(item.getItemId()) {
-                    case R.id.menu_modify_team:
-                        onModifyTeamMenuClick(teamData);
-                        break;
+                if (item.getItemId() == R.id.menu_modify_team) {
+                    onModifyTeamMenuClick(teamData);
                 }
+
                 return true;
             }
         });
@@ -134,10 +130,8 @@ public class TeamListFragment extends BaseFragment<FragmentTeamListBinding> impl
 
     @Override
     public void onClick(View view) {
-        switch(view.getId()) {
-            case R.id.btn_create_team:
-                onCreateTeamButtonClick();
-                break;
+        if (view.getId() == R.id.btn_create_team) {
+            onCreateTeamButtonClick();
         }
     }
 

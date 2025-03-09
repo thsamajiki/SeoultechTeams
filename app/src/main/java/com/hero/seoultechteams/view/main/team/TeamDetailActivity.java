@@ -112,14 +112,12 @@ public class TeamDetailActivity extends BaseActivity<ActivityTeamDetailBinding> 
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.iv_back:
-                updateTeamDetail();
-                break;
-//            case R.id.iv_option_menu:
-//                showTeamDetailOptionMenu();
-//                break;
+        if (view.getId() == R.id.iv_back) {
+            updateTeamDetail();
         }
+//        else if (view.getId() == R.id.iv_option_menu) {
+//            showTeamDetailOptionMenu();
+//        }
     }
 
     private void updateTeamDetail() {
