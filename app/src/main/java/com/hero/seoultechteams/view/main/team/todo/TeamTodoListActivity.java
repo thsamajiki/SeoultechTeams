@@ -96,16 +96,12 @@ public class TeamTodoListActivity extends BaseActivity<ActivityTeamTodoListBindi
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.iv_back:
-                finish();
-                break;
-            case R.id.iv_team_option_menu:
-                showTeamTodoListOptionMenu();
-                break;
-            case R.id.mcv_add_todo:
-                onAddTodoCardViewClick();
-                break;
+        if (view.getId() == R.id.iv_back) {
+            finish();
+        } else if (view.getId() == R.id.iv_team_option_menu) {
+            showTeamTodoListOptionMenu();
+        } else if (view.getId() == R.id.mcv_add_todo) {
+            onAddTodoCardViewClick();
         }
     }
 
@@ -116,18 +112,16 @@ public class TeamTodoListActivity extends BaseActivity<ActivityTeamTodoListBindi
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 Intent intent;
-                switch (item.getItemId()) {
-                    case R.id.menu_team_member_list:
-                        intent = new Intent(TeamTodoListActivity.this, TeamMemberListActivity.class);
-                        intent.putExtra(EXTRA_TEAM_DATA, getTeamData());
-                        startActivity(intent);
-                        break;
-                    case R.id.menu_team_participation:
-                        intent = new Intent(TeamTodoListActivity.this, TeamParticipationActivity.class);
-                        intent.putExtra(EXTRA_TEAM_DATA, getTeamData());
-                        startActivity(intent);
-                        break;
+                if (item.getItemId() == R.id.menu_team_member_list) {
+                    intent = new Intent(TeamTodoListActivity.this, TeamMemberListActivity.class);
+                    intent.putExtra(EXTRA_TEAM_DATA, getTeamData());
+                    startActivity(intent);
+                } else if (item.getItemId() == R.id.menu_team_participation) {
+                    intent = new Intent(TeamTodoListActivity.this, TeamParticipationActivity.class);
+                    intent.putExtra(EXTRA_TEAM_DATA, getTeamData());
+                    startActivity(intent);
                 }
+
                 return true;
             }
         });
@@ -142,18 +136,14 @@ public class TeamTodoListActivity extends BaseActivity<ActivityTeamTodoListBindi
 
     @Override
     public void onItemClick(int position, View view, TodoEntity data) {
-        switch (view.getId()) {
-            case R.id.btn_dismiss_todo:
-                updateTodoState(true, position, data);
-                break;
-            case R.id.btn_state_todo:
-                updateTodoState(false, position, data);
-                break;
-            default:
-                Intent intent = new Intent(this, TodoDetailActivity.class);
-                intent.putExtra(EXTRA_TODO_KEY, data.getTodoKey());
-                updateTodoResultLauncher.launch(intent);
-                break;
+        if (view.getId() == R.id.btn_dismiss_todo) {
+            updateTodoState(true, position, data);
+        } else if (view.getId() == R.id.btn_state_todo) {
+            updateTodoState(false, position, data);
+        } else {
+            Intent intent = new Intent(this, TodoDetailActivity.class);
+            intent.putExtra(EXTRA_TODO_KEY, data.getTodoKey());
+            updateTodoResultLauncher.launch(intent);
         }
     }
 
