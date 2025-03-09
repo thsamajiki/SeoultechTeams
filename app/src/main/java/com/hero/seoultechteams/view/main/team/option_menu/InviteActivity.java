@@ -69,13 +69,10 @@ public class InviteActivity extends BaseActivity<ActivityInviteBinding> implemen
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.iv_back:
-                finish();
-                break;
-            case R.id.btn_invite:
-                openInviteUserDialog();
-                break;
+        if (view.getId() == R.id.iv_back) {
+            finish();
+        } else if (view.getId() == R.id.btn_invite) {
+            openInviteUserDialog();
         }
     }
 
@@ -83,12 +80,11 @@ public class InviteActivity extends BaseActivity<ActivityInviteBinding> implemen
         binding.inputEmailOrUser.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                switch (actionId) {
-                    case EditorInfo.IME_ACTION_DONE:
-                        String input = v.getText().toString();
-                        presenter.getUserList(input);
-                        break;
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    String input = v.getText().toString();
+                    presenter.getUserList(input);
                 }
+
                 return true;
             }
         });
@@ -129,9 +125,8 @@ public class InviteActivity extends BaseActivity<ActivityInviteBinding> implemen
 
     @Override
     public void onItemClick(int position, View view, UserEntity data) {
-        switch (view.getId()) {
-            case R.id.iv_member_profile:
-                break;
+        if (view.getId() == R.id.iv_member_profile) {
+            return;
         }
     }
 
