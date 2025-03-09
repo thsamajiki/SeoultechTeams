@@ -21,7 +21,6 @@ import com.hero.seoultechteams.view.main.team.option_menu.presenter.TeamParticip
 
 import java.util.List;
 
-
 public class TeamParticipationActivity extends BaseActivity<ActivityTeamParticipationBinding> implements View.OnClickListener, TeamParticipationContract.View {
 
     private final TeamParticipationContract.Presenter presenter = new TeamParticipationPresenter(this,
@@ -81,10 +80,8 @@ public class TeamParticipationActivity extends BaseActivity<ActivityTeamParticip
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.iv_back:
+        if (view.getId() ==  R.id.iv_back) {
                 finish();
-                break;
         }
     }
 
