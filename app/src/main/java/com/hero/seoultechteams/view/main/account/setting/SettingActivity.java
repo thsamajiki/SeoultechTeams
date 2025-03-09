@@ -68,37 +68,26 @@ public class SettingActivity extends BaseActivity<ActivitySettingBinding> implem
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.iv_back:
-                finish();
-                break;
-            case R.id.layout_item_notice:
-                onNoticeLayoutClick();
-                break;
-            case R.id.layout_item_font:
-                openFontPopUp();
-                break;
-            case R.id.layout_item_delete_cache:
-                openDeleteCachePopUp();
-                break;
-            case R.id.layout_item_inquiry:
-                openInquiryPopUp();
-                break;
-            case R.id.layout_item_review:
-                launchReviewDialog(reviewManager, reviewInfo);
-                break;
-            case R.id.layout_item_service_policy:
-                onClickServicePolicy();
-                break;
-            case R.id.layout_item_privacy_policy:
-                onClickPrivacyPolicy();
-                break;
-            case R.id.layout_item_open_source:
-                openOpenSource();
-                break;
-            case R.id.layout_item_drop_out:
-                openDropOutDialog();
-                break;
+        if (view.getId() == R.id.iv_back) {
+            finish();
+        } else if (view.getId() == R.id.layout_item_notice) {
+            onNoticeLayoutClick();
+        } else if (view.getId() == R.id.layout_item_font) {
+            openFontPopUp();
+        } else if (view.getId() == R.id.layout_item_delete_cache) {
+            openDeleteCachePopUp();
+        } else if (view.getId() == R.id.layout_item_inquiry) {
+            openInquiryPopUp();
+        } else if (view.getId() == R.id.layout_item_review) {
+            launchReviewDialog(reviewManager, reviewInfo);
+        } else if (view.getId() == R.id.layout_item_service_policy) {
+            onClickServicePolicy();
+        } else if (view.getId() == R.id.layout_item_privacy_policy) {
+            onClickPrivacyPolicy();
+        } else if (view.getId() == R.id.layout_item_open_source) {
+            openOpenSource();
+        } else if (view.getId() == R.id.layout_item_drop_out) {
+            openDropOutDialog();
         }
     }
 
